@@ -1,0 +1,309 @@
+html {
+  font-family: sans-serif;
+}
+
+body {
+  margin: 0;
+  background-color: #e6f2ff;
+  min-width: 850px;
+  overflow-x: auto;
+}
+
+body.home {
+  background-image: url("https://cdn.shopify.com/s/files/1/0031/3912/products/stackoverflow_gold_1024x1024.png");
+  background-repeat:no-repeat;
+  background-position:left;
+  background-attachment:fixed;
+  background-size: 650px 700px;
+  opacity: 0.9;
+}
+
+aside, footer, header, nav, section {
+  display: block;
+}
+
+
+h1, h2, h3, h4, h5, h6, p {
+	padding: 10px;
+}
+
+header {
+	color: #00264d; 
+}
+
+a {
+	text-decoration: none;
+}
+button.btn { 
+	font-size: 15px;
+	padding: 5px;
+	background-color: #fff;
+	border: 1px solid #666;
+}
+
+
+.main{
+	background-color: #004d99;
+	color: #fff; 
+}
+
+.signin-form input {
+	padding: 2px;
+	border: 1px solid #004d99;
+	border-radius: 1px;
+}
+
+.signup-form input {
+	width: 100%;
+	font-size: 15px;
+	padding: 4px;
+	border: 1px solid #ccc;
+	border-radius: 1px;
+}
+
+.signup-form {
+	width: 70%;
+	margin-right: auto;
+	margin-left: auto;
+	padding: 10px
+}
+
+.form-item {
+	margin-bottom: 15px;
+}
+
+@media (min-width: 768px){
+	.signup-form {
+		margin-right: 20px;
+		padding: 10px
+	}
+	
+	.signup-form input {
+		width: 100%;
+		font-size: 15px;
+		padding: 4px;
+		border: 1px solid #ccc;
+		border-radius: 2px;
+	}
+
+	.form-item {
+		margin-bottom: 15px;
+	}
+}
+
+.right {
+	display: inline-block;
+	float: right;
+}
+.center{
+	text-align: center;
+}
+
+.logo {
+	display: inline-block;
+}
+
+div.logo p {
+	margin-left: 15px;
+	padding: 7px;
+	border-top: 3px solid #00264d;
+	border-right: 3px solid #00264d;
+	font-size: 18px;
+	font-weight: bolder;
+}
+
+.top-link {
+	padding: 1.0em;
+}
+
+.row-container {
+	width: 100%;
+	margin:auto;
+}
+
+.sd-margin-1, .d-margin-1, .sd-margin-2, .d-margin-2, .sd-margin-3, .d-margin-3, .sd-margin-4, .d-margin-4, .sd-margin-5, .d-margin-5, .sd-margin-6, .d-margin-6, .sd-margin-7, .d-margin-7, .sd-margin-8, .sd-margin-9, .d-margin-9, .sd-margin-10, .d-margin-10, .sd-margin-11, .d-margin-11, .sd-margin-12, .d-margin-12 {
+  position: relative;
+  min-height: 1px;
+  padding: auto;
+}
+.sd-margin-1, .sd-margin-2, .sd-margin-3, .sd-margin-4, .sd-margin-5, .sd-margin-6, .sd-margin-7, .sd-margin-8, .sd-margin-9, .sd-margin-10, .sd-margin-11, .sd-margin-12 {
+  float: left;
+}
+.sd-margin-12 {
+  width: 100%;
+}
+.sd-margin-11 {
+  width: 91.66666667%;
+}
+.sd-margin-10 {
+  width: 83.33333333%;
+}
+.sd-margin-9 {
+  width: 75%;
+}
+.sd-margin-8 {
+  width: 66.66666667%;
+}
+.sd-margin-7 {
+  width: 58.33333333%;
+}
+.sd-margin-6 {
+  width: 50%;
+}
+.sd-margin-5 {
+  width: 41.66666667%;
+}
+.sd-margin-4 {
+  width: 33.33333333%;
+}
+.sd-margin-3 {
+  width: 25%;
+}
+.sd-margin-2 {
+  width: 16.66666667%;
+}
+.sd-margin-1 {
+  width: 8.33333333%;
+}
+
+.sd-margin-offset-12 {
+  margin-left: 100%;
+}
+.sd-margin-offset-11 {
+  margin-left: 91.66666667%;
+}
+.sd-margin-offset-10 {
+  margin-left: 83.33333333%;
+}
+.sd-margin-offset-9 {
+  margin-left: 75%;
+}
+.sd-margin-offset-8 {
+  margin-left: 66.66666667%;
+}
+.sd-margin-offset-7 {
+  margin-left: 58.33333333%;
+}
+.sd-margin-offset-6 {
+  margin-left: 50%;
+}
+.sd-margin-offset-5 {
+  margin-left: 41.66666667%;
+}
+.sd-margin-offset-4 {
+  margin-left: 33.33333333%;
+}
+.sd-margin-offset-3 {
+  margin-left: 25%;
+}
+.sd-margin-offset-2 {
+  margin-left: 16.66666667%;
+}
+.sd-margin-offset-1 {
+  margin-left: 8.33333333%;
+}
+.sd-margin-offset-0 {
+  margin-left: 0;
+}
+
+@media (min-width: 768px) {
+  .d-margin-1, .d-margin-2, .d-margin-3, .d-margin-4, .d-margin-5, .d-margin-6, .d-margin-7, .d-margin-8, .d-margin-9, .d-margin-10, .d-margin-11, .d-margin-12 {
+    float: left;
+  }
+  .d-margin-12 {
+    width: 100%;
+  }
+  .d-margin-11 {
+    width: 91.66666667%;
+  }
+  .d-margin-10 {
+    width: 83.33333333%;
+  }
+  .d-margin-9 {
+    width: 75%;
+  }
+  .d-margin-8 {
+    width: 66.66666667%;
+  }
+  .d-margin-7 {
+    width: 58.33333333%;
+  }
+  .d-margin-6 {
+    width: 50%;
+  }
+  .d-margin-5 {
+    width: 41.66666667%;
+  }
+  .d-margin-4 {
+    width: 33.33333333%;
+  }
+  .d-margin-3 {
+    width: 25%;
+  }
+  .d-margin-2 {
+    width: 16.66666667%;
+  }
+  .d-margin-1 {
+    width: 8.33333333%;
+  }
+
+  .d-margin-offset-12 {
+    margin-left: 100%;
+  }
+  .d-margin-offset-11 {
+    margin-left: 91.66666667%;
+  }
+  .d-margin-offset-10 {
+    margin-left: 83.33333333%;
+  }
+  .d-margin-offset-9 {
+    margin-left: 75%;
+  }
+  .d-margin-offset-8 {
+    margin-left: 66.66666667%;
+  }
+  .d-margin-offset-7 {
+    margin-left: 58.33333333%;
+  }
+  .d-margin-offset-6 {
+    margin-left: 50%;
+  }
+  .d-margin-offset-5 {
+    margin-left: 41.66666667%;
+  }
+  .d-margin-offset-4 {
+    margin-left: 33.33333333%;
+  }
+  .d-margin-offset-3 {
+    margin-left: 25%;
+  }
+  .d-margin-offset-2 {
+    margin-left: 16.66666667%;
+  }
+  .d-margin-offset-1 {
+    margin-left: 8.33333333%;
+  }
+  .d-margin-offset-0 {
+    margin-left: 0;
+  }
+}
+
+#pass-strength {
+	display: none;
+}
+
+.clear-fix:before, .clear-fix:after {
+  display: table;
+  content: " ";
+}
+
+.clear-fix:after {
+	clear: both;
+}
+
+button.primary {
+	min-width: 7em;
+	background-color: #004d99;
+	color: #fff;
+	border: 1px solid #fff;
+}
