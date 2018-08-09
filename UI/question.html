@@ -11,12 +11,14 @@
 <body>
 	<header class="home">
 		<div class="logo">
-			<p class="home">StackOverflow<small>-lite</small></p>
+			<a href="home.html"><p class="home">StackOverflow<small>-lite</small></p></a>
 		</div>
 
-		<div class="top-link right">
-			
-		</div>
+		<nav class="top-link right">
+			<a href="profile-page.html" class="inherit">Home</a>
+			<a href="profile-page.html" class="inherit"><b>coco-maiko</b></a>
+			<a href="signin.html" class="inherit">logout</a>
+		</nav>
 
 	</header>
 
@@ -131,11 +133,11 @@
 		<div class="sd-margin-12 d-margin-3">
 			<div class="card margin-top-30">
 				<ul class="list list-unstyled">
-					<li>Time asked: <b>08:07am, 0ctober 2, 2018</b></li>
+					<li>Time asked: <b>08:07am, October 2, 2018</b></li>
 					<li>Answers: <b>4</b></li>
-					<li>Asked by: <b>coco-maiko</b></li>
+					<li>Asked by: <a href="profile-page.html" class="inherit"><b>coco-maiko</b></a></li>
 				</ul>
-				<button class="btn danger margin-top-20" onclick="confirm('You are about to DELETE this question...')">Delete Question</button>
+				<button class="btn danger margin-top-20" onclick="confirm('You are about to DELETE this question...(this CANNOT be reversed)')">Delete Question</button>
 			</div>
 
 			<div>		
