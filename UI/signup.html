@@ -46,8 +46,8 @@
 				</div>
 				<div class="form-item">
 					<label for="password">Create Password</label>
-					<input type="password" name="create-password" placeholder="Create Password" id="password" required>
-					<p id="pass-strength">Password Strength: <span id="result"></span></p>
+					<input type="password" name="create-password" placeholder="Create Password" id="password" onchange="checkPassword()" required>
+					<h5 id="pass-strength">Password Strength: <span id="result"></span></h5>
 				</div>
 				<div class="form-item">
 					<label for="password">Repeat Password</label>
@@ -65,6 +65,6 @@
 	<footer class="center">
 		<small>Created by Theodore Okafor as part of Andela Developer Challenge</small>
 	</footer>
-	<script src="./javascript/custom.js"></script>
+	<script src="javascript/build/custom.bundle.js"></script>
 </body>
 </html>
