@@ -29,16 +29,16 @@ var check = function check(input) {
     var matchLength = doMatch(arr1, input).length;
     switch (matchLength) {
       case 4:
-        result = "100%";
+        result = "Password Strength: 100%";
         break;
       case 3:
-        result = "75%";
+        result = "Password Strength: 75%";
         break;
       case 2:
-        result = "50%";
+        result = "Password Strength: 50%";
         break;
       case 1:
-        result = "25%";
+        result = "Password Strength: 25%";
         break;
       default:
         result = "Invalid";
@@ -50,8 +50,19 @@ var checkPassword = function checkPassword() {
   passDisplay.style.display = "inline-block";
   result.innerHTML = check(password.value);
 };
-//password.onchange = checkPassword;
 
+//PASSWORD MATCH CHECK
+var matchDisplay = document.getElementById("match-display");
+var password2 = document.getElementById("password2");
+var signupBtn = document.getElementById("sign-up");
+
+var passwordMatch = function passwordMatch() {
+  if (password.value !== password2.value) {
+    matchDisplay.innerHTML = "Passwords do not match!";
+  } else {
+    signupBtn.disabled = false;
+  }
+};
 
 //ACCEPT-ANSWER TOGGLE
 

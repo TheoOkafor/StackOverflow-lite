@@ -12,8 +12,7 @@ body.home, div.home {
 }
 
 body.home {
-	min-width: 850px;
-  overflow-x: auto;
+	width: 100%;
   background-color: #e6f2ff;
   background-image: url("https://cdn.shopify.com/s/files/1/0031/3912/products/stackoverflow_gold_1024x1024.png");
   background-repeat:no-repeat;
@@ -45,6 +44,11 @@ header.home {
 a {
 	text-decoration: none;
 }
+
+a.inherit{
+	color: inherit;
+}
+
 button.btn, input[type= 'reset']{ 
 	font-size: 15px;
 	color: #666;
@@ -58,7 +62,7 @@ button.btn, input[type= 'reset']{
 
 .main{
 	background-color: #004d99;
-	color: #fff; 
+	color: #fff;
 }
 
 .signin-form input {
@@ -79,7 +83,7 @@ button.btn, input[type= 'reset']{
 }
 
 .signup-form {
-	width: 70%;
+	width: 80%;
 	margin-right: auto;
 	margin-left: auto;
 	padding: 10px
@@ -90,10 +94,6 @@ button.btn, input[type= 'reset']{
 }
 
 @media (min-width: 768px){
-	.signup-form {
-		margin-right: 20px;
-		padding: 10px
-	}
 	
 	.signup-form input {
 		width: 100%;
@@ -106,6 +106,13 @@ button.btn, input[type= 'reset']{
 	.form-item {
 		margin-bottom: 15px;
 	}
+}
+
+.sign-card {
+	margin: 30px 20px;
+	border: 2px solid #fff;
+	border-radius: 5px;
+	padding: 10px;
 }
 
 .right {
@@ -128,6 +135,7 @@ button.btn, input[type= 'reset']{
 div.logo p {
 	margin-left: 15px;
 	padding: 7px;
+	color: #00264d;
 	border-top: 3px solid #00264d;
 	border-right: 3px solid #00264d;
 	border-radius: 10px;
@@ -324,9 +332,19 @@ div.logo p.home {;
   }
 }
 
+#signup-error, #signin-error {
+	color: red;
+	font-weight: bolder;
+	display: none;
+}
+
 #pass-strength {
 	color: #99ffcc;
 	display: none;
+}
+
+#match-display {
+	color:#ff8000;
 }
 
 .clear-fix:before, .clear-fix:after {
@@ -346,6 +364,7 @@ button.danger {
 button.primary {
 	background-color: #004d99;
 	color: #fff;
+	padding: 6px;
 	border: 1px solid #fff;
 }
 
@@ -430,6 +449,10 @@ div.answer-card {
 	display: none;
 }
 
+.default {
+	display: inline-block;
+}
+
 
 .margin-top-5 {
 	margin-top: 5px;
@@ -505,3 +528,61 @@ div.answer-card {
 	margin-bottom: 60px;
 }
 
+span.profile-username {
+	text-transform: uppercase;
+}
+
+table.table {
+	margin: 20px 0px;
+}
+
+table.table td {
+	border-bottom: 1px solid #d9d9d9;
+	margin: 0px 3px;
+	padding: 0px 7px;
+}
+
+table.table tr:hover {
+	background-color: #e6f0ff;
+}
+
+p.num-answer {
+	position: relative;
+	color: #666;
+	background-color: #fff;
+	padding: 5px;
+	min-width: 40px;
+	border: 1px solid #999;
+	border-radius: 3px;
+	display: inline-block;
+	text-align: center;
+}
+p.selected {
+	color: #fff;
+	background-color: #00bf9d;
+	border: 1px solid #fff;
+}
+
+footer {
+	height: 50px;
+	width:100%;
+	text-align: center;
+	margin-top: 20px;
+	padding: 20px;
+	color: inherit;
+}
+
+nav a {
+	padding: 0px 10px;
+}
+
+.caret {
+	position: relative;
+  top: 14px;
+  left: 5px;
+  width: 0;
+  height: 0;
+  border-right: 7px solid transparent;
+  border-left: 7px solid transparent;
+	border-top: 10px solid #fff;
+}

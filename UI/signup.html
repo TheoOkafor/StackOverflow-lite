@@ -11,52 +11,51 @@
 <body class="home">
 	<header>
 		<div class="logo">
-			<p>StackOverflow<small>-lite</small></p>
+			<a href="home.html"><p>StackOverflow<small>-lite</small></p></a>
 		</div>
 
-		<div class="top-link right">
-			<form class="signin-form" id="signin">
-				<label for="username">Username or Email</label>
-				<input type="text" name="username" placeholder="Username or email" required>
-
-				<label for="password">Password</label>
-				<input type="password" name="create-password"  placeholder="Password" required>
-				<button>Sign in</button>
-			</form>
-		</div>
+		<nav class="top-link right">
+			<a href="signup.html" class="inherit">Sign up</a> |
+			<a href="#" class="inherit"> Sign in</a>
+		</nav>
 
 	</header>
 
 	<div class="main row-container">
-		<div class="sd-margin-10 d-margin-6">
+		<div class="sd-margin-12 d-margin-6 margin-top-20">
 			<h1 class="heading center">Join Stack Overflow<small>-lite</small></h1>
 			<p>StackOverflow-lite is a platform where people can ask questions and provide answers.</p>
 		</div>
 
-		<div class="sd-margin-10 d-margin-6">
-			<form class="signup-form">
-				<p><small>Already Signed up?</small> <a href="#signin">Sign in</a></p>
-				<div class="form-item">
-					<label for="username">Username</label>
-					<input type="text" name="username" placeholder="username" required>
-				</div>
-				<div class="form-item">
-					<label for="email">Email</label>
-					<input type="email" name="user-email" placeholder="Your current email address" required>
-				</div>
-				<div class="form-item">
-					<label for="password">Create Password</label>
-					<input type="password" name="create-password" placeholder="Create Password" id="password" onchange="checkPassword()" required>
-					<h5 id="pass-strength">Password Strength: <span id="result"></span></h5>
-				</div>
-				<div class="form-item">
-					<label for="password">Repeat Password</label>
-					<input type="password" name="repeat-password" placeholder="Repeat the password" required>
-				</div>
+		<div class="sd-margin-12 d-margin-6">
+			<div class="sign-card">
+				<form class="signup-form">
+					<p><small>Already Signed up?</small> <a href="signin.html" class="inherit">Sign in</a></p>
 
-				<p><small>By clicking "Sign Up", you acknowledge that you have read and accepted terms of service, privacy policy and cookie policy.</small></p>
-				<button class="btn primary">Sign Up</button> <span></span>
-			</form>
+					<p class="signup-error"></p>
+					<div class="form-item">
+						<label for="username">Username</label>
+						<input type="text" name="username" placeholder="username" required>
+					</div>
+					<div class="form-item">
+						<label for="email">Email</label>
+						<input type="email" name="user-email" placeholder="Your current email address" required>
+					</div>
+					<div class="form-item">
+						<label for="password">Create Password</label>
+						<input type="password" name="create-password" placeholder="Create Password" id="password" onchange="checkPassword()" required>
+						<h5 id="pass-strength"><span id="result"></span></h5>
+					</div>
+					<div class="form-item">
+						<label for="password">Repeat Password</label>
+						<input type="password" name="repeat-password" placeholder="Repeat password" id="password2" onchange="passwordMatch()" required>
+						<h5 id="match-display"></h5>
+					</div>
+
+					<p><small>By clicking "Sign Up", you acknowledge that you have read and accepted terms of service, privacy policy and cookie policy.</small></p>
+					<button class="btn primary" id="sign-up" disabled>Sign Up</button>
+				</form>
+			</div>
 		</div>
 		<div class="clear-fix"></div>
 
