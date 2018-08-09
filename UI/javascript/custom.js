@@ -1,3 +1,4 @@
+//PASSWORD STRENGTH
 let result = document.getElementById("result");
 let password = document.getElementById("password");
 let passDisplay = document.getElementById("pass-strength");
@@ -8,6 +9,7 @@ const check = (input) => {
 
   const doMatch = (arr, word) => {
     let result = [];
+    let i;
 
     for (i in arr){
       if(word.match(arr[i]) !== null){
@@ -45,10 +47,38 @@ const check = (input) => {
   return result;
 }
 const checkPassword = () => {
-  passDisplay.style.display = block;
+  passDisplay.style.display = "inline-block";
   result.innerHTML = check(password.value);
 }
-password.onchange = checkPassword;
 
 
-//SIGN IN FOCUS
+//ACCEPT-ANSWER TOGGLE
+
+const showAccepted = (input) => {
+  let index = parseInt(input);
+  let accepted = document.getElementsByClassName("accepted");
+  let unacceptBtn = document.getElementsByClassName("unaccept");
+  let acceptBtns = document.getElementsByClassName("accept");
+
+  unacceptBtn[index].style.display = "inline";
+  accepted[index].style.display = "inline";
+
+  for (let i=0; i<=acceptBtns.length-1; i++){
+    acceptBtns[i].style.display = "none";
+  }
+}
+
+
+const showAcceptBtn = (input) => {
+  let index = parseInt(input);
+  let accepted = document.getElementsByClassName("accepted");
+  let unacceptBtn = document.getElementsByClassName("unaccept");
+  let acceptBtns = document.getElementsByClassName("accept");
+
+  unacceptBtn[index].style.display = "none";
+  accepted[index].style.display = "none";
+
+  for (let i=0; i<= acceptBtns.length-1; i++){
+    acceptBtns[i].style.display = "inline";
+  }
+}
