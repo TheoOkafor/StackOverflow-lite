@@ -94,3 +94,14 @@ const showAcceptBtn = (input) => {
     acceptBtns[i].style.display = "inline";
   }
 }
+
+//SHOW MORE CONTENT BUTTON
+const showMore = (input) => {
+  let index = parseInt(input);
+  let btnContainer = document.getElementsByClassName("btn-container");
+  //let showMoreBtn = document.getElementsByClassName("show-more");
+  let hiddenContent = document.getElementsByClassName("hidden-content");
+
+  hiddenContent[index].style.display = "inline";
+  btnContainer[index].style.display = "none";
+}

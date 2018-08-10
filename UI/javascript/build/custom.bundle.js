@@ -93,3 +93,14 @@ var showAcceptBtn = function showAcceptBtn(input) {
     acceptBtns[i].style.display = "inline";
   }
 };
+
+//SHOW MORE CONTENT BUTTON
+var showMore = function showMore(input) {
+  var index = parseInt(input);
+  var btnContainer = document.getElementsByClassName("btn-container");
+  //let showMoreBtn = document.getElementsByClassName("show-more");
+  var hiddenContent = document.getElementsByClassName("hidden-content");
+
+  hiddenContent[index].style.display = "inline";
+  btnContainer[index].style.display = "none";
+};
