@@ -149,7 +149,7 @@ div.logo p.home {;
 	border-right: 3px solid #fff;
 }
 
-.top-link {
+.top-link .sitemap {
 	padding: 1.0em;
 }
 
@@ -368,6 +368,26 @@ button.primary {
 	border: 1px solid #fff;
 }
 
+button.link {
+	background-color: inherit;
+	color: #0080ff;
+	font-size: inherit;
+	padding: 4px;
+	border: none;
+}
+
+button.link:hover {
+	cursor: pointer;
+}
+
+button.link:visited {
+	color: blue;
+}
+
+span.hidden-content {
+	display: none;
+}
+
  input[type= 'reset'] {
 	max-width: 70px;
 }
@@ -572,7 +592,7 @@ footer {
 	color: inherit;
 }
 
-nav a {
+nav a, .sitemap a {
 	padding: 0px 10px;
 }
 
