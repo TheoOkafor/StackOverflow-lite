@@ -27,7 +27,6 @@ aside, footer, header, nav, section {
   display: block;
 }
 
-
 h1, h2, h3, h4, h5, h6 {
 	margin-top: 10px;
 	margin-bottom: 10px;
@@ -640,4 +639,12 @@ nav a, .sitemap a {
 
 button.gray {
 	color: #666;
+}
+
+div.error-mssg {
+	width: 80%;
+	margin: auto;
+	padding: 50px;
+	font-size: 50px;
+	text-align: center
 }
