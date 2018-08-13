@@ -104,3 +104,12 @@ var showMore = function showMore(input) {
   hiddenContent[index].style.display = 'inline';
   btnContainer[index].style.display = 'none';
 };
+
+//SHOW COMMENT SECTION
+var showCommentForm = function showCommentForm(input) {
+  //Input is the value of the button which corresponds with the position of the button
+  //in the className DOM array
+  var index = parseInt(input);
+  var commentForm = document.getElementsByClassName('comment-form');
+  commentForm[index].style.display = 'block';
+};

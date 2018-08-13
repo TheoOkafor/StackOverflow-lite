@@ -103,3 +103,13 @@ const showMore = (input) => {
   hiddenContent[index].style.display = 'inline';
   btnContainer[index].style.display = 'none';
 };
+
+
+//SHOW COMMENT SECTION
+const showCommentForm = (input) => {
+  //Input is the value of the button which corresponds with the position of the button
+  //in the className DOM array
+  const index = parseInt(input);
+  const commentForm = document.getElementsByClassName('comment-form');
+  commentForm[index].style.display = 'block';
+};

@@ -49,17 +49,6 @@ a.inherit{
 	color: inherit;
 }
 
-button.btn, input[type= 'reset']{ 
-	font-size: 15px;
-	color: #666;
-	padding: 5px;
-	background-color: #fff;
-	border: 1px solid #999;
-	border-radius: 3px;
-	cursor: pointer;
-}
-
-
 .main{
 	background-color: #004d99;
 	color: #fff;
@@ -72,14 +61,26 @@ button.btn, input[type= 'reset']{
 }
 
 .signup-form input,
+.signin-form input,
 .question-form input,
 .question-form textarea,
-.answer-form textarea {
+.answer-form textarea,
+.comment-form textarea {
 	width: 100%;
 	font-size: 15px;
-	padding: 4px;
+	padding: 10px;
 	border: 1px solid #ccc;
 	border-radius: 1px;
+}
+
+button.btn, input[type= 'reset']{ 
+	font-size: 15px;
+	color: #666;
+	padding: 6px;
+	background-color: #fff;
+	border: 1px solid #999;
+	border-radius: 3px;
+	cursor: pointer;
 }
 
 .signup-form {
@@ -97,8 +98,8 @@ button.btn, input[type= 'reset']{
 	
 	.signup-form input {
 		width: 100%;
-		font-size: 15px;
-		padding: 4px;
+		font-size: 16px;
+		padding: 10px;
 		border: 1px solid #ccc;
 		border-radius: 2px;
 	}
@@ -106,6 +107,11 @@ button.btn, input[type= 'reset']{
 	.form-item {
 		margin-bottom: 15px;
 	}
+}
+
+#sign-, #sign-in {
+	padding: 10px;
+	width: 120px;
 }
 
 .sign-card {
@@ -364,7 +370,7 @@ button.danger {
 button.primary {
 	background-color: #004d99;
 	color: #fff;
-	padding: 6px;
+	margin-right: 15px;
 	border: 1px solid #fff;
 }
 
@@ -605,4 +611,28 @@ nav a, .sitemap a {
   border-right: 7px solid transparent;
   border-left: 7px solid transparent;
 	border-top: 10px solid #fff;
+}
+.answer-options {
+	padding-top: 10px;
+}
+
+.answer-options > button {
+	margin-left: 10px;
+}
+
+.upvote-display {
+	font-weight: bold;
+	color: green;
+}
+
+.comment-form {
+	width: 90%;
+	margin: 20px 5px 0px 5px;
+	border-top: 1px solid #eee;
+	padding:10px;
+	display: none;
+}
+
+button.gray {
+	color: #666;
 }
