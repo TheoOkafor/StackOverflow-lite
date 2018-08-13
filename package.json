@@ -20,7 +20,7 @@
   "scripts": {
     "start": "node app.js",
     "devstart": "nodemon app.js",
-    "test": "mocha test/test.js",
+    "test": "mocha --exit test/test.js",
     "babel-app": "babel --presets es2015  app.js --out-file api_build/app.js",
     "babel-test": "babel --presets es2015  test/test.js --out-file api_build/test/test.js",
     "babel-index": "babel --presets es2015  routes/index.js --out-file api_build/routes/index.js",
