@@ -1,0 +1,23 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "APIs for StackOverflow-lite web application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TheoOkafor/StackOverflow-lite.git"
+  },
+  "keywords": [
+    "Questions",
+    "Answers"
+  ],
+  "author": "Theo Okafor",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TheoOkafor/StackOverflow-lite/issues"
+  },
+  "homepage": "https://github.com/TheoOkafor/StackOverflow-lite#readme"
+}
