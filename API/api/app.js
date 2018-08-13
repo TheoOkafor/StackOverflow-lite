@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
+const questionsRouter = require('./routes/questions');
 
 const app = express();
 
@@ -19,8 +20,10 @@ app.use(bodyParser.json({ type: 'application/json'}));
 
 app.use(cookieParser());
 
-app.use('/', indexRouter);
+app.use('/', questionsRouter);
 app.use('/users', usersRouter);
+app.use('/questions', usersRouter);
+
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

@@ -1,16 +1,33 @@
 {
   "name": "api",
   "version": "0.0.0",
-  "private": true,
+  "description": "APIs for StackOverflow-lite web application",
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TheoOkafor/StackOverflow-lite.git"
+  },
+  "keywords": [
+    "Questions",
+    "Answers"
+  ],
+  "author": "Theo Okafor",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TheoOkafor/StackOverflow-lite/issues"
+  },
+  "homepage": "https://github.com/TheoOkafor/StackOverflow-lite#readme",
   "scripts": {
-    "start": "node ./bin/www",
-    "devstart": "nodemon ./bin/www",
+    "start": "node app.js",
+    "devstart": "nodemon app.js",
     "test": "mocha",
     "babel-app": "babel --presets es2015  app.js --out-file api_build/app.js",
-    "babel-test": "babel --presets es2015  test/test.js --out-file api_build/test/test.js"
+    "babel-test": "babel --presets es2015  test/test.js --out-file api_build/test/test.js",
+    "babel-index": "babel --presets es2015  routes/index.js --out-file api_build/routes/index.js"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
+    "config": "^2.0.1",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "express": "~4.16.0",
