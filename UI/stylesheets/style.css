@@ -1,10 +1,11 @@
 html {
-  font-family: sans-serif;
+  font-family: Ubuntu;
 }
 
 body {
   margin: 0;
   color: #333;
+  font-size: 17px;
 }
 
 body.home, div.home {
@@ -30,6 +31,10 @@ aside, footer, header, nav, section {
 h1, h2, h3, h4, h5, h6 {
 	margin-top: 10px;
 	margin-bottom: 10px;
+}
+
+p, li {
+	font-family: Roboto;
 }
 
 header {
@@ -67,14 +72,14 @@ a.inherit{
 .answer-form textarea,
 .comment-form textarea {
 	width: 100%;
-	font-size: 15px;
+	font-size: 17px;
 	padding: 10px;
 	border: 1px solid #ccc;
 	border-radius: 1px;
 }
 
 button.btn, input[type= 'reset']{ 
-	font-size: 15px;
+	font-size: 17px;
 	color: #666;
 	padding: 6px;
 	background-color: #fff;
@@ -98,7 +103,7 @@ button.btn, input[type= 'reset']{
 	
 	.signup-form input {
 		width: 100%;
-		font-size: 16px;
+		font-size: 17px;
 		padding: 10px;
 		border: 1px solid #ccc;
 		border-radius: 2px;
@@ -145,7 +150,7 @@ div.logo p {
 	border-top: 3px solid #00264d;
 	border-right: 3px solid #00264d;
 	border-radius: 10px;
-	font-size: 18px;
+	font-size: 20px;
 	font-weight: bolder;
 }
 
