@@ -2,7 +2,7 @@
 StackOverflow-lite is a platform where people can ask questions and provide answers. (Andela Developer Challenge)
 
 #Build status: 
-![](https://travis-ci.com/TheoOkafor/StackOverflow-lite.svg?branch=master)
+[![Build Status](https://travis-ci.com/TheoOkafor/StackOverflow-lite.svg?branch=get-questions)](https://travis-ci.com/TheoOkafor/StackOverflow-lite)
 
 #Coverage Status:
-[![Coverage Status](https://coveralls.io/repos/github/TheoOkafor/StackOverflow-lite/badge.svg?branch=master)](https://coveralls.io/github/TheoOkafor/StackOverflow-lite?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/TheoOkafor/StackOverflow-lite/badge.svg?branch=get-questions)](https://coveralls.io/github/TheoOkafor/StackOverflow-lite?branch=get-questions)
