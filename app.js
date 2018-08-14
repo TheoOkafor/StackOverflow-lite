@@ -5,9 +5,8 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
 const questionsRouter = require('./routes/questions');
+const usersRouter = require('./routes/users');
 
 const app = express();
 
@@ -20,9 +19,12 @@ app.use(bodyParser.json({ type: 'application/json'}));
 
 app.use(cookieParser());
 
-app.use('/', questionsRouter);
 app.use('/users', usersRouter);
-app.use('/questions', usersRouter);
+app.use('/v1/users', usersRouter);
+app.use('/', questionsRouter);
+app.use('/questions', questionsRouter);
+app.use('/v1', questionsRouter);
+app.use('/v1/questions', questionsRouter);
 
 
 // catch 404 and forward to error handler
