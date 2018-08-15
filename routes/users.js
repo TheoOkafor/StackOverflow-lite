@@ -3,24 +3,20 @@ const data = require('../data/data');
 
 const router = express.Router();
 
-router.get('/', (req, res, next) => {
+router.get('/', (req, res) => {
   res.json(data.users);
-  next();
 });
 
-router.get('/users', (req, res, next) => {
+router.get('/users', (req, res) => {
   res.json(data.users);
-  next();
 });
 
-router.get('/v1', (req, res, next) => {
+router.get('/v1', (req, res) => {
   res.json(data.users);
-  next();
 });
 
-router.get('/v1/users', (req, res, next) => {
+router.get('/v1/users', (req, res) => {
   res.json(data.users);
-  next();
 });
 
 
