@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Stack Overflow-lite </title>
+	<meta name="description" content="StackOverflow-lite is a platform where people can ask questions and provide answers.">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" type="image/png" href="UI/images/favicon/favicon.png">
+	<link rel="stylesheet" href="UI/stylesheets/style.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Ubuntu">
+</head>
+<body>
+	<header class="home">
+		<div class="logo">
+			<p class="home">StackOverflow<small>-lite</small></p>
+		</div>
+
+		<nav class="top-link right margin-top-25">
+			<a href="UI/signup.html" class="inherit">Sign up</a> |
+			<a href="#" class="inherit"> Sign in</a>
+		</nav>
+
+	</header>
+
+	<div class="row-container home">
+		<div class="sd-margin-12 d-margin-2">
+			<p class="home">Home Page</p>
+			<p>Live feed</p>
+		</div>
+
+		<div class="sd-margin-12 d-margin-7 margin-top-15">
+			<div class="row-container">
+				<div class="card center" id="home-notif">
+					<button class="inherit right close" onclick="closeNotif()" >x</button>
+					<h3 class="">Updates to our Privacy Policy</h3>
+					<p class="">We have updated our privacy policy. Learn more <a href="UI/not-found.html" class="inherit">here</a>.</p>
+				</div>
+
+				<div class="card margin-top-15">
+					<h5>Coco-Maiko <small>(you)</small></h5>
+					<form class="question-form">
+						<input type="text" name="question-input" placeholder="What is your question?">
+						<textarea placeholder="Description (optional ie. You don't have to.)"></textarea>
+						<div class="btn-group">
+							<button class="btn primary question-btn">Ask Question</button>
+							<input type="reset" value="Cancel">
+						</div>
+					</form>
+				</div>
+
+				<div class="card">
+					<h3><a href="UI/question.html" class="question">Why do people Suffer in Nigeria?</a></h3>
+					<div>
+						<h5 class="person-answer"><a href="UI/profile-page.html" class="inherit">John-champion</a>
+							<br>
+							<small>Answered <span>Oct 2010</span></small>
+						</h5>
+					</div>
+					<p class="answer">
+						Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+						tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+						quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+						consequat<span class="btn-container">...<button value="0" class="link show-more" onclick="showMore(this.value)">(more)</button></span> <span class="hidden-content">consectetur adipisicing elit, sed do eiusmod
+						tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse	cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non	proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</span>
+					</p>
+					<h6>Answers: <span>1001</span></h6>
+				</div>
+
+				<div class="card">
+					<h3><a href="UI/question.html" class="question">What is the best way to declare variables in Python?</a></h3>
+					<div>
+						<h5 class="person-answer"><a href="UI/profile-page.html" class="inherit">Jim-berglin</a>
+							<br>
+							<small>Answered <span>Oct 2011</span></small>
+						</h5>
+					</div>
+					<p class="answer">
+						Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+						tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+						quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+						consequat<span class="btn-container">...<button value="1" class="link show-more" onclick="showMore(this.value)">(more)</button></span> <span class="hidden-content">consectetur adipisicing elit, sed do eiusmod
+						tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse	cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non	proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</span>
+					</p>
+					<h6>Answers: <span>6</span></h6>
+				</div>
+
+				<div class="card">
+					<h3><a href="UI/question.html" class="question">Does scripting in Java mean that I can JavaScript?</a></h3>
+					<div>
+						<h5 class="person-answer"><a href="UI/profile-page.html" class="inherit">lalasticlala</a>
+							<br>
+							<small>Answered <span>Oct 2013</span></small>
+						</h5>
+					</div>
+					<p class="answer">
+						Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+						tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+						quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+						consequat<span class="btn-container">...<button value="2" class="link show-more" onclick="showMore(this.value)">(more)</button></span> <span class="hidden-content">consectetur adipisicing elit, sed do eiusmod
+						tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse	cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non	proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</span>
+					</p>
+					<h6>Answers: <span>6</span></h6>
+				</div>
+
+				<div class="card">
+					<h3><a href="UI/question.html" class="question">What does Nigeria and Ghana have in common?</a></h3>
+					<div>
+						<h5 class="person-answer"><a href="UI/profile-page.html" class="inherit">Jide_kafor</a>
+							<br>
+							<small>Answered <span>Oct 2011</span></small>
+						</h5>
+					</div>
+					<p class="answer">
+						Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+						tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+						quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+						consequat<span class="btn-container">...<button value="3" class="link show-more" onclick="showMore(this.value)">(more)</button></span> <span class="hidden-content">consectetur adipisicing elit, sed do eiusmod
+						tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse	cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non	proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</span>
+					</p>
+					<h6>Answers: <span>6</span></h6>
+				</div>
+
+			</div>
+		</div>
+
+		<div class="sd-margin-12 d-margin-3">
+			<h3 class="side-title">Questions with Most Answers</h3>
+			<div>
+				<ul class="list">
+					<li><a href="UI/question.html">Why do people Suffer in Nigeria?</a></li>
+					<li><a href="UI/question.html">lorem ipsum?</a></li>
+					<li><a href="UI/question.html">do people Suffer?</a></li>
+					<li><a href="UI/question.html">Lorem ipsum dolor sit amet, consectetur adipisicing elit?</a></li>
+					<li><a href="question.html">dolor sit amet, consectetur adipisicing elit?</a></li>
+				</ul>
+			</div>
+		</div>
+
+
+	</div><!--End of Row Container -->
+
+	<footer class="home center">
+		<p class="sitemap margin-bottom-30"><small><a href="UI/UI/home.html" class="inherit">Home</a> | <a href="UI/question.html" class="inherit">Question page</a> | <a href="UI/question-signin.html" class="inherit">Question page 2</a> | <a href="profile-page.html" class="inherit">Profile page</a> | <a href="UI/signup.html" class="inherit">Signup page</a> | <a href="UI/signin.html" class="inherit">Signin page</a> | <a href="UI/not-found.html" class="inherit">Error 404 page</a></small></p>
+		<p><small>Created by Theodore Okafor as part of Andela Developer Challenge</small></p>
+	</footer>
+	<script src="UI/javascript/build/custom.bundle.js"></script>
+</body>
+</html>
