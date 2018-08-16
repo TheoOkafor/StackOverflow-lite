@@ -113,3 +113,8 @@ const showCommentForm = (input) => {
   const commentForm = document.getElementsByClassName('comment-form');
   commentForm[index].style.display = 'block';
 };
+
+//CLOSE HOME NOTIFICATION
+const closeNotif = () => {
+  document.getElementById('home-notif').style.display = 'none';
+}

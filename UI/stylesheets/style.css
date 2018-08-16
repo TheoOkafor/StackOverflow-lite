@@ -40,7 +40,7 @@ header {
 	color: #00264d; 
 }
 
-header.home {
+header.home, footer.home, footer.home p {
 	color: #fff;
 	background-color: #003366;  
 }
@@ -58,6 +58,19 @@ a.inherit{
 	color: #fff;
 }
 
+div.site-desc h1 {
+	font-size: 50px;
+	margin: 50px 0px;
+}
+div.site-desc p {
+	font-size: 30px;
+	font-family: Ubuntu;
+	text-align: center;
+}
+div.site-desc p span {
+	background-color: #0080ff;
+}
+
 .signin-form input {
 	padding: 2px;
 	border: 1px solid #004d99;
@@ -73,8 +86,10 @@ a.inherit{
 	width: 100%;
 	font-size: 17px;
 	padding: 10px;
-	border: 1px solid #ccc;
-	border-radius: 1px;
+	border: 2px solid #b3d9ff;
+	border-radius: 3px;
+	font-family: Roboto;
+	color: #333;
 }
 
 button.btn, input[type= 'reset']{ 
@@ -378,6 +393,14 @@ button.primary {
 	border: 1px solid #fff;
 }
 
+button.primary-o {
+	background-color: #fff;
+	color: #004d99;
+	margin-right: 15px;
+	padding: 5px;
+	border: 2px solid #0080ff;
+}
+
 button.link {
 	background-color: inherit;
 	color: #0080ff;
@@ -386,12 +409,21 @@ button.link {
 	border: none;
 }
 
-button.link:hover {
+button:hover {
 	cursor: pointer;
 }
 
 button.link:visited {
 	color: blue;
+}
+
+button.close{
+	background-color: inherit;
+	color: #999;
+	font-size: inherit;
+	font-weight: bold;
+	padding: 4px;
+	border: none;
 }
 
 span.hidden-content {
@@ -594,8 +626,12 @@ p.selected {
 }
 
 footer {
+	position: relative;
+	left: 0px;
+	bottom: 0px;
 	height: 50px;
 	width:100%;
+	margin-top: 50px;
 	text-align: center;
 	margin-top: 20px;
 	padding: 20px;

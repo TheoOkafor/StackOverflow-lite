@@ -113,3 +113,8 @@ var showCommentForm = function showCommentForm(input) {
   var commentForm = document.getElementsByClassName('comment-form');
   commentForm[index].style.display = 'block';
 };
+
+//CLOSE HOME NOTIFICATION
+var closeNotif = function closeNotif() {
+  document.getElementById('home-notif').style.display = 'none';
+};
