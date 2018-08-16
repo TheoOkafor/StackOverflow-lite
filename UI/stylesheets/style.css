@@ -40,7 +40,7 @@ header {
 	color: #00264d; 
 }
 
-header.home, footer.home, footer.home p {
+header.home, footer.home{
 	color: #fff;
 	background-color: #003366;  
 }
