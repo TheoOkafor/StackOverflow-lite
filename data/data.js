@@ -1,8 +1,17 @@
 'use strict';
 
-var express = require('express');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.data = undefined;
 
-var data = express();
+var _express = require('express');
+
+var _express2 = _interopRequireDefault(_express);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var data = (0, _express2.default)();
 data.questions = [{
   id: 1,
   title: 'Why do people Suffer in Nigeria?',
@@ -167,4 +176,4 @@ data.users = [{ name: "john-champion",
   }]
 }];
 
-module.exports = data;
+exports.data = data;

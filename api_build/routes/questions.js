@@ -1,30 +1,30 @@
-const express = require('express');
-const data = require('../data/data');
+import express from 'express';
+import {data} from '../data/data';
 
-const router = express.Router();
+const questionRouter = express.Router();
 
 const questions = data.questions;
 
 // GET ALL QUESTIONS
-router.get('/', (req, res) => {
+questionRouter.get('/', (req, res) => {
   res.json(questions);
 });
 
-router.get('/questions', (req, res) => {
+questionRouter.get('/questions', (req, res) => {
   res.json(questions);
 });
 
-router.get('/v1', (req, res) => {
+questionRouter.get('/v1', (req, res) => {
   res.json(questions);
 });
 
-router.get('/v1/questions', (req, res) => {
+questionRouter.get('/v1/questions', (req, res) => {
   res.json(questions);
 });
 
 
 // GET A QUESTION
-router.get('/v1/questions/:id([0-9]{1,})', (req, res) => {
+questionRouter.get('/v1/questions/:id([0-9]{1,})', (req, res) => {
   const requestId = req.params.id;
   const currQuestion = questions.filter((question) => {
     if (question.id === parseInt(requestId)) {
@@ -41,7 +41,7 @@ router.get('/v1/questions/:id([0-9]{1,})', (req, res) => {
 });
 
 // POST A QUESTION
-router.post('/v1/questions', (req, res) => {
+questionRouter.post('/v1/questions', (req, res) => {
   const reqBody = req.body; // reqBody = JSON.parse(req.body) worked for POSTMAN but not MOCHA test
   // Check if all fields are provided and are valid:
   const invalidReq = reqBody.title === null || reqBody.title === '' || reqBody.title === undefined;
@@ -66,7 +66,7 @@ router.post('/v1/questions', (req, res) => {
 
 
 // POST AN ANSWER
-router.post('/v1/questions/:id([0-9]{1,})/answers', (req, res) => {
+questionRouter.post('/v1/questions/:id([0-9]{1,})/answers', (req, res) => {
   const reqBody = req.body;
   const requestId = req.params.id;
   const invalidReq = reqBody.body === null || reqBody.body === '' || reqBody.body === undefined;
@@ -100,4 +100,4 @@ router.post('/v1/questions/:id([0-9]{1,})/answers', (req, res) => {
   }
 });
 
-module.exports = router;
+export {questionRouter};

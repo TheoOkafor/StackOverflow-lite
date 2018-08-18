@@ -1,31 +1,41 @@
 'use strict';
 
-var express = require('express');
-var data = require('../data/data');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.questionRouter = undefined;
 
-var router = express.Router();
+var _express = require('express');
 
-var questions = data.questions;
+var _express2 = _interopRequireDefault(_express);
+
+var _data = require('../data/data');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var questionRouter = _express2.default.Router();
+
+var questions = _data.data.questions;
 
 // GET ALL QUESTIONS
-router.get('/', function (req, res) {
+questionRouter.get('/', function (req, res) {
   res.json(questions);
 });
 
-router.get('/questions', function (req, res) {
+questionRouter.get('/questions', function (req, res) {
   res.json(questions);
 });
 
-router.get('/v1', function (req, res) {
+questionRouter.get('/v1', function (req, res) {
   res.json(questions);
 });
 
-router.get('/v1/questions', function (req, res) {
+questionRouter.get('/v1/questions', function (req, res) {
   res.json(questions);
 });
 
 // GET A QUESTION
-router.get('/v1/questions/:id([0-9]{1,})', function (req, res) {
+questionRouter.get('/v1/questions/:id([0-9]{1,})', function (req, res) {
   var requestId = req.params.id;
   var currQuestion = questions.filter(function (question) {
     if (question.id === parseInt(requestId)) {
@@ -42,7 +52,7 @@ router.get('/v1/questions/:id([0-9]{1,})', function (req, res) {
 });
 
 // POST A QUESTION
-router.post('/v1/questions', function (req, res) {
+questionRouter.post('/v1/questions', function (req, res) {
   var reqBody = req.body; // reqBody = JSON.parse(req.body) worked for POSTMAN but not MOCHA test
   // Check if all fields are provided and are valid:
   var invalidReq = reqBody.title === null || reqBody.title === '' || reqBody.title === undefined;
@@ -66,7 +76,7 @@ router.post('/v1/questions', function (req, res) {
 });
 
 // POST AN ANSWER
-router.post('/v1/questions/:id([0-9]{1,})/answers', function (req, res) {
+questionRouter.post('/v1/questions/:id([0-9]{1,})/answers', function (req, res) {
   var reqBody = req.body;
   var requestId = req.params.id;
   var invalidReq = reqBody.body === null || reqBody.body === '' || reqBody.body === undefined;
@@ -100,4 +110,4 @@ router.post('/v1/questions/:id([0-9]{1,})/answers', function (req, res) {
   }
 });
 
-module.exports = router;
+exports.questionRouter = questionRouter;

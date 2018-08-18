@@ -1,10 +1,10 @@
 'use strict';
 
 // Require the dev-dependencies
-const chai = require('chai');
-const chaiHttp = require('chai-http');
-const data = require('../data/data');
-const app = require('../app');
+import chai from 'chai';
+import chaiHttp from 'chai-http';
+import {data as data} from '../data/data';
+import {app as app} from '../app';
 
 const questions = data.questions;
 

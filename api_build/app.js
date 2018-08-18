@@ -1,11 +1,11 @@
-const createError = require('http-errors');
-const express = require('express');
-const cookieParser = require('cookie-parser');
-const logger = require('morgan');
-const bodyParser = require('body-parser');
+import createError from 'http-errors';
+import express from 'express';
+import cookieParser from 'cookie-parser';
+import logger from 'morgan';
+import bodyParser from 'body-parser';
 
-const questionsRouter = require('./routes/questions');
-const usersRouter = require('./routes/users');
+import {questionRouter} from './routes/questions';
+import {userRouter} from './routes/users';
 
 const app = express();
 
@@ -19,11 +19,11 @@ app.use(bodyParser.json({ type: 'application/json' }));
 app.use(cookieParser());
 
 
-app.use('/', questionsRouter);
-app.use('/users', usersRouter);
-app.use('/v1/users', usersRouter);
-app.use('/questions', questionsRouter);
-app.use('/v1/questions', questionsRouter);
+app.use('/', questionRouter);
+app.use('/users', userRouter);
+app.use('/v1/users', userRouter);
+app.use('/questions', questionRouter);
+app.use('/v1/questions', questionRouter);
 
 
 // catch 404 and forward to error handler
@@ -48,4 +48,4 @@ app.listen(5000, () => {
   console.log('Server is listening on port 5000');
 });
 
-module.exports = app;
+export {app};

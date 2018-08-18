@@ -1,4 +1,4 @@
-const express = require('express');
+import express from 'express';
 
 const data = express();
 data.questions = [
@@ -206,4 +206,4 @@ data.users = [
   }
 ];
 
-module.exports = data;
+export {data};

@@ -1,23 +1,23 @@
-const express = require('express');
-const data = require('../data/data');
+import express from 'express';
+import {data} from '../data/data';
 
-const router = express.Router();
+const userRouter = express.Router();
 
-router.get('/', (req, res) => {
+userRouter.get('/', (req, res) => {
   res.json(data.users);
 });
 
-router.get('/users', (req, res) => {
+userRouter.get('/users', (req, res) => {
   res.json(data.users);
 });
 
-router.get('/v1', (req, res) => {
+userRouter.get('/v1', (req, res) => {
   res.json(data.users);
 });
 
-router.get('/v1/users', (req, res) => {
+userRouter.get('/v1/users', (req, res) => {
   res.json(data.users);
 });
 
 
-module.exports = router;
+export {userRouter};

@@ -24,6 +24,7 @@
     "babel-app": "babel --presets es2015  app.js --out-file ../app.js",
     "babel-test": "babel --presets es2015  test/test.js --out-file ../test/test.js",
     "babel-data": "babel --presets es2015  data/data.js --out-file ../data/data.js",
+    "babel-users": "babel --presets es2015  routes/users.js --out-file ../routes/users.js",
     "babel-questions": "babel --presets es2015  routes/questions.js --out-file ../routes/questions.js"
   },
   "dependencies": {
