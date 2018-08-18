@@ -66,8 +66,8 @@ app.use(function (err, req, res, next) {
 });
 
 // listen for requests
-app.listen(5000, function () {
-  console.log('Server is listening on port 5000');
+app.listen(process.env.PORT || 5000, function () {
+  console.log('Server is listening on port');
 });
 
 exports.app = app;
