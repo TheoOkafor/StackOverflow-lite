@@ -5,7 +5,7 @@ import logger from 'morgan';
 import bodyParser from 'body-parser';
 
 import {questionRouter} from './routes/questions';
-import {userRouter} from './routes/users';
+//import {userRouter} from './routes/users';
 
 const app = express();
 
@@ -20,8 +20,8 @@ app.use(cookieParser());
 
 
 app.use('/', questionRouter);
-app.use('/users', userRouter);
-app.use('/v1/users', userRouter);
+//app.use('/users', userRouter);
+//app.use('/v1/users', userRouter);
 app.use('/questions', questionRouter);
 app.use('/v1/questions', questionRouter);
 

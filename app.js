@@ -27,9 +27,9 @@ var _bodyParser2 = _interopRequireDefault(_bodyParser);
 
 var _questions = require('./routes/questions');
 
-var _users = require('./routes/users');
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//import {userRouter} from './routes/users';
 
 var app = (0, _express2.default)();
 
@@ -43,8 +43,8 @@ app.use(_bodyParser2.default.json({ type: 'application/json' }));
 app.use((0, _cookieParser2.default)());
 
 app.use('/', _questions.questionRouter);
-app.use('/users', _users.userRouter);
-app.use('/v1/users', _users.userRouter);
+//app.use('/users', userRouter);
+//app.use('/v1/users', userRouter);
 app.use('/questions', _questions.questionRouter);
 app.use('/v1/questions', _questions.questionRouter);
 
