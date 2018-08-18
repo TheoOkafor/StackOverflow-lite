@@ -5,4 +5,4 @@ StackOverflow-lite is a platform where people can ask questions and provide answ
 [![Build Status](https://travis-ci.com/TheoOkafor/StackOverflow-lite.svg?branch=get-questions)](https://travis-ci.com/TheoOkafor/StackOverflow-lite)
 
 #Coverage Status:
-[![Coverage Status](https://coveralls.io/repos/github/TheoOkafor/StackOverflow-lite/badge.svg?branch=get-questions)](https://coveralls.io/github/TheoOkafor/StackOverflow-lite)
+[![Coverage Status](https://coveralls.io/repos/github/TheoOkafor/StackOverflow-lite/badge.svg)](https://coveralls.io/github/TheoOkafor/StackOverflow-lite)
