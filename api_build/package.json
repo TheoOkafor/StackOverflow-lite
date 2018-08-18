@@ -21,10 +21,10 @@
     "start": "node app.js",
     "devstart": "nodemon app.js",
     "test": "mocha --exit test/test.js",
-    "babel-app": "babel --presets es2015  app.js --out-file api_build/app.js",
-    "babel-test": "babel --presets es2015  test/test.js --out-file api_build/test/test.js",
-    "babel-index": "babel --presets es2015  routes/index.js --out-file api_build/routes/index.js",
-    "babel-questions": "babel --presets es2015  routes/questions.js --out-file api_build/routes/questions.js"
+    "babel-app": "babel --presets es2015  app.js --out-file ../app.js",
+    "babel-test": "babel --presets es2015  test/test.js --out-file ../test/test.js",
+    "babel-data": "babel --presets es2015  data/data.js --out-file ../data/data.js",
+    "babel-questions": "babel --presets es2015  routes/questions.js --out-file ../routes/questions.js"
   },
   "dependencies": {
     "body-parser": "^1.18.3",

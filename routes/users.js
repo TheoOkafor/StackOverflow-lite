@@ -1,23 +1,9 @@
-const express = require('express');
-const data = require('../data/data');
+var express = require('express');
+var router = express.Router();
 
-const router = express.Router();
-
-router.get('/', (req, res) => {
-  res.json(data.users);
+/* GET users listing. */
+router.get('/', function(req, res, next) {
+  res.send('respond with a resource');
 });
-
-router.get('/users', (req, res) => {
-  res.json(data.users);
-});
-
-router.get('/v1', (req, res) => {
-  res.json(data.users);
-});
-
-router.get('/v1/users', (req, res) => {
-  res.json(data.users);
-});
-
 
 module.exports = router;
