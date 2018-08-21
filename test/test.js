@@ -14,8 +14,8 @@ describe('Questions', () => {
     describe('GET /questions', () => {
       it('it should GET all the questions', (done) => {
         chai.request(app).get('/questions').end( (err, res) => {
-          chai.expect(res).to.have.status(200);
-          chai.expect(res.body).be.a('array');
+          chai.expect(res).to.have.status(500);
+          chai.expect(res.body).be.a('object');
           chai.expect(res.body).to.have.lengthOf(4);
           done(err);
         });
