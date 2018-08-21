@@ -1,0 +1,1 @@
+import {getQuestionCtrl} from 'fetchAllQuestions';

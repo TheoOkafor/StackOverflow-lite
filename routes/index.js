@@ -1,19 +1,15 @@
 import express from 'express';
 import {data} from '../data/data';
+import {getQuestionCtrl} from '../controllers/fetchAllQuestions';
 
-const questionRouter = express.Router();
-
-const questions = data.questions;
+const router = express.Router();
 
 // GET ALL QUESTIONS
-
-questionRouter.get('/v1/questions', (req, res) => {
-  res.json(questions);
-});
-
+router.route('/questions')
+  .get(getQuestionCtrl);
 
 // GET A QUESTION
-questionRouter.get('/v1/questions/:id([0-9]{1,})', (req, res) => {
+/*questionRouter.get('/v1/questions/:id([0-9]{1,})', (req, res) => {
   const requestId = req.params.id;
   const currQuestion = questions.filter((question) => {
     if (question.id === parseInt(requestId)) {
@@ -93,5 +89,5 @@ questionRouter.post('/v1/questions/:id([0-9]{1,})/answers', (req, res) => {
     res.json({ message: `New answer: ${reqBody.body} added`, question: `${currQuestion[0].title}` });
   }
 });
-
-export {questionRouter};
+*/
+export {router};
