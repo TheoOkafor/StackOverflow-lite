@@ -6,17 +6,6 @@ const questionRouter = express.Router();
 const questions = data.questions;
 
 // GET ALL QUESTIONS
-questionRouter.get('/', (req, res) => {
-  res.json(questions);
-});
-
-questionRouter.get('/questions', (req, res) => {
-  res.json(questions);
-});
-
-questionRouter.get('/v1', (req, res) => {
-  res.json(questions);
-});
 
 questionRouter.get('/v1/questions', (req, res) => {
   res.json(questions);
@@ -42,7 +31,7 @@ questionRouter.get('/v1/questions/:id([0-9]{1,})', (req, res) => {
 
 // POST A QUESTION
 questionRouter.post('/v1/questions', (req, res) => {
-  const reqBody = req.body; // reqBody = JSON.parse(req.body) worked for POSTMAN but not MOCHA test
+  const reqBody = req.body;
   // Check if all fields are provided and are valid:
   const invalidReq = reqBody.title === null || reqBody.title === '' || reqBody.title === undefined;
   if (invalidReq) {
@@ -60,7 +49,11 @@ questionRouter.post('/v1/questions', (req, res) => {
       username: reqBody.username,
       answers: [],
     });
-    res.json({ message: `New question: ${reqBody.title} added.`, location: `/v1/questions/${newId}` });
+    res.status(201);
+    res.json({status: 'Successful',
+      message: `New question: ${reqBody.title} added.`,
+      location: `/v1/questions/${newId}`
+    });
   }
 });
 
@@ -96,6 +89,7 @@ questionRouter.post('/v1/questions/:id([0-9]{1,})/answers', (req, res) => {
       timeAnswered: timeStr,
       accepted: false,
     });
+    res.status(201);
     res.json({ message: `New answer: ${reqBody.body} added`, question: `${currQuestion[0].title}` });
   }
 });

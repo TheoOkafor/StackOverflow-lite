@@ -25,6 +25,17 @@ describe('Questions', function () {
     // Test the /GET route
     describe('/GET questions', function () {
       it('it should GET all the questions', function (done) {
+        _chai2.default.request(_app.app).get('/').end(function (err, res) {
+          _chai2.default.expect(res).to.have.status(200);
+          _chai2.default.expect(res.body).be.a('array');
+          _chai2.default.expect(res.body).to.have.lengthOf(4);
+          done(err);
+        });
+      });
+    });
+
+    describe('/GET questions', function () {
+      it('it should GET all the questions', function (done) {
         _chai2.default.request(_app.app).get('/questions').end(function (err, res) {
           _chai2.default.expect(res).to.have.status(200);
           _chai2.default.expect(res.body).be.a('array');
@@ -141,6 +152,16 @@ describe('POST Answers', function () {
         _chai2.default.expect(res.body).to.be.a('object');
         _chai2.default.expect(res.body).to.have.property('message');
         _chai2.default.expect(res.body.message).to.equal('Question 16 Not Found');
+        done(err);
+      });
+    });
+  });
+  describe('/POST /v1/questions/1/answers', function () {
+    it('it should return error for a request server cannot handle', function (done) {
+      var answer = ['This is a test', 'TheoOkafor'];
+      _chai2.default.request(_app.app).post('/v1/questions/1/answers').send(answer).end(function (err, res) {
+        _chai2.default.expect(res).to.have.status(500);
+        _chai2.default.expect(res.body).to.be.a('string');
         done(err);
       });
     });

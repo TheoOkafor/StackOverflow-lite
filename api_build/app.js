@@ -16,15 +16,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.text());
 app.use(bodyParser.json({ type: 'application/json' }));
 
-app.use(cookieParser());
-
-
-app.use('/', questionRouter);
-//app.use('/users', userRouter);
-//app.use('/v1/users', userRouter);
-app.use('/questions', questionRouter);
 app.use('/v1/questions', questionRouter);
-
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

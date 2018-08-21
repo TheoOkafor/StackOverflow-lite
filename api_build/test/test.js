@@ -1,10 +1,8 @@
-'use strict';
-
 // Require the dev-dependencies
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import {data as data} from '../data/data';
-import {app as app} from '../app';
+import {data} from '../data/data';
+import {app} from '../app';
 
 const questions = data.questions;
 
@@ -13,32 +11,10 @@ chai.use(chaiHttp);
 describe('Questions', function () {
   describe('GET QUESTIONS', function () {
     // Test the /GET route
-    describe('/GET questions', function () {
-      it('it should GET all the questions', function (done) {
-        chai.request(app).get('/questions').end(function (err, res) {
-          chai.expect(res).to.have.status(200);
-          chai.expect(res.body).be.a('array');
-          chai.expect(res.body).to.have.lengthOf(4);
-          done(err);
-        });
-      });
-    });
-
     describe('/GET v1/questions', function () {
       it('it should GET all the questions', function (done) {
         chai.request(app).get('/v1/questions').end(function (err, res) {
           chai.expect(res).to.have.status(200);
-          chai.expect(res.body).be.a('array');
-          chai.expect(res.body).to.have.lengthOf(4);
-          done(err);
-        });
-      });
-    });
-
-    describe('/GET /v1', function () {
-      it('it should GET all the questions', function (done) {
-        chai.request(app).get('/v1').end(function (err, res) {
-          chai.expect(200);
           chai.expect(res.body).be.a('array');
           chai.expect(res.body).to.have.lengthOf(4);
           done(err);
@@ -82,6 +58,7 @@ describe('Questions', function () {
           chai.expect(res).to.have.status(400);
           chai.expect(res.body).to.be.a('object');
           chai.expect(res.body).to.have.property('message');
+          //message value here
           done(err);
         });
       });
@@ -95,7 +72,7 @@ describe('Questions', function () {
           username: 'TheoOkafor'
         };
         chai.request(app).post('/v1/questions').send(question).end(function (err, res) {
-          chai.expect(res).to.have.status(200);
+          chai.expect(res).to.have.status(201);
           chai.expect(res.body).to.be.a('object');
           chai.expect(res.body).to.have.property('message');
           chai.expect(res.body).to.have.property('location');
@@ -158,7 +135,7 @@ describe('POST Answers', function () {
         username: 'TheoOkafor'
       };
       chai.request(app).post('/v1/questions/1/answers').send(answer).end(function (err, res) {
-        chai.expect(res).to.have.status(200);
+        chai.expect(res).to.have.status(201);
         chai.expect(res.body).to.be.a('object');
         chai.expect(res.body).to.have.property('message');
         chai.expect(res.body).to.have.property('question');
