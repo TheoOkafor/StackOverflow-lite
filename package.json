@@ -20,7 +20,8 @@
   "scripts": {
     "start": "babel-node app.js",
     "devstart": "nodemon app.js --exec babel-node",
-    "test": "nyc mocha --timeout=3000 --require babel-register test --exec",
+    "test": "mocha test --require babel-register --exit",
+    "test-nyc": "nyc mocha --timeout=3000 --require babel-register test --exec",
     "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "dependencies": {

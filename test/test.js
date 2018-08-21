@@ -1,17 +1,17 @@
 // Require the dev-dependencies
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import {data} from '../data/data';
-import {app} from '../app';
+import { data } from '../data/data';
+import { app } from '../app';
 
 const questions = data.questions;
-
 chai.use(chaiHttp);
+
 // Parent block for QUESTIONS
 describe('Questions', () => {
   describe('GET QUESTIONS', () => {
     // Test the /GET route
-    describe('/GET v1/questions', () => {
+    describe('GET /questions', () => {
       it('it should GET all the questions', (done) => {
         chai.request(app).get('/questions').end( (err, res) => {
           chai.expect(res).to.have.status(200);
@@ -21,9 +21,11 @@ describe('Questions', () => {
         });
       });
     });
-
+  });
+});
+/*
     // GET A QUESTION FROM QUESTIONS TEST
-    describe('/GET /v1/questions/2', () => {
+    describe('GET /questions/2', () => {
       it('it should GET the question with id = 2', (done) => {
         chai.request(app).get('/questions/2').end( (err, res) => {
           chai.expect(res).to.have.status(200);
@@ -144,4 +146,4 @@ describe('POST Answers', () => {
       });
     });
   });
-});
+});*/
