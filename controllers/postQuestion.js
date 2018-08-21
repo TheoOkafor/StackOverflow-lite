@@ -6,13 +6,12 @@ const questions = data.questions;
 const postQuestion = (req, res) => {
   const reqBody = req.body;
   const newId = questions[questions.length - 1].id + 1;
-  const timeNow = new Date();
-  const timeStr = timeNow.toUTCString();
+  const timeNow = new Date().toUTCString();
   const newQuestion = {
     id: newId,
     title: reqBody.title,
     body: reqBody.body,
-    timeSubmitted: timeStr,
+    timeSubmitted: timeNow,
     username: reqBody.username,
     answers: [],
   };

@@ -1,19 +1,19 @@
 // Require the dev-dependencies
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import {data} from './data/data';
-import {app} from './app';
+import {data} from '../data/data';
+import {app} from '../app';
 
 const questions = data.questions;
 
 chai.use(chaiHttp);
 // Parent block for QUESTIONS
-describe('Questions', function () {
-  describe('GET QUESTIONS', function () {
+describe('Questions', () => {
+  describe('GET QUESTIONS', () => {
     // Test the /GET route
-    describe('/GET v1/questions', function () {
-      it('it should GET all the questions', function (done) {
-        chai.request(app).get('/v1/questions').end(function (err, res) {
+    describe('/GET v1/questions', () => {
+      it('it should GET all the questions', (done) => {
+        chai.request(app).get('/questions').end( (err, res) => {
           chai.expect(res).to.have.status(200);
           chai.expect(res.body).be.a('array');
           chai.expect(res.body).to.have.lengthOf(4);
@@ -23,9 +23,9 @@ describe('Questions', function () {
     });
 
     // GET A QUESTION FROM QUESTIONS TEST
-    describe('/GET /v1/questions/2', function () {
-      it('it should GET the question with id = 2', function (done) {
-        chai.request(app).get('/v1/questions/2').end(function (err, res) {
+    describe('/GET /v1/questions/2', () => {
+      it('it should GET the question with id = 2', (done) => {
+        chai.request(app).get('/questions/2').end( (err, res) => {
           chai.expect(res).to.have.status(200);
           chai.expect(res.body).be.a('object');
           chai.expect(res.body.id).to.equal(2);
@@ -34,9 +34,9 @@ describe('Questions', function () {
       });
     });
 
-    describe('/GET /v1/questions/100', function () {
-      it('it should return \'Question 100 Not Found\'', function (done) {
-        chai.request(app).get('/v1/questions/100').end(function (err, res) {
+    describe('/GET /v1/questions/100', () => {
+      it('it should return \'Question 100 Not Found\'', (done) => {
+        chai.request(app).get('/questions/100').end( (err, res) => {
           chai.expect(res).to.have.status(404);
           chai.expect(res.body).be.a('string');
           chai.expect(res.body).to.equal('Question 100 Not Found');
@@ -47,14 +47,14 @@ describe('Questions', function () {
   });
 
   // POST QUESTIONS TEST
-  describe('POST QUESTIONS', function () {
-    describe('/POST /v1/questions', function () {
-      it('it should NOT POST Question if the TITLE is Not provided', function (done) {
+  describe('POST QUESTIONS', () => {
+    describe('/POST /v1/questions', () => {
+      it('it should NOT POST Question if the TITLE is Not provided', (done) => {
         const question = {
           body: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
           username: 'TheoOkafor'
         };
-        chai.request(app).post('/v1/questions').send(question).end(function (err, res) {
+        chai.request(app).post('/questions').send(question).end( (err, res) => {
           chai.expect(res).to.have.status(400);
           chai.expect(res.body).to.be.a('object');
           chai.expect(res.body).to.have.property('message');
@@ -64,14 +64,14 @@ describe('Questions', function () {
       });
     });
 
-    describe('/POST /v1/questions', function () {
-      it('it should POST Question if all the required fields are provided', function (done) {
+    describe('/POST /v1/questions', () => {
+      it('it should POST Question if all the required fields are provided', (done) => {
         const question = {
           title: 'Why do people hate reading?',
           body: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
           username: 'TheoOkafor'
         };
-        chai.request(app).post('/v1/questions').send(question).end(function (err, res) {
+        chai.request(app).post('/questions').send(question).end( (err, res) => {
           chai.expect(res).to.have.status(201);
           chai.expect(res.body).to.be.a('object');
           chai.expect(res.body).to.have.property('message');
@@ -81,9 +81,10 @@ describe('Questions', function () {
       });
     });
 
-    describe('/GET /v1/questions/' + questions[questions.length - 1].id, function () {
-      it('it should return GET the question ' + questions[questions.length - 1].id + ' that was just POSTed', function (done) {
-        chai.request(app).get('/v1/questions/' + questions[questions.length - 1].id).end(function (err, res) {
+    describe('/GET /v1/questions/' + questions[questions.length - 1].id, () => {
+      it('it should return GET the question ' + questions[questions.length - 1].id + ' that was just POSTed', (done) => {
+        chai.request(app).get('/questions/' + questions[questions.length - 1].id)
+        .end( (err, res) => {
           chai.expect(res).to.have.status(200);
           chai.expect(res.body).to.be.a('object');
           chai.expect(res.body).to.have.property('id');
@@ -95,15 +96,15 @@ describe('Questions', function () {
   });
 });
 // Parent block for ANSWERS
-describe('POST Answers', function () {
+describe('POST Answers', () => {
   // TESTS FOR ANSWERS
-  describe('/POST /v1/questions/16/answers', function () {
-    it('it should NOT POST Answer if question does not exist', function (done) {
+  describe('/POST /v1/questions/16/answers', () => {
+    it('it should NOT POST Answer if question does not exist', (done) => {
       const answer = {
         body: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
         username: 'TheoOkafor'
       };
-      chai.request(app).post('/v1/questions/16/answers').send(answer).end(function (err, res) {
+      chai.request(app).post('/questions/16/answers').send(answer).end( (err, res) => {
         chai.expect(res).to.have.status(404);
         chai.expect(res.body).to.be.a('object');
         chai.expect(res.body).to.have.property('message');
@@ -113,12 +114,12 @@ describe('POST Answers', function () {
     });
   });
 
-  describe('/POST /v1/questions/1/answers', function () {
-    it('it should NOT POST Answer if the BODY is Not provided', function (done) {
+  describe('/POST /v1/questions/1/answers', () => {
+    it('it should NOT POST Answer if the BODY is Not provided', (done) => {
       const answer = {
         username: 'TheoOkafor'
       };
-      chai.request(app).post('/v1/questions/1/answers').send(answer).end(function (err, res) {
+      chai.request(app).post('/questions/1/answers').send(answer).end( (err, res) => {
         chai.expect(res).to.have.status(400);
         chai.expect(res.body).to.be.a('object');
         chai.expect(res.body).to.have.property('message');
@@ -128,13 +129,13 @@ describe('POST Answers', function () {
     });
   });
 
-  describe('/POST /v1/questions/1/answers', function () {
-    it('it should POST answer if all the required fields are provided', function (done) {
+  describe('/POST /v1/questions/1/answers', () => {
+    it('it should POST answer if all the required fields are provided', (done) => {
       const answer = {
         body: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
         username: 'TheoOkafor'
       };
-      chai.request(app).post('/v1/questions/1/answers').send(answer).end(function (err, res) {
+      chai.request(app).post('/questions/1/answers').send(answer).end( (err, res) => {
         chai.expect(res).to.have.status(201);
         chai.expect(res.body).to.be.a('object');
         chai.expect(res.body).to.have.property('message');

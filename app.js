@@ -17,7 +17,7 @@ app.use(bodyParser.json({ type: 'application/json' }));
 app.use('/v1', router);
 
 // catch 404 and forward to error handler
-app.use((req, res, next) => {
+/*app.use((req, res, next) => {
   next(createError(404));
 });
 
@@ -33,7 +33,7 @@ app.use((err, req, res, next) => {
   	message: 'Unknown server error'
   });
   next();
-});
+});*/
 
 // listen for requests
 app.listen(port, () => {
