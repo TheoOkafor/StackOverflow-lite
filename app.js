@@ -3,7 +3,7 @@ import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import bodyParser from 'body-parser';
 
-import {router} from './routes';
+import { router } from './routes';
 
 const app = express();
 const port = process.env.PORT || 5000;

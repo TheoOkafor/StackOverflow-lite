@@ -1,8 +1,8 @@
 import express from 'express';
-import {data} from '../data/data';
+import { data } from '../data/data';
 
 const allQuestions = data.questions;
-const getQuestionCtrl = (req, res) => {
+const fetchAllQuestionsCtrl = (req, res) => {
 	res.status(200)
   res.json({
   	status: 'successful',
@@ -10,4 +10,4 @@ const getQuestionCtrl = (req, res) => {
   });
 };
 
-export {getQuestionCtrl};
+export {fetchAllQuestionsCtrl};
