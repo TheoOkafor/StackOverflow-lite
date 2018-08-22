@@ -13,10 +13,10 @@ const postQuestionValidate = (req, res, next) => {
     res.json({
       status: 'failed',
       message: err.message,
-      data: reqBody
+      data: reqBody,
     });
   }
   return next();
-}
+};
 
 export { postQuestionValidate };

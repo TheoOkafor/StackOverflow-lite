@@ -20,9 +20,12 @@
   "scripts": {
     "start": "babel-node app.js",
     "devstart": "nodemon app.js --exec babel-node",
-    "test": "mocha test --require babel-register --exit",
-    "test-nyc": "nyc mocha --timeout=3000 --require babel-register test --exec",
-    "coverage": "nyc report --reporter=text-lcov | coveralls"
+    "test": "nyc mocha --timeout=3000 --exit --require babel-register test --exec",
+    "test-nyc": "mocha test --require babel-register --exit",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "eslint-app": "./node_modules/.bin/eslint --fix app.js data/data.js routes/index.js",
+    "eslint-middlewares": "./node_modules/.bin/eslint --fix middlewares/postQuestionValidate.js middlewares/postAnswerValidate.js middlewares/urlErrHandler.js",
+    "eslint-controllers": "./node_modules/.bin/eslint --fix controllers/fetchAllQuestions.js controllers/fetchQuestion.js controllers/postQuestion.js controllers/postAnswer.js"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
@@ -31,9 +34,7 @@
     "debug": "~2.6.9",
     "express": "~4.16.0",
     "http-errors": "~1.6.2",
-    "morgan": "~1.9.0",
-    "eslint": "^5.3.0",
-    "eslint-config-airbnb": "^17.1.0"
+    "morgan": "~1.9.0"
   },
   "devDependencies": {
     "babel": "^6.23.0",
@@ -44,19 +45,17 @@
     "chai": "^4.1.2",
     "chai-http": "^4.0.0",
     "coveralls": "^3.0.2",
-    "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-config-prettier": "^3.0.1",
+    "eslint": "^5.4.0",
+    "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^6.1.1",
-    "eslint-plugin-prettier": "^2.6.2",
     "eslint-plugin-react": "^7.11.1",
     "istanbul": "^0.4.5",
     "jscover": "^1.0.0",
     "mocha": "^5.2.0",
     "mocha-lcov-reporter": "^1.3.0",
     "nodemon": "^1.18.3",
-    "nyc": "^12.0.2",
-    "prettier": "^1.14.2"
+    "nyc": "^12.0.2"
   },
   "engines": {
     "node": "8.11.3"

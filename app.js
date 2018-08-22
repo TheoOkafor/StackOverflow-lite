@@ -1,5 +1,4 @@
 import express from 'express';
-import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import bodyParser from 'body-parser';
 
@@ -29,8 +28,9 @@ app.use((err, req, res, next) => {
 
   // render the error page
   res.status(err.status || 500);
-  res.json({status: 'failed',
-  	message: 'Server could not complete request'
+  res.json({
+    status: 'failed',
+  	message: 'Server could not complete request',
   });
   next();
 });
@@ -40,4 +40,4 @@ app.listen(port, () => {
   console.log(`Server is listening on port ${port}`);
 });
 
-export {app};
+export { app };

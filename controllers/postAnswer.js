@@ -18,9 +18,8 @@ const postAnswer = (req, res) => {
     res.json({
       status: 'failed',
       message: err.message,
-      data: reqBody
+      data: reqBody,
     });
-    
   } else {
     const answers = currQuestion[0].answers;
     const newId = answers[answers.length - 1].id + 1;
@@ -31,19 +30,18 @@ const postAnswer = (req, res) => {
       body: reqBody.body,
       username: reqBody.username,
       timeAnswered: timeNow,
-      accepted: false
+      accepted: false,
     };
-    
+
     answers.push(answer);
     res.status(201);
     res.json({
-      status: 'Successful',
+      status: 'successful',
       message: 'New answer added.',
-      data: answers[newId-1],
-      metadata: `/v1/questions/${ newId }`
+      data: answers[newId - 1],
+      metadata: `/v1/questions/${newId}`,
     });
-  } 
-  
-}
+  }
+};
 
 export { postAnswer };

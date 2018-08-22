@@ -11,15 +11,15 @@ const postAnswerValidate = (req, res, next) => {
 
   if (invalidReq) {
     const err = new Error('Bad Request. Answer must have a body.');
-    res.status(400)
+    res.status(400);
     res.json({
       status: 'failed',
       message: err.message,
-      data: reqBody
+      data: reqBody,
     });
   } else {
     return next();
   }
-}
+};
 
 export { postAnswerValidate };

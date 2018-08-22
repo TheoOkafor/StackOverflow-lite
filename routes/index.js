@@ -1,5 +1,4 @@
 import express from 'express';
-import { data } from '../data/data';
 import { fetchAllQuestionsCtrl } from '../controllers/fetchAllQuestions';
 import { fetchQuestionCtrl } from '../controllers/fetchQuestion';
 import { postQuestion } from '../controllers/postQuestion';
@@ -11,7 +10,7 @@ import { urlErrHandler } from '../middlewares/urlErrHandler';
 const router = express.Router();
 
 // GET ALL QUESTIONS
-router.get('/questions', fetchAllQuestionsCtrl)
+router.get('/questions', fetchAllQuestionsCtrl);
 
 // GET A QUESTION
 router.get('/questions/:id([0-9]{1,})', fetchQuestionCtrl);
@@ -33,4 +32,4 @@ router.post('/questions/:id([A-z0-9]{1,})', urlErrHandler);
 router.post('/questions/:id([^0-9]{1,})/answers', urlErrHandler);
 
 
-export {router};
+export { router };

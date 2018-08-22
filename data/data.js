@@ -36,8 +36,8 @@ data.questions = [
         username: 'champion',
         timeAnswered: '08:07AM, October 03, 2018',
         accepted: false,
-      }
-    ]
+      },
+    ],
   },
   {
     id: 2,
@@ -73,8 +73,8 @@ data.questions = [
         username: 'tyrone',
         timeAnswered: '08:07AM, October 03, 2018',
         accepted: false,
-      }
-    ]
+      },
+    ],
   },
   {
     id: 3,
@@ -110,8 +110,8 @@ data.questions = [
         username: 'user4',
         timeAnswered: '08:07AM, October 03, 2018',
         accepted: false,
-      }
-    ]
+      },
+    ],
   },
   {
     id: 4,
@@ -147,63 +147,66 @@ data.questions = [
         username: 'user4',
         timeAnswered: '08:07AM, October 03, 2018',
         accepted: false,
-      }
-    ]
-  }
+      },
+    ],
+  },
 ];
 
 
 data.users = [
-  { name: "john-champion",
+  {
+    name: 'john-champion',
     id: 1,
-    timeJoined: "October 02, 2018",
-    password: "safaefKL12",
-    questionsAuthoured: [2, 3], //Question ID array.
+    timeJoined: 'October 02, 2018',
+    password: 'safaefKL12',
+    questionsAuthoured: [2, 3], // Question ID array.
     answersAuthoured: [
       {
         questionID: 1,
-        answerID: 1
+        answerID: 1,
       },
       {
         questionID: 5,
-        answerID: 4
-      }
-    ]
+        answerID: 4,
+      },
+    ],
   },
 
-  { name: "jim-berglin",
+  {
+    name: 'jim-berglin',
     id: 2,
-    timeJoined: "October 04, 2018",
-    password: "safaefKL12",
-    questionsAuthoured: [4, 5], //Question ID array.
+    timeJoined: 'October 04, 2018',
+    password: 'safaefKL12',
+    questionsAuthoured: [4, 5], // Question ID array.
     answersAuthoured: [
       {
         questionID: 2,
-        answerID: 1
+        answerID: 1,
       },
       {
         questionID: 3,
-        answerID: 4
-      }
-    ]
+        answerID: 4,
+      },
+    ],
   },
 
-  { name: "coko-maiko",
+  {
+    name: 'coko-maiko',
     id: 3,
-    timeJoined: "October 04, 2018",
-    password: "safaefKL12",
-    questionsAuthoured: [1], //Question ID array.
+    timeJoined: 'October 04, 2018',
+    password: 'safaefKL12',
+    questionsAuthoured: [1], // Question ID array.
     answersAuthoured: [
       {
         questionID: 2,
-        answerID: 2
+        answerID: 2,
       },
       {
         questionID: 3,
-        answerID: 5
-      }
-    ]
-  }
+        answerID: 5,
+      },
+    ],
+  },
 ];
 
-export {data};
+export { data };

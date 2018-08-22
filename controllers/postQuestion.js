@@ -18,11 +18,11 @@ const postQuestion = (req, res) => {
   questions.push(newQuestion);
   res.status(201);
   res.json({
-    status: 'Successful',
+    status: 'successful',
     message: 'New question added.',
-    data: questions[newId-1],
-    location: `/v1/questions/${ newId }`
+    data: questions[newId - 1],
+    metadata: `/v1/questions/${newId}`,
   });
-}
+};
 
 export { postQuestion };
