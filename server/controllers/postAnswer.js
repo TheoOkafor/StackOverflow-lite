@@ -1,5 +1,5 @@
 import express from 'express';
-import { data } from '../data/data';
+import { data } from '../../data/data';
 
 const questions = data.questions;
 
@@ -39,7 +39,9 @@ const postAnswer = (req, res) => {
       status: 'successful',
       message: 'New answer added.',
       data: answers[newId - 1],
-      metadata: `/v1/questions/${newId}`,
+      metadata: {
+        location: `/v1/questions/${newId}`,
+      },
     });
   }
 };

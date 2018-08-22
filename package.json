@@ -23,18 +23,29 @@
     "test": "nyc mocha --timeout=3000 --exit --require babel-register test --exec",
     "test-nyc": "mocha test --require babel-register --exit",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "eslint-app": "./node_modules/.bin/eslint --fix app.js data/data.js routes/index.js",
-    "eslint-middlewares": "./node_modules/.bin/eslint --fix middlewares/postQuestionValidate.js middlewares/postAnswerValidate.js middlewares/urlErrHandler.js",
-    "eslint-controllers": "./node_modules/.bin/eslint --fix controllers/fetchAllQuestions.js controllers/fetchQuestion.js controllers/postQuestion.js controllers/postAnswer.js"
+    "eslint-app": "./node_modules/.bin/eslint --fix app.js data/data.js server/routes/index.js",
+    "eslint-middlewares1": "./node_modules/.bin/eslint --fix server/middlewares/postQuestionValidate.js",
+    "eslint-middlewares2": "./node_modules/.bin/eslint --fix server/middlewares/postAnswerValidate.js",
+    "eslint-middlewares3": "./node_modules/.bin/eslint --fix server/middlewares/urlErrHandler.js",
+    "eslint-controllers1": "./node_modules/.bin/eslint --fix server/controllers/fetchAllQuestions.js",
+    "eslint-controllers2": "./node_modules/.bin/eslint --fix server/controllers/fetchQuestion.js",
+    "eslint-controllers3": "./node_modules/.bin/eslint --fix server/controllers/postQuestion.js",
+    "eslint-controllers4": "./node_modules/.bin/eslint --fix server/controllers/postAnswer.js",
+    "eslint-controllers5": "./node_modules/.bin/eslint --fix server/controllers/postQuestion.js",
+    "eslint-controllers6": "./node_modules/.bin/eslint --fix server/controllers/postAnswer.js",
+    "eslint-test": "./node_modules/.bin/eslint --fix test/test.js"
   },
   "dependencies": {
+    "bluebird": "^3.5.1",
     "body-parser": "^1.18.3",
     "config": "^2.0.1",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "express": "~4.16.0",
     "http-errors": "~1.6.2",
-    "morgan": "~1.9.0"
+    "morgan": "~1.9.0",
+    "pg": "^7.4.3",
+    "pg-promise": "^8.4.6"
   },
   "devDependencies": {
     "babel": "^6.23.0",

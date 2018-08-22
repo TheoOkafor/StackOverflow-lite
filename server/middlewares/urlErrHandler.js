@@ -1,5 +1,4 @@
 import express from 'express';
-import { data } from '../data/data';
 
 const urlErrHandler = (req, res) => {
   const err = new Error('Bad Request, invalid URL');

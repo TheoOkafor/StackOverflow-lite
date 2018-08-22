@@ -1,5 +1,5 @@
 import express from 'express';
-import { data } from '../data/data';
+import { data } from '../../data/data';
 
 const questions = data.questions;
 

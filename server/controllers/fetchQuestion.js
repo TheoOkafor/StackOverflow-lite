@@ -1,5 +1,5 @@
 import express from 'express';
-import { data } from '../data/data';
+import { data } from '../../data/data';
 
 const questions = data.questions;
 
@@ -14,7 +14,8 @@ const fetchQuestionCtrl = (req, res) => {
   if (currQuestion.length === 1) {
     res.json({
       status: 'successful',
-      question: currQuestion[0],
+      message: `Question ${requestId} found`,
+      data: currQuestion[0],
     });
   } else {
     res.status(404);// Set status to 404 as question was not found
