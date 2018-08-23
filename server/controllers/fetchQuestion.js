@@ -1,5 +1,4 @@
 import express from 'express';
-import client from '../db-setup';
 import db from '../db';
 
 const fetchQuestionCtrl = (req, res) => {
@@ -9,15 +8,19 @@ const fetchQuestionCtrl = (req, res) => {
     text: 'SELECT * FROM questions WHERE id = $1',
     values: [requestId]
   }
+  const errorResponse = () => {
+    res.status(404);// Set status to 404 as question was not found
+    res.json({
+      status: 'failed',
+      message: `Question ${requestId} Not Found`,
+    });
+    return res;
+  }
 
   db.one(query.text, requestId)
     .then( (data) => {
       if(data.length === 0){
-        res.status(404);// Set status to 404 as question was not found
-        res.json({
-          status: 'failed',
-          message: `Question ${requestId} Not Found`,
-        });
+        errorResponse();
       } else {
         res.json({
           status: 'successful',
@@ -25,23 +28,11 @@ const fetchQuestionCtrl = (req, res) => {
           data: data,
         });
       }
-    });
-/*
-  client.query(query, (err, data) => {
-    if(err || data.rows.length === 0){
-      res.status(404);// Set status to 404 as question was not found
-      res.json({
-        status: 'failed',
-        message: `Question ${requestId} Not Found`,
-      });
-    } else {
-      res.json({
-        status: 'successful',
-        message: `Question ${requestId} found`,
-        data: data.rows,
-      });
-    }
-  }); */ 
+    })
+    .catch(error => {
+      console.log(error);
+      errorResponse();
+    }); 
 }
 
 export { fetchQuestionCtrl };

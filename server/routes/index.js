@@ -5,6 +5,7 @@ import { postQuestion } from '../controllers/postQuestion';
 import { postQuestionValidate } from '../middlewares/postQuestionValidate';
 import { postAnswer } from '../controllers/postAnswer';
 import { postAnswerValidate } from '../middlewares/postAnswerValidate';
+import { deleteQuestion } from '../controllers/deleteQuestion';
 
 const router = express.Router();
 
@@ -20,5 +21,8 @@ router.post('/questions', postQuestionValidate, postQuestion);
 // POST AN ANSWER
 router.post('/questions/:id([0-9]{1,})/answers', postAnswerValidate,
   postAnswer);
+
+// DELETE A QUESTION
+router.delete('/questions/:id([0-9]{1,})', deleteQuestion);
 
 export { router };
