@@ -1,73 +1,55 @@
-'use strict';
+import express from 'express';
+import logger from 'morgan';
+import bodyParser from 'body-parser';
+import promise from 'bluebird';
+import { router } from './server/routes';
+import { urlErrHandler } from './server/middlewares/urlErrHandler';
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.app = undefined;
+// Setup DB
+const options = {
+  promiseLib: promise,
+};
+const pgp = require('pg-promise')(options);
 
-var _httpErrors = require('http-errors');
+const connectionString = 'postgres://localhost:5432/stack-lite';
+const db = pgp(connectionString);
 
-var _httpErrors2 = _interopRequireDefault(_httpErrors);
+const app = express();
+const port = process.env.PORT || 5000;
 
-var _express = require('express');
-
-var _express2 = _interopRequireDefault(_express);
-
-var _cookieParser = require('cookie-parser');
-
-var _cookieParser2 = _interopRequireDefault(_cookieParser);
-
-var _morgan = require('morgan');
-
-var _morgan2 = _interopRequireDefault(_morgan);
-
-var _bodyParser = require('body-parser');
-
-var _bodyParser2 = _interopRequireDefault(_bodyParser);
-
-var _questions = require('./routes/questions');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-//import {userRouter} from './routes/users';
-
-var app = (0, _express2.default)();
-
-app.use((0, _morgan2.default)('dev'));
+app.use(logger('dev'));
 
 // parse application/json and look for raw text
-app.use(_bodyParser2.default.urlencoded({ extended: true }));
-app.use(_bodyParser2.default.text());
-app.use(_bodyParser2.default.json({ type: 'application/json' }));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({ type: 'application/json' }));
 
-app.use((0, _cookieParser2.default)());
-
-app.use('/', _questions.questionRouter);
-//app.use('/users', userRouter);
-//app.use('/v1/users', userRouter);
-app.use('/questions', _questions.questionRouter);
-app.use('/v1/questions', _questions.questionRouter);
+app.use('/v1', router);
+app.use('/v1', urlErrHandler);
 
 // catch 404 and forward to error handler
-app.use(function (req, res, next) {
-  next((0, _httpErrors2.default)(404));
+app.use((req, res, next) => {
+  next(createError(404));
 });
 
 // error handler
-app.use(function (err, req, res, next) {
+app.use((err, req, res, next) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : 'Something went wrong';
+  const mssg = 'Something went wrong';
+  res.locals.error = req.app.get('env') === 'development' ? err : mssg;
 
   // render the error page
   res.status(err.status || 500);
-  res.send('error');
+  res.json(err.body || {
+    status: 'failed',
+  	message: 'Server could not complete request',
+  });
   next();
 });
 
 // listen for requests
-app.listen(process.env.PORT || 5000, function () {
-  console.log('Server is listening on port');
+app.listen(port, () => {
+  console.log(`Server is listening on port ${port}`);
 });
 
-exports.app = app;
+export { app };

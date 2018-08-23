@@ -1,79 +1,75 @@
-'use strict';
-
 // Require the dev-dependencies
+import chai from 'chai';
+import chaiHttp from 'chai-http';
+import { data } from '../data/data';
+import { app } from '../app';
 
-var _chai = require('chai');
+const questions = data.questions;
+chai.use(chaiHttp);
 
-var _chai2 = _interopRequireDefault(_chai);
-
-var _chaiHttp = require('chai-http');
-
-var _chaiHttp2 = _interopRequireDefault(_chaiHttp);
-
-var _data = require('../data/data');
-
-var _app = require('../app');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var questions = _data.data.questions;
-
-_chai2.default.use(_chaiHttp2.default);
 // Parent block for QUESTIONS
-describe('Questions', function () {
-  describe('GET QUESTIONS', function () {
+describe('Questions', () => {
+  describe('GET QUESTIONS', () => {
     // Test the /GET route
-    describe('/GET questions', function () {
-      it('it should GET all the questions', function (done) {
-        _chai2.default.request(_app.app).get('/questions').end(function (err, res) {
-          _chai2.default.expect(res).to.have.status(200);
-          _chai2.default.expect(res.body).be.a('array');
-          _chai2.default.expect(res.body).to.have.lengthOf(4);
+    describe('GET /questions', () => {
+      it('it should return error 500', (done) => {
+        chai.request(app).get('/questions').end((err, res) => {
+          chai.expect(res).to.have.status(500);
+          chai.expect(res.body).be.a('object');
+          chai.expect(res.body.status).to.equal('failed');
           done(err);
         });
       });
     });
 
-    describe('/GET v1/questions', function () {
-      it('it should GET all the questions', function (done) {
-        _chai2.default.request(_app.app).get('/v1/questions').end(function (err, res) {
-          _chai2.default.expect(res).to.have.status(200);
-          _chai2.default.expect(res.body).be.a('array');
-          _chai2.default.expect(res.body).to.have.lengthOf(4);
+    describe('GET /v1/questions/gabyy', () => {
+      it('it should return error 400', (done) => {
+        chai.request(app).get('/v1/questions/gabyy').end((err, res) => {
+          chai.expect(res).to.have.status(400);
+          chai.expect(res.body).be.a('object');
+          chai.expect(res.body.status).to.equal('failed');
+          chai.expect(res.body.message).to.equal('Bad Request, invalid URL');
           done(err);
         });
       });
     });
 
-    describe('/GET /v1', function () {
-      it('it should GET all the questions', function (done) {
-        _chai2.default.request(_app.app).get('/v1').end(function (err, res) {
-          _chai2.default.expect(200);
-          _chai2.default.expect(res.body).be.a('array');
-          _chai2.default.expect(res.body).to.have.lengthOf(4);
+    // Test the /GET route
+    describe('GET /questions', () => {
+      it('it should GET all the questions', (done) => {
+        chai.request(app).get('/v1/questions').end((err, res) => {
+          chai.expect(res).to.have.status(200);
+          chai.expect(res.body).be.a('object');
+          chai.expect(res.body.status).to.equal('successful');
+          chai.expect(res.body).to.have.property('message');
+          chai.expect(res.body.message).to.equal('Questions found');
           done(err);
         });
       });
     });
 
     // GET A QUESTION FROM QUESTIONS TEST
-    describe('/GET /v1/questions/2', function () {
-      it('it should GET the question with id = 2', function (done) {
-        _chai2.default.request(_app.app).get('/v1/questions/2').end(function (err, res) {
-          _chai2.default.expect(res).to.have.status(200);
-          _chai2.default.expect(res.body).be.a('object');
-          _chai2.default.expect(res.body.id).to.equal(2);
+    describe('GET /v1/questions/2', () => {
+      it('it should GET the question with id = 2', (done) => {
+        chai.request(app).get('/v1/questions/2').end((err, res) => {
+          chai.expect(res).to.have.status(200);
+          chai.expect(res.body).be.a('object');
+          chai.expect(res.body.status).to.equal('successful');
+          chai.expect(res.body).to.have.property('message');
+          chai.expect(res.body.message).to.equal('Question 2 found');
+          chai.expect(res.body).to.have.property('data');
           done(err);
         });
       });
     });
 
-    describe('/GET /v1/questions/100', function () {
-      it('it should return \'Question 100 Not Found\'', function (done) {
-        _chai2.default.request(_app.app).get('/v1/questions/100').end(function (err, res) {
-          _chai2.default.expect(res).to.have.status(404);
-          _chai2.default.expect(res.body).be.a('string');
-          _chai2.default.expect(res.body).to.equal('Question 100 Not Found');
+    describe('/GET /v1/questions/100', () => {
+      it('it should return \'Question 100 Not Found\'', (done) => {
+        chai.request(app).get('/v1/questions/100').end((err, res) => {
+          chai.expect(res).to.have.status(404);
+          chai.expect(res.body).be.a('object');
+          chai.expect(res.body.status).to.equal('failed');
+          chai.expect(res.body.message).to.equal('Question 100 Not Found');
           done(err);
         });
       });
@@ -81,97 +77,109 @@ describe('Questions', function () {
   });
 
   // POST QUESTIONS TEST
-  describe('POST QUESTIONS', function () {
-    describe('/POST /v1/questions', function () {
-      it('it should NOT POST Question if the TITLE is Not provided', function (done) {
-        var question = {
-          body: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-          username: 'TheoOkafor'
+  describe('POST QUESTIONS', () => {
+    describe('/POST /v1/questions', () => {
+      it('it should NOT POST Question if the TITLE is Not provided', (done) => {
+        const question = {
+          body: 'Lorem ipsum dolor sit amet, consectetur adipisicing',
+          username: 'TheoOkafor',
         };
-        _chai2.default.request(_app.app).post('/v1/questions').send(question).end(function (err, res) {
-          _chai2.default.expect(res).to.have.status(400);
-          _chai2.default.expect(res.body).to.be.a('object');
-          _chai2.default.expect(res.body).to.have.property('message');
+        chai.request(app).post('/v1/questions').send(question).end((err, res) => {
+          chai.expect(res).to.have.status(400);
+          chai.expect(res.body).to.be.a('object');
+          chai.expect(res.body).to.have.property('message');
+          chai.expect(res.body.message).to.equal('Bad Request. Question must have a title.');
           done(err);
         });
       });
     });
 
-    describe('/POST /v1/questions', function () {
-      it('it should POST Question if all the required fields are provided', function (done) {
-        var question = {
+    describe('/POST /v1/questions', () => {
+      it('it should POST Question if all the required\
+       fields are provided', (done) => {
+        const question = {
           title: 'Why do people hate reading?',
-          body: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-          username: 'TheoOkafor'
+          body: 'Lorem ipsum dolor sit amet, consectetur',
+          username: 'TheoOkafor',
         };
-        _chai2.default.request(_app.app).post('/v1/questions').send(question).end(function (err, res) {
-          _chai2.default.expect(res).to.have.status(200);
-          _chai2.default.expect(res.body).to.be.a('object');
-          _chai2.default.expect(res.body).to.have.property('message');
-          _chai2.default.expect(res.body).to.have.property('location');
+        chai.request(app).post('/v1/questions').send(question).end((err, res) => {
+          chai.expect(res).to.have.status(201);
+          chai.expect(res.body).to.be.a('object');
+          chai.expect(res.body).to.have.property('message');
+          chai.expect(res.body).to.have.property('data');
+          chai.expect(res.body).to.have.property('metadata');
+          chai.expect(res.body.status).to.equal('successful');
+          chai.expect(res.body.message).to.equal('New question added');
           done(err);
         });
       });
     });
 
-    describe('/GET /v1/questions/' + questions[questions.length - 1].id, function () {
-      it('it should return GET the question ' + questions[questions.length - 1].id + ' that was just POSTed', function (done) {
-        _chai2.default.request(_app.app).get('/v1/questions/' + questions[questions.length - 1].id).end(function (err, res) {
-          _chai2.default.expect(res).to.have.status(200);
-          _chai2.default.expect(res.body).to.be.a('object');
-          _chai2.default.expect(res.body).to.have.property('id');
-          _chai2.default.expect(res.body.title).to.equal('Why do people hate reading?');
-          done(err);
-        });
+    describe(`/GET /v1/questions/${questions[questions.length - 1].id}`, () => {
+      it(`it should GET the question ${questions[questions.length - 1].id}\
+       that was just POSTed`, (done) => {
+        chai.request(app).get(`/v1/questions/${questions[questions.length - 1].id}`)
+          .end((err, res) => {
+            chai.expect(res).to.have.status(200);
+            chai.expect(res.body).be.a('object');
+            chai.expect(res.body.status).to.equal('successful');
+            chai.expect(res.body).to.have.property('message');
+            chai.expect(res.body).to.have.property('data');
+            done(err);
+          });
       });
     });
   });
 });
 // Parent block for ANSWERS
-describe('POST Answers', function () {
+describe('POST Answers', () => {
   // TESTS FOR ANSWERS
-  describe('/POST /v1/questions/16/answers', function () {
-    it('it should NOT POST Answer if question does not exist', function (done) {
-      var answer = {
-        body: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-        username: 'TheoOkafor'
+  describe('/POST /v1/questions/16/answers', () => {
+    it('it should NOT POST Answer if question does not exist', (done) => {
+      const answer = {
+        body: 'Lorem ipsum dolor sit amet, consectetur',
+        username: 'TheoOkafor',
       };
-      _chai2.default.request(_app.app).post('/v1/questions/16/answers').send(answer).end(function (err, res) {
-        _chai2.default.expect(res).to.have.status(404);
-        _chai2.default.expect(res.body).to.be.a('object');
-        _chai2.default.expect(res.body).to.have.property('message');
-        _chai2.default.expect(res.body.message).to.equal('Question 16 Not Found');
+      chai.request(app).post('/v1/questions/16/answers').send(answer).end((err, res) => {
+        chai.expect(res).to.have.status(404);
+        chai.expect(res.body).to.be.a('object');
+        chai.expect(res.body).to.have.property('message');
+        chai.expect(res.body.message).to.equal('Question 16 Not Found');
         done(err);
       });
     });
   });
 
-  describe('/POST /v1/questions/1/answers', function () {
-    it('it should NOT POST Answer if the BODY is Not provided', function (done) {
-      var answer = {
-        username: 'TheoOkafor'
+  describe('/POST /v1/questions/1/answers', () => {
+    it('it should NOT POST Answer if the BODY is Not provided', (done) => {
+      const answer = {
+        username: 'TheoOkafor',
       };
-      _chai2.default.request(_app.app).post('/v1/questions/1/answers').send(answer).end(function (err, res) {
-        _chai2.default.expect(res).to.have.status(400);
-        _chai2.default.expect(res.body).to.be.a('object');
-        _chai2.default.expect(res.body).to.have.property('message');
-        _chai2.default.expect(res.body.message).to.equal('Bad Request. Answer must have a body.');
+      chai.request(app).post('/v1/questions/1/answers').send(answer).end((err, res) => {
+        chai.expect(res).to.have.status(400);
+        chai.expect(res.body).to.be.a('object');
+        chai.expect(res.body).to.have.property('message');
+        chai.expect(res.body.status).to.equal('failed');
+        chai.expect(res.body.message).to.equal('Bad Request. Answer must have a body.');
         done(err);
       });
     });
   });
 
-  describe('/POST /v1/questions/1/answers', function () {
-    it('it should POST answer if all the required fields are provided', function (done) {
-      var answer = {
-        body: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-        username: 'TheoOkafor'
+  describe('/POST /v1/questions/1/answers', () => {
+    it('it should POST answer if all the required fields are provided', (done) => {
+      const answer = {
+        body: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit',
+        username: 'TheoOkafor',
       };
-      _chai2.default.request(_app.app).post('/v1/questions/1/answers').send(answer).end(function (err, res) {
-        _chai2.default.expect(res).to.have.status(200);
-        _chai2.default.expect(res.body).to.be.a('object');
-        _chai2.default.expect(res.body).to.have.property('message');
-        _chai2.default.expect(res.body).to.have.property('question');
+      chai.request(app).post('/v1/questions/1/answers').send(answer).end((err, res) => {
+        chai.expect(res).to.have.status(201);
+        chai.expect(res.body).to.be.a('object');
+        chai.expect(res.body).to.have.property('message');
+          chai.expect(res.body).to.have.property('data');
+          chai.expect(res.body).to.have.property('metadata');
+          chai.expect(res.body.status).to.equal('successful');
+        chai.expect(res.body.message).to.equal('New answer added.');
         done(err);
       });
     });
