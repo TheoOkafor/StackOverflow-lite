@@ -1,6 +1,3 @@
-DROP DATABASE IF EXISTS stackLite;
-CREATE DATABASE stackLite;
-
 \c stackLite;
 
 CREATE TABLE questions (
