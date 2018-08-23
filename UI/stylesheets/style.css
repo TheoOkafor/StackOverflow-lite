@@ -6,7 +6,8 @@ body {
   margin: 0;
   color: #333;
   font-size: 17px;
-  overflow-x: hidden;
+  min-width: 450px;
+  overflow-x: auto;
 }
 
 body.home, div.home {
@@ -16,12 +17,10 @@ body.home, div.home {
 body.home {
 	width: 100%;
   background-color: #e6f2ff;
-  background-image: url("https://cdn.shopify.com/s/files/1/0031/3912/products/stackoverflow_gold_1024x1024.png");
-  background-repeat:no-repeat;
-  background-position:left;
-  background-attachment:fixed;
-  background-size: 650px 700px;
-  opacity: 0.9;
+}
+
+body.sign {
+	background-color: #004d99;
 }
 
 aside, footer, header, nav, section {
@@ -61,11 +60,15 @@ footer.error {
 footer.sign {
 	background-color: #004d99;
 	color: white;
+	margin-top: 20px;
+	border-top: 2px solid #80bfff;
+	box-shadow: 2px 2px 3px 3px #80bfff
 }
 
 header.home, footer.home{
 	color: #fff;
-	background-color: #004d99;  
+	background-color: #004d99;
+	margin-bottom: 0px;  
 }
 
 a {
@@ -158,8 +161,9 @@ button.btn, input[type= 'reset']{
 
 .sign-card {
 	margin: 30px 20px;
-	border: 2px solid #fff;
+	border: 2px solid #80bfff;
 	border-radius: 5px;
+	box-shadow: 1px 1px 2px 2px #80bfff;
 	padding: 10px;
 }
 
