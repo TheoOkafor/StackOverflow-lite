@@ -6,5 +6,24 @@ npm:
 cache:
   directories:
     - "node_modules"
+services:
+  - postgresql
+
+addons:
+  postgresql: "9.5"
+  apt:
+      packages:
+      - postgresql-9.5
+      - postgresql-client-9.5
+env:
+  global:
+  - PGPORT=5432
+
+before_script:
+  - psql -c 'create database stackLite;' -U postgres
+  - psql -c "CREATE USER postgres WITH PASSWORD 'postgres';" -U postgres
+  - psql -U postgres -d stackLite -a -f data/questions.sql
+  - psql -U postgres -d stackLite -a -f data/answers.sql
+
 after_success:
 - npm run coverage
