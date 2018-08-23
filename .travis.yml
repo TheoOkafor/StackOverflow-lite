@@ -21,9 +21,9 @@ env:
 
 before_script:
   - psql -c "ALTER USER postgres WITH PASSWORD 'postgres';" -U postgres
-  - psql -c 'create database stackLite;' -U postgres
-  - psql -U postgres -d stackLite -a -f data/questions.sql
-  - psql -U postgres -d stackLite -a -f data/answers.sql
+  - psql -c "create database stackLite;" -U postgres
+  - psql -U postgres -d stackLite -a -f ./data/questions.sql
+  - psql -U postgres -d stackLite -a -f ./data/answers.sql
 
 after_success:
 - npm run coverage
