@@ -79,7 +79,8 @@ describe('Questions', () => {
   // POST QUESTIONS TEST
   describe('POST QUESTIONS', () => {
     describe('/POST /v1/questions', () => {
-      it('it should NOT POST Question if the TITLE is Not provided', (done) => {
+      it('it should NOT POST Question if the TITLE is Not'
+        + ' provided', (done) => {
         const question = {
           body: 'Lorem ipsum dolor sit amet, consectetur adipisicing',
           username: 'TheoOkafor',
@@ -88,7 +89,8 @@ describe('Questions', () => {
           chai.expect(res).to.have.status(400);
           chai.expect(res.body).to.be.a('object');
           chai.expect(res.body).to.have.property('message');
-          chai.expect(res.body.message).to.equal('Bad Request. Question must have a title.');
+          chai.expect(res.body.message).to.equal('Bad Request.'
+            + ' Question must have a title.');
           done(err);
         });
       });
@@ -102,16 +104,17 @@ describe('Questions', () => {
           body: 'Lorem ipsum dolor sit amet, consectetur',
           username: 'TheoOkafor',
         };
-        chai.request(app).post('/v1/questions').send(question).end((err, res) => {
-          chai.expect(res).to.have.status(201);
-          chai.expect(res.body).to.be.a('object');
-          chai.expect(res.body).to.have.property('message');
-          chai.expect(res.body).to.have.property('data');
-          chai.expect(res.body).to.have.property('metadata');
-          chai.expect(res.body.status).to.equal('successful');
-          chai.expect(res.body.message).to.equal('New question added');
-          done(err);
-        });
+        chai.request(app).post('/v1/questions')
+          .send(question).end((err, res) => {
+            chai.expect(res).to.have.status(201);
+            chai.expect(res.body).to.be.a('object');
+            chai.expect(res.body).to.have.property('message');
+            chai.expect(res.body).to.have.property('data');
+            chai.expect(res.body).to.have.property('metadata');
+            chai.expect(res.body.status).to.equal('successful');
+            chai.expect(res.body.message).to.equal('New question added');
+            done(err);
+          });
       });
     });
 
@@ -140,13 +143,14 @@ describe('POST Answers', () => {
         body: 'Lorem ipsum dolor sit amet, consectetur',
         username: 'TheoOkafor',
       };
-      chai.request(app).post('/v1/questions/16/answers').send(answer).end((err, res) => {
-        chai.expect(res).to.have.status(404);
-        chai.expect(res.body).to.be.a('object');
-        chai.expect(res.body).to.have.property('message');
-        chai.expect(res.body.message).to.equal('Question 16 Not Found');
-        done(err);
-      });
+      chai.request(app).post('/v1/questions/16/answers').send(answer)
+        .end((err, res) => {
+          chai.expect(res).to.have.status(404);
+          chai.expect(res.body).to.be.a('object');
+          chai.expect(res.body).to.have.property('message');
+          chai.expect(res.body.message).to.equal('Question 16 Not Found');
+          done(err);
+        });
     });
   });
 
@@ -155,33 +159,37 @@ describe('POST Answers', () => {
       const answer = {
         username: 'TheoOkafor',
       };
-      chai.request(app).post('/v1/questions/1/answers').send(answer).end((err, res) => {
-        chai.expect(res).to.have.status(400);
-        chai.expect(res.body).to.be.a('object');
-        chai.expect(res.body).to.have.property('message');
-        chai.expect(res.body.status).to.equal('failed');
-        chai.expect(res.body.message).to.equal('Bad Request. Answer must have a body.');
-        done(err);
-      });
+      chai.request(app).post('/v1/questions/1/answers').send(answer)
+        .end((err, res) => {
+          chai.expect(res).to.have.status(400);
+          chai.expect(res.body).to.be.a('object');
+          chai.expect(res.body).to.have.property('message');
+          chai.expect(res.body.status).to.equal('failed');
+          chai.expect(res.body.message).to.equal('Bad Request.'
+        + ' Answer must have a body.');
+          done(err);
+        });
     });
   });
 
   describe('/POST /v1/questions/1/answers', () => {
-    it('it should POST answer if all the required fields are provided', (done) => {
+    it('it should POST answer if all the required'
+      + ' fields are provided', (done) => {
       const answer = {
         body: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit',
         username: 'TheoOkafor',
       };
-      chai.request(app).post('/v1/questions/1/answers').send(answer).end((err, res) => {
-        chai.expect(res).to.have.status(201);
-        chai.expect(res.body).to.be.a('object');
-        chai.expect(res.body).to.have.property('message');
+      chai.request(app).post('/v1/questions/1/answers').send(answer)
+        .end((err, res) => {
+          chai.expect(res).to.have.status(201);
+          chai.expect(res.body).to.be.a('object');
+          chai.expect(res.body).to.have.property('message');
           chai.expect(res.body).to.have.property('data');
           chai.expect(res.body).to.have.property('metadata');
           chai.expect(res.body.status).to.equal('successful');
-        chai.expect(res.body.message).to.equal('New answer added.');
-        done(err);
-      });
+          chai.expect(res.body.message).to.equal('New answer added.');
+          done(err);
+        });
     });
   });
 });

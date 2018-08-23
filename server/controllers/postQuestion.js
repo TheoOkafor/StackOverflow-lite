@@ -5,13 +5,13 @@ const postQuestion = (req, res) => {
   const reqBody = req.body;
   const timeNow = new Date().toUTCString();
   const request = {
-    text: 'INSERT INTO questions (title, body, timeSubmitted, username,'+
-    ' answers) VALUES ($1, $2, $3, $4, $5) RETURNING id',
+    text: 'INSERT INTO questions (title, body, timeSubmitted, username,'
+    + ' answers) VALUES ($1, $2, $3, $4, $5) RETURNING id',
     values: [reqBody.title, reqBody.body, timeNow, reqBody.username, []],
-  }
+  };
   db.one(request.text, request.values)
-    .then( (data) => {
-      if(!data){
+    .then((data) => {
+      if (!data) {
         res.status(501);// Set status to 501
         res.json({
           status: 'failed',
@@ -29,7 +29,7 @@ const postQuestion = (req, res) => {
           },
         });
       }
-    })
+    });
 };
 
 export { postQuestion };

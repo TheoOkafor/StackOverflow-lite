@@ -6,8 +6,8 @@ const deleteQuestion = (req, res) => {
   const request = 'DELETE FROM questions WHERE ID = $1';
 
   db.result(request, id)
-    .then( (data) => {
-      if(!data){
+    .then((data) => {
+      if (!data) {
         res.status(501);// Set status to 501
         res.json({
           status: 'failed',
@@ -17,10 +17,10 @@ const deleteQuestion = (req, res) => {
         res.status(201);
         res.json({
           status: 'successful',
-          message: `Question ${id} deleted`
+          message: `Question ${id} deleted`,
         });
       }
-    })
+    });
 };
 
 export { deleteQuestion };

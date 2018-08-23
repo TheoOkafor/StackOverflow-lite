@@ -33,7 +33,9 @@
     "eslint-controllers4": "./node_modules/.bin/eslint --fix server/controllers/postAnswer.js",
     "eslint-controllers5": "./node_modules/.bin/eslint --fix server/controllers/postQuestion.js",
     "eslint-controllers6": "./node_modules/.bin/eslint --fix server/controllers/postAnswer.js",
-    "eslint-test": "./node_modules/.bin/eslint --fix test/test.js"
+    "eslint-controllers7": "./node_modules/.bin/eslint --fix server/controllers/acceptAnswer.js",
+    "eslint-controllers8": "./node_modules/.bin/eslint --fix server/controllers/deleteQuestion.js",
+    "eslint-test": "./node_modules/.bin/eslint --fix test/test.js server/db.js"
   },
   "dependencies": {
     "bluebird": "^3.5.1",
