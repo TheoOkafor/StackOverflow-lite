@@ -1,6 +1,8 @@
+DROP TABLE answers;
+
 CREATE TABLE answers (
   ID SERIAL PRIMARY KEY,
-  questionID INTEGER,
+  questionID INTEGER REFERENCES questions(ID),
   body TEXT,
   timeSubmitted TIMESTAMP,
   username VARCHAR (20),

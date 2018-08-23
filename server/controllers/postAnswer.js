@@ -7,15 +7,10 @@ const postAnswer = (req, res) => {
   const timeNow = new Date().toUTCString();
   // Find the question with the request id.
   const request = {
-    text: 'WITH rows AS ('+
-      ' INSERT INTO answers'+
+    text: 'INSERT INTO answers'+
       ' (questionID, body, timeSubmitted, username, accepted)'+
       ' VALUES ($1, $2, $3, $4, $5)'+
-      ' RETURNING id'+
-      ')'+
-        'UPDATE questions SET answers = array_cat'+
-        '(topics, ARRAY[SELECT id FROM rows]) WHERE ID = $1'+
-          ' RETURNING id',
+      ' RETURNING ID',
     values: [requestId, reqBody.body, timeNow, reqBody.username, false],
   }
   db.one(request.text, request.values)
@@ -33,13 +28,16 @@ const postAnswer = (req, res) => {
         res.status(201);
         res.json({
           status: 'successful',
-          message: 'New answer added.',
+          message: `New answer added.`,
           data: reqBody,
           metadata: {
-            location: `/v1/questions/${requestId}/answers`,
+            location: `/v1/questions/${requestId}/answers/${data.id}`,
           },
         });
       }
+    })
+    .catch( (error) => {
+      console.log(error);
     });
 }
 
