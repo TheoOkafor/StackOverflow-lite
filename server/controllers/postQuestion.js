@@ -16,6 +16,7 @@ const postQuestion = (req, res) => {
         res.json({
           status: 'failed',
           message: 'Server failed to complete request',
+          data: reqBody,
         });
       } else {
         res.status(201);

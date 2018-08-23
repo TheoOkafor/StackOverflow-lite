@@ -3,7 +3,6 @@ import db from '../db';
 
 const deleteQuestion = (req, res) => {
   const id = parseInt(req.params.id);
-  const timeNow = new Date().toUTCString();
   const request = 'DELETE FROM questions WHERE ID = $1';
 
   db.result(request, id)
