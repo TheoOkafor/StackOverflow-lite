@@ -1,11 +1,12 @@
 \c stackLite;
+DROP TABLE questions;
 
 CREATE TABLE questions (
   ID SERIAL PRIMARY KEY,
   title TEXT NOT NULL,
   body TEXT,
   timeSubmitted TIMESTAMP,
-  username VARCHAR (20),
+  username VARCHAR (20) REFERENCES users(username),
   answers INTEGER[]
 );
 

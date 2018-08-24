@@ -1,3 +1,5 @@
+\c stackLite
+
 DROP TABLE answers;
 
 CREATE TABLE answers (
@@ -5,7 +7,7 @@ CREATE TABLE answers (
   questionID INTEGER REFERENCES questions(ID),
   body TEXT,
   timeSubmitted TIMESTAMP,
-  username VARCHAR (20),
+  username VARCHAR (20) REFERENCES users(username),
   accepted BOOLEAN
 );
 

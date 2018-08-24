@@ -1,11 +1,12 @@
 import express from 'express';
-import {data} from '../data/data';
+import signup from '../controllers/signup';
 
 const userRouter = express.Router();
 
-userRouter.get('/v1/users', (req, res) => {
-  res.json(data.users);
+userRouter.post('/signup', signup);
+
+userRouter.post('/signin', (req, res) => {
+  res.json('signin not implemented');
 });
 
-
-export {userRouter};
+export default userRouter;

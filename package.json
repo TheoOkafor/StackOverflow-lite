@@ -38,6 +38,7 @@
     "eslint-test": "./node_modules/.bin/eslint --fix test/test.js server/db.js"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "bluebird": "^3.5.1",
     "body-parser": "^1.18.3",
     "config": "^2.0.1",
@@ -46,6 +47,7 @@
     "express": "~4.16.0",
     "http-errors": "~1.6.2",
     "jsdoc": "^3.5.5",
+    "jsonwebtoken": "^8.3.0",
     "morgan": "~1.9.0",
     "pg": "^7.4.3",
     "pg-promise": "^8.4.6"

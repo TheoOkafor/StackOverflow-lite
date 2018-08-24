@@ -1,11 +1,12 @@
 import express from 'express';
 import logger from 'morgan';
 import bodyParser from 'body-parser';
+import userRouter from './server/routes/users';
 import { router } from './server/routes';
 import { urlErrHandler } from './server/middlewares/urlErrHandler';
 
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 3000;
 
 app.use(logger('dev'));
 
@@ -14,6 +15,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({ type: 'application/json' }));
 
 app.use('/v1', router);
+app.use('/v1/auth', userRouter);
 app.use('/v1', urlErrHandler);
 
 // catch 404 and forward to error handler
