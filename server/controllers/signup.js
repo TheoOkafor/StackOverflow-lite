@@ -33,7 +33,7 @@ const signup = (req, res) => {
     		config.secret,
     		{ expiresIn: 86400 }//expires in 24hours
     	);
-    	
+
       res.status(201);
       res.json({
         status: 'successful',
