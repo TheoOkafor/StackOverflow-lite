@@ -26,7 +26,7 @@ const postAnswer = (req, res) => {
     const timeNow = new Date().toUTCString();
 
     const answer = {
-      id: newId,
+      id: newId ,
       body: reqBody.body,
       username: reqBody.username,
       timeAnswered: timeNow,

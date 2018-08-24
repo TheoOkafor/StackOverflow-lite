@@ -30,9 +30,10 @@ app.use('/v1', urlErrHandler);
 app.use((req, res, next) => {
   next(createError(404));
 });
-
+/*
 // error handler
 app.use((err, req, res, next) => {
+  console.log(err.body);
   // set locals, only providing error in development
   res.locals.message = err.message;
   const mssg = 'Something went wrong';
@@ -45,7 +46,7 @@ app.use((err, req, res, next) => {
   	message: 'Server could not complete request',
   });
   next();
-});
+});*/
 
 // listen for requests
 app.listen(port, () => {
