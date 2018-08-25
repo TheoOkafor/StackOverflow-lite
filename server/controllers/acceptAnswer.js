@@ -3,23 +3,24 @@ import db from '../db';
 
 const acceptAnswer = (req, res) => {
   const id = parseInt(req.params.idA);
-  const query = 'UPDATE answers SET accepted=$2 WHERE ID=$1'
-  + 'RETURNING id';
-  const request = [id, req.body.value];
-  db.one(query, request)
+  const idQ = parseInt(req.params.idQ);
+  const query = 'UPDATE answers SET accepted=$3 WHERE ID=$1'
+   +' AND questionID=$2 RETURNING questionID';
+  const request = [id, idQ, req.body.value];
+  db.any(query, request)
     .then((data) => {
-      if (!data) {
-        res.status(501);// Set status to 501
+      if (data.length < 1) {
+        res.status(404);// Set status to 404
         res.json({
           status: 'failed',
-          message: 'Server failed to complete request',
+          message: `Question ${req.params.idQ} not found`,
         });
       } else {
         res.status(201);
         res.json({
           status: 'successful',
-          message: `Answer ${data.id} has been ${req.body.value === true
-            ? 'accepted' : 'unaccepted'}`,
+          message: `Answer ${id} has been ${req.body.value ?
+           'accepted' : 'unaccepted'}`,
           metadata: {
             location: `/v1/questions/${req.params.idQ}`,
           },
@@ -27,7 +28,11 @@ const acceptAnswer = (req, res) => {
       }
     })
     .catch((error) => {
-      console.log(error);
+      res.status(501);// Set status to 501
+      res.json({
+        status: 'failed',
+        message: 'Server failed to complete request',
+      });
     });
 };
 

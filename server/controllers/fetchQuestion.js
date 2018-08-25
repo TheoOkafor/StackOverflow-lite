@@ -8,30 +8,29 @@ const fetchQuestionCtrl = (req, res) => {
     text: 'SELECT * FROM questions WHERE id = $1',
     values: [requestId],
   };
-  const errorResponse = () => {
-    res.status(404);// Set status to 404 as question was not found
-    res.json({
-      status: 'failed',
-      message: `Question ${requestId} Not Found`,
-    });
-    return res;
-  };
 
   db.one(query.text, requestId)
     .then((data) => {
-      if (data.length === 0) {
-        errorResponse();
-      } else {
-        res.json({
-          status: 'successful',
-          message: `Question ${requestId} found`,
-          data,
-        });
-      }
+      res.json({
+        status: 'successful',
+        message: `Question ${requestId} found`,
+        data,
+      });
     })
     .catch((error) => {
-      console.log(error);
-      errorResponse();
+      if (error.received === 0) {
+        res.status(404);// Set status to 404 as question was not found
+        res.json({
+          status: 'failed',
+          message: `Question ${requestId} Not Found`,
+        });
+      } else {
+        res.status(501);// Set status to 501
+        res.json({
+          status: 'failed',
+          message: 'Server failed to complete request',
+        });
+      }
     });
 };
 

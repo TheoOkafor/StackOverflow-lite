@@ -1,12 +1,14 @@
 import express from 'express';
-import { fetchAllQuestionsCtrl } from '../controllers/fetchAllQuestions';
-import { fetchQuestionCtrl } from '../controllers/fetchQuestion';
-import { postQuestion } from '../controllers/postQuestion';
+import { acceptAnswerValidate } from '../middlewares/acceptAnswerValidate';
 import { postQuestionValidate } from '../middlewares/postQuestionValidate';
-import { postAnswer } from '../controllers/postAnswer';
+import { fetchAllQuestionsCtrl } from '../controllers/fetchAllQuestions';
 import { postAnswerValidate } from '../middlewares/postAnswerValidate';
+import { fetchQuestionCtrl } from '../controllers/fetchQuestion';
 import { deleteQuestion } from '../controllers/deleteQuestion';
 import { acceptAnswer } from '../controllers/acceptAnswer';
+import { postQuestion } from '../controllers/postQuestion';
+import { postAnswer } from '../controllers/postAnswer';
+
 
 
 const router = express.Router();
@@ -27,6 +29,8 @@ router.post('/questions/:id([0-9]{1,})/answers', postAnswerValidate,
 // DELETE A QUESTION
 router.delete('/questions/:id([0-9]{1,})', deleteQuestion);
 
-// POST AN ANSWER
-router.put('/questions/:idQ([0-9]{1,})/answers/:idA([0-9]{1,})', acceptAnswer);
+// ACCEPT AN ANSWER
+router.put('/questions/:idQ([0-9]{1,})/answers/:idA([0-9]{1,})',
+acceptAnswerValidate, acceptAnswer);
+
 export { router };

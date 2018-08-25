@@ -1,13 +1,15 @@
 import express from 'express';
 
-const postAnswerValidate = (req, res, next) => {
+const acceptAnswerValidate = (req, res, next) => {
   const requestId = req.params.id;
   const reqBody = req.body;
   // Check if all fields are provided and are valid:
-  const invalidReq = reqBody.body === null || reqBody.body === undefined;
+  const invalidReq = reqBody.value === undefined
+    || typeof reqBody.value !== "boolean";
 
   if (invalidReq) {
-    const err = new Error('Bad Request. Answer must have a body.');
+    const err = new Error('Bad Request. '
+      + 'Expected a request body with {value: true || false}');
     res.status(400);
     res.json({
       status: 'failed',
@@ -19,4 +21,4 @@ const postAnswerValidate = (req, res, next) => {
   }
 };
 
-export { postAnswerValidate };
+export { acceptAnswerValidate };

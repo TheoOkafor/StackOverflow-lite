@@ -6,12 +6,12 @@ const deleteQuestion = (req, res) => {
   const request = 'DELETE FROM questions WHERE ID = $1';
 
   db.result(request, id)
-    .then((data) => {
-      if (!data) {
-        res.status(501);// Set status to 501
+    .then((result) => {
+      if (result.rowCount < 1) {
+        res.status(404);// Set status to 501
         res.json({
           status: 'failed',
-          message: 'Server failed to complete request',
+          message: `Question ${id} not found`,
         });
       } else {
         res.status(201);
@@ -20,6 +20,13 @@ const deleteQuestion = (req, res) => {
           message: `Question ${id} deleted`,
         });
       }
+    })
+    .catch((error) => {
+      res.status(501);// Set status to 501
+      res.json({
+        status: 'failed',
+        message: 'Server failed to complete request',
+      });
     });
 };
 

@@ -1,7 +1,7 @@
 import express from 'express';
 
 const urlErrHandler = (req, res) => {
-  const err = new Error('Bad Request, invalid URL');
+  const err = new Error('Bad Request, URL id: must an integer');
   res.status(400);
   res.json({
     status: 'failed',

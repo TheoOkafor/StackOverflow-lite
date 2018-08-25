@@ -15,7 +15,23 @@ const postAnswer = (req, res) => {
   };
   db.one(request.text, request.values)
     .then((data) => {
-      if (!data) {
+      res.status(201);
+      res.json({
+        status: 'successful',
+        message: 'New answer added',
+        data: reqBody,
+        metadata: {
+          location: `/v1/questions/${requestId}/answers/${data.id}`,
+        },
+      });
+    })
+    .catch((error) => {
+      /**
+       * [if there question ID is not found]
+       * @param {[undefined]} error.where [Property of the error object return]
+       * @return {[JSON reponse]}             [The request failed]
+       */
+      if (error.where === undefined) {
         const err = new Error(`Question ${requestId} Not Found`);
         res.status(404);
         res.json({
@@ -24,19 +40,13 @@ const postAnswer = (req, res) => {
           data: reqBody,
         });
       } else {
-        res.status(201);
+        res.status(501);// Set status to 501
         res.json({
-          status: 'successful',
-          message: 'New answer added.',
-          data: reqBody,
-          metadata: {
-            location: `/v1/questions/${requestId}/answers/${data.id}`,
-          },
+          status: 'failed',
+          message: 'Server failed to complete request',
         });
+        console.log(error);
       }
-    })
-    .catch((error) => {
-      console.log(error);
     });
 };
 

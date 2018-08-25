@@ -1,6 +1,7 @@
+DROP TABLE answers;
 CREATE TABLE answers (
   ID SERIAL PRIMARY KEY,
-  questionID INTEGER REFERENCES questions(ID),
+  questionID INTEGER REFERENCES questions(ID) ON DELETE CASCADE,
   body TEXT,
   timeSubmitted TIMESTAMP,
   username VARCHAR (20) REFERENCES users(username),

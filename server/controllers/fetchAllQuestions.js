@@ -8,10 +8,16 @@ const fetchAllQuestionsCtrl = (req, res, next) => {
 	  	res.json({
 		  	status: 'successful',
 		    message: 'Questions found',
-		  	data: data.rows,
+		  	data,
       });
   	})
-  	.catch(err => next(err));
+  	.catch((err) => {
+  		res.status(501);// Set status to 501
+      res.json({
+        status: 'failed',
+        message: 'Server failed to complete request',
+      });
+  	});
 };
 
 export { fetchAllQuestionsCtrl };

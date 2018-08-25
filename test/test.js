@@ -28,7 +28,8 @@ describe('Questions', () => {
           chai.expect(res).to.have.status(400);
           chai.expect(res.body).be.a('object');
           chai.expect(res.body.status).to.equal('failed');
-          chai.expect(res.body.message).to.equal('Bad Request, invalid URL');
+          chai.expect(res.body.message).to.equal('Bad Request,'
+            + ' URL id: must an integer');
           done(err);
         });
       });
@@ -85,20 +86,21 @@ describe('Questions', () => {
           body: 'Lorem ipsum dolor sit amet, consectetur adipisicing',
           username: 'TheoOkafor',
         };
-        chai.request(app).post('/v1/questions').send(question).end((err, res) => {
+        chai.request(app).post('/v1/questions').send(question)
+          .end((err, res) => {
           chai.expect(res).to.have.status(400);
           chai.expect(res.body).to.be.a('object');
           chai.expect(res.body).to.have.property('message');
           chai.expect(res.body.message).to.equal('Bad Request.'
-            + ' Question must have a title.');
+            + ' Question must have a title');
           done(err);
         });
       });
     });
 
     describe('/POST /v1/questions', () => {
-      it('it should POST Question if all the required\
-       fields are provided', (done) => {
+      it('it should POST Question if all the required'
+       +' fields are provided', (done) => {
         const question = {
           title: 'Why do people hate reading?',
           body: 'Lorem ipsum dolor sit amet, consectetur',
@@ -118,16 +120,45 @@ describe('Questions', () => {
       });
     });
 
-    describe(`/GET /v1/questions/${questions[questions.length - 1].id}`, () => {
-      it(`it should GET the question ${questions[questions.length - 1].id}\
-       that was just POSTed`, (done) => {
-        chai.request(app).get(`/v1/questions/${questions[questions.length - 1].id}`)
+    describe('GET /v1/questions/5', () => {
+      it('it should GET the question 5 that was just POSTed', (done) => {
+        chai.request(app).get('/v1/questions/5')
           .end((err, res) => {
             chai.expect(res).to.have.status(200);
             chai.expect(res.body).be.a('object');
             chai.expect(res.body.status).to.equal('successful');
             chai.expect(res.body).to.have.property('message');
             chai.expect(res.body).to.have.property('data');
+            chai.expect(res.body.data).to.have.property('title');
+            chai.expect(res.body.data.title).to.equal('Why do people hate reading?');
+            done(err);
+          });
+      });
+    });
+
+    describe('DELETE /v1/questions/20', () => {
+      it('it should NOT DELETE question 20', (done) => {
+        chai.request(app).delete('/v1/questions/20')
+          .end((err, res) => {
+            chai.expect(res).to.have.status(404);
+            chai.expect(res.body).be.a('object');
+            chai.expect(res.body.status).to.equal('failed');
+            chai.expect(res.body).to.have.property('message');
+            chai.expect(res.body.message).to.equal('Question 20 not found');
+            done(err);
+          });
+      });
+    });
+
+    describe('DELETE /v1/questions/4', () => {
+      it('it should DELETE question 4', (done) => {
+        chai.request(app).delete('/v1/questions/4')
+          .end((err, res) => {
+            chai.expect(res).to.have.status(201);
+            chai.expect(res.body).be.a('object');
+            chai.expect(res.body.status).to.equal('successful');
+            chai.expect(res.body).to.have.property('message');
+            chai.expect(res.body.message).to.equal('Question 4 deleted');
             done(err);
           });
       });
@@ -187,9 +218,94 @@ describe('POST Answers', () => {
           chai.expect(res.body).to.have.property('data');
           chai.expect(res.body).to.have.property('metadata');
           chai.expect(res.body.status).to.equal('successful');
-          chai.expect(res.body.message).to.equal('New answer added.');
+          chai.expect(res.body.message).to.equal('New answer added');
           done(err);
         });
     });
   });
+
+  describe('PUT /v1/questions/1/answers/1', () => {
+    it('it should ACCEPT answer 1 in question 1', (done) => {
+      const request = {
+        value: true,
+      };
+      chai.request(app).put('/v1/questions/1/answers/1').send(request)
+        .end((err, res) => {
+          chai.expect(res).to.have.status(201);
+          chai.expect(res.body).to.be.a('object');
+          chai.expect(res.body).to.have.property('message');
+          chai.expect(res.body).to.have.property('metadata');
+          chai.expect(res.body).to.have.property('status');
+          chai.expect(res.body.status).to.equal('successful');
+          chai.expect(res.body.message).to.equal('Answer 1 has been accepted');
+          done(err);
+        });
+    });
+  });
+
+  describe('PUT /v1/questions/100/answers/1', () => {
+    it('it should return error message for inexistent questions',
+     (done) => {
+      const request = {
+        value: true,
+      };
+      chai.request(app).put('/v1/questions/100/answers/1').send(request)
+        .end((err, res) => {
+          chai.expect(res).to.have.status(404);
+          chai.expect(res.body).to.be.a('object');
+          chai.expect(res.body).to.have.property('message');
+          chai.expect(res.body).to.have.property('status');
+          chai.expect(res.body.status).to.equal('failed');
+          chai.expect(res.body.message).to.equal('Question 100 not found');
+          done(err);
+        });
+    });
+  });
+
+  describe('PUT /v1/questions/100/answers/1', () => {
+    it('it should return error messages when no/bad value',
+      (done) => {
+      const request = {
+        value: 'true',
+      };
+      chai.request(app).put('/v1/questions/2/answers/2').send(request)
+        .end((err, res) => {
+          chai.expect(res).to.have.status(400);
+          chai.expect(res.body).to.be.a('object');
+          chai.expect(res.body).to.have.property('message');
+          chai.expect(res.body).to.have.property('status');
+          chai.expect(res.body).to.have.property('data');
+          chai.expect(res.body.status).to.equal('failed');
+          chai.expect(res.body.message).to
+            .equal('Bad Request. '
+            + 'Expected a request body with {value: true || false}');
+          done(err);
+        });
+    });
+  });
+});
+
+// Parent block for ANSWERS
+describe('USER AUTHENTICATION', () => {
+  describe('POST /v1/auth/signup', () => {
+      it('it should POST Question if all the required'
+       +' fields are provided', (done) => {
+        const question = {
+          title: 'Why do people hate reading?',
+          body: 'Lorem ipsum dolor sit amet, consectetur',
+          username: 'TheoOkafor',
+        };
+        chai.request(app).post('/v1/questions')
+          .send(question).end((err, res) => {
+            chai.expect(res).to.have.status(201);
+            chai.expect(res.body).to.be.a('object');
+            chai.expect(res.body).to.have.property('message');
+            chai.expect(res.body).to.have.property('data');
+            chai.expect(res.body).to.have.property('metadata');
+            chai.expect(res.body.status).to.equal('successful');
+            chai.expect(res.body.message).to.equal('New question added');
+            done(err);
+          });
+      });
+    });
 });
