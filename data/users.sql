@@ -1,7 +1,3 @@
-\c stackLite
-
-DROP TABLE users;
-
 CREATE TABLE users (
   ID SERIAL PRIMARY KEY NOT NULL,
   username VARCHAR (20) NOT NULL UNIQUE,

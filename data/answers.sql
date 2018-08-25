@@ -1,7 +1,3 @@
-\c stackLite
-
-DROP TABLE answers;
-
 CREATE TABLE answers (
   ID SERIAL PRIMARY KEY,
   questionID INTEGER REFERENCES questions(ID),

@@ -1,6 +1,3 @@
-\c stackLite;
-DROP TABLE questions;
-
 CREATE TABLE questions (
   ID SERIAL PRIMARY KEY,
   title TEXT NOT NULL,
