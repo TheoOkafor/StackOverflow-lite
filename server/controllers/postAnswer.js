@@ -22,11 +22,12 @@ const postAnswer = (req, res) => {
     });
   } else {
     const answers = currQuestion[0].answers;
-    const newId = answers[answers.length - 1].id + 1;
+    let ansEmpty = answers.length === 0;
+    const newId = ansEmpty? 1: answers[answers.length - 1].id + 1;
     const timeNow = new Date().toUTCString();
 
     const answer = {
-      id: newId,
+      id: newId ,
       body: reqBody.body,
       username: reqBody.username,
       timeAnswered: timeNow,

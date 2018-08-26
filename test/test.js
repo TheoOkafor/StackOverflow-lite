@@ -28,7 +28,7 @@ describe('Questions', () => {
           chai.expect(res).to.have.status(400);
           chai.expect(res.body).be.a('object');
           chai.expect(res.body.status).to.equal('failed');
-          chai.expect(res.body.message).to.equal('Bad Request, invalid URL');
+          chai.expect(res.body.message).to.equal('Bad Request, URL ID parameter must be integer');
           done(err);
         });
       });
@@ -166,6 +166,26 @@ describe('POST Answers', () => {
     });
   });
 
+  describe(`POST /v1/questions/${questions[questions.length - 1].id}`, () => {
+      it(`it should POST the answer to question that was just POSTed`, (done) => {
+        const answer = {
+          body: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit',
+          username: 'TheoOkafor',
+        };
+        chai.request(app).post(`/v1/questions/${questions[questions.length - 1].id}/answers`)
+          .send(answer).end((err, res) => {
+            chai.expect(res).to.have.status(201);
+            chai.expect(res.body).be.a('object');
+            chai.expect(res.body).to.have.property('message');
+            chai.expect(res.body).to.have.property('data');
+            chai.expect(res.body).to.have.property('metadata');
+            chai.expect(res.body.status).to.equal('successful');
+            chai.expect(res.body.message).to.equal('New answer added.');
+            done(err);
+          });
+      });
+    })
+
   describe('/POST /v1/questions/1/answers', () => {
     it('it should POST answer if all the required fields are provided', (done) => {
       const answer = {
@@ -176,9 +196,9 @@ describe('POST Answers', () => {
         chai.expect(res).to.have.status(201);
         chai.expect(res.body).to.be.a('object');
         chai.expect(res.body).to.have.property('message');
-          chai.expect(res.body).to.have.property('data');
-          chai.expect(res.body).to.have.property('metadata');
-          chai.expect(res.body.status).to.equal('successful');
+        chai.expect(res.body).to.have.property('data');
+        chai.expect(res.body).to.have.property('metadata');
+        chai.expect(res.body.status).to.equal('successful');
         chai.expect(res.body.message).to.equal('New answer added.');
         done(err);
       });

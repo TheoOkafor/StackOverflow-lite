@@ -1,18 +1,8 @@
 import express from 'express';
 import logger from 'morgan';
 import bodyParser from 'body-parser';
-import promise from 'bluebird';
 import { router } from './server/routes';
 import { urlErrHandler } from './server/middlewares/urlErrHandler';
-
-// Setup DB
-const options = {
-  promiseLib: promise,
-};
-const pgp = require('pg-promise')(options);
-
-const connectionString = 'postgres://localhost:5432/stack-lite';
-const db = pgp(connectionString);
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -33,10 +23,6 @@ app.use((req, res, next) => {
 
 // error handler
 app.use((err, req, res, next) => {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  const mssg = 'Something went wrong';
-  res.locals.error = req.app.get('env') === 'development' ? err : mssg;
 
   // render the error page
   res.status(err.status || 500);

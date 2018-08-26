@@ -1,6 +1,9 @@
 import express from 'express';
 import { data } from '../../data/data';
-
+/**
+ * [allQuestions description]
+ * @type {[type]}
+ */
 const allQuestions = data.questions;
 const fetchAllQuestionsCtrl = (req, res) => {
   res.status(200);
