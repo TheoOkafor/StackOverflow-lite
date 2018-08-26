@@ -1,7 +1,7 @@
 /**
  * The signup uses JSON Web Token to manage user authentication
  * Bcrypt is use to encrypt the password stored in the Database
- * DB is the Database setup
+ * db is the Database setup module
  */
 import express from 'express';
 import jwt from 'jsonwebtoken';
@@ -30,7 +30,7 @@ const signup = (req, res) => {
       username,
     ],
   };
-  
+
   /**
    * [userData - The public part of the user request data]
    * @type {Object}
@@ -73,7 +73,17 @@ const signup = (req, res) => {
         });
       }
     })
+    /**
+     * Catch Error call-back
+     * @param  {Object} error handles the errors resulting from the request. 
+     * @return {JSON object}  error 404 or 500 message.
+     */
     .catch((error) => {
+      /**
+       * Checks to see whether user exists in the DB
+       * @param  {Number} error.received - Zero if no DB data was received.
+       * @return {JSON object} - Error message to the user.
+       */
       if (error.received === 0){
         res.status(404);
         res.json({

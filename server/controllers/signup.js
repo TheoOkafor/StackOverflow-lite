@@ -1,7 +1,7 @@
 /**
  * The signup uses JSON Web Token to manage user authentication
  * Bcrypt is use to encrypt the password stored in the Database
- * DB is the Database setup
+ * db is the Database setup module
  */
 import express from 'express';
 import jwt from 'jsonwebtoken';
@@ -46,7 +46,7 @@ const signup = (req, res) => {
     username: req.body.username,
     email: req.body.email,
   };
-
+  
   db.one(request.text, request.values)
     .then((data) => {
     	// create a token
@@ -68,9 +68,20 @@ const signup = (req, res) => {
         },
       });
     })
+    /**
+     * Catch Error call-back
+     * @param  {Object} error handles the errors resulting from the request. 
+     * @return {JSON object}  error 500 message.
+     */
     .catch((error) => {
       const usernameExists = `Key (username)=(${username}) already exists.`;
       const emailExists = `Key (email)=(${email}) already exists.`;
+      /**
+       * This checks if the error object has the detail property
+       * With the values being checked for
+       * @param  {String} error.detail a string value
+       * @return {JSON object} Either 409 or 501 error message.
+       */
       if (error.detail === emailExists) {
         res.status(409);
         res.json({

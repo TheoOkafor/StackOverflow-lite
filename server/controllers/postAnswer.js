@@ -1,11 +1,20 @@
 import express from 'express';
 import db from '../db';
 
+/**
+ * Handles POST answer requests to the database
+ * @param  {JSON Object} req - The user request to the server
+ * @param  {JSON Object} res - The response to the user
+ * @return {JSON Object}     - Error Message or Success message.
+ */
 const postAnswer = (req, res) => {
   const reqBody = req.body;
   const requestId = req.params.id;
   const timeNow = new Date().toUTCString();
-  // Find the question with the request id.
+  /**
+   * The SQL statement
+   * @type {Object}
+   */
   const request = {
     text: 'INSERT INTO answers'
       + ' (questionID, body, timeSubmitted, username, accepted)'
@@ -14,7 +23,7 @@ const postAnswer = (req, res) => {
     values: [requestId, reqBody.body, timeNow, reqBody.username, false],
   };
   db.one(request.text, request.values)
-    .then((data) => {
+    .then(data => {
       res.status(201);
       res.json({
         status: 'successful',
@@ -25,11 +34,16 @@ const postAnswer = (req, res) => {
         },
       });
     })
-    .catch((error) => {
+    /**
+     * Catches the error from the database
+     * @param  {Object} error - contains details about the database error
+     * @return {JSON Object}  - contains error 404 or 500 message sent to the user
+     */
+    .catch(error => {
       /**
-       * [if there question ID is not found]
-       * @param {[undefined]} error.where [Property of the error object return]
-       * @return {[JSON reponse]}             [The request failed]
+       * checks for the question ID
+       * @param {undefined} error.where - Property of the error object return
+       * @return {JSON Object} - Error 404 or Error 500
        */
       if (error.where === undefined) {
         const err = new Error(`Question ${requestId} Not Found`);
@@ -40,7 +54,7 @@ const postAnswer = (req, res) => {
           data: reqBody,
         });
       } else {
-        res.status(501);// Set status to 501
+        res.status(500);// Set status to 500
         res.json({
           status: 'failed',
           message: 'Server failed to complete request',
