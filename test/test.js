@@ -1,10 +1,8 @@
 // Require the dev-dependencies
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import { data } from '../data/data';
 import { app } from '../app';
 
-const questions = data.questions;
 chai.use(chaiHttp);
 
 // Parent block for QUESTIONS
@@ -130,7 +128,8 @@ describe('Questions', () => {
             chai.expect(res.body).to.have.property('message');
             chai.expect(res.body).to.have.property('data');
             chai.expect(res.body.data).to.have.property('title');
-            chai.expect(res.body.data.title).to.equal('Why do people hate reading?');
+            chai.expect(res.body.data.title).to
+              .equal('Why do people hate reading?');
             done(err);
           });
       });
@@ -285,27 +284,203 @@ describe('POST Answers', () => {
   });
 });
 
-// Parent block for ANSWERS
+// Parent block for AUTHENTICATION
 describe('USER AUTHENTICATION', () => {
-  describe('POST /v1/auth/signup', () => {
-      it('it should POST Question if all the required'
-       +' fields are provided', (done) => {
-        const question = {
-          title: 'Why do people hate reading?',
-          body: 'Lorem ipsum dolor sit amet, consectetur',
-          username: 'TheoOkafor',
+
+  //SIGN UP
+  describe('USER SIGN-UP', () => {
+    describe('POST /v1/auth/signup', () => {
+      it('it should SIGNUP user if required details are provided', (done) => {
+        const userReq = {
+          username: "umeryui",
+          email: "gheti31@yahoo.com",
+          password: "password",
         };
-        chai.request(app).post('/v1/questions')
-          .send(question).end((err, res) => {
+        chai.request(app).post('/v1/auth/signup')
+          .send(userReq).end((err, res) => {
             chai.expect(res).to.have.status(201);
             chai.expect(res.body).to.be.a('object');
             chai.expect(res.body).to.have.property('message');
             chai.expect(res.body).to.have.property('data');
             chai.expect(res.body).to.have.property('metadata');
+            chai.expect(res.body.metadata).to.have.property('auth');
+            chai.expect(res.body.metadata).to.have.property('token');
+            chai.expect(res.body.metadata.auth).to.equal(true);
             chai.expect(res.body.status).to.equal('successful');
-            chai.expect(res.body.message).to.equal('New question added');
+            chai.expect(res.body.message).to
+              .equal('New user created.');
             done(err);
           });
       });
     });
+
+    describe('POST /v1/auth/signup', () => {
+      it('it should NOT SIGNUP user if EMAIL is not provided', (done) => {
+        const userReq = {
+          username: "umeryui",
+          password: "password",
+        };
+        chai.request(app).post('/v1/auth/signup')
+          .send(userReq).end((err, res) => {
+            chai.expect(res).to.have.status(400);
+            chai.expect(res.body).to.be.a('object');
+            chai.expect(res.body).to.have.property('message');
+            chai.expect(res.body).to.have.property('data');
+            chai.expect(res.body.status).to.equal('failed');
+            chai.expect(res.body.message).to.deep
+            .equal('Bad request. username, email and password are all required');
+            done(err);
+          });
+      });
+    });
+
+    describe('POST /v1/auth/signup', () => {
+      it('it should NOT SIGNUP user if USERNAME is not provided', (done) => {
+        const userReq = {
+          username: "umeryui",
+          password: "password",
+        };
+        chai.request(app).post('/v1/auth/signup')
+          .send(userReq).end((err, res) => {
+            chai.expect(res).to.have.status(400);
+            chai.expect(res.body).to.be.a('object');
+            chai.expect(res.body).to.have.property('message');
+            chai.expect(res.body).to.have.property('data');
+            chai.expect(res.body.status).to.equal('failed');
+            chai.expect(res.body.message).to.deep
+            .equal('Bad request. username, email and password are all required');
+            done(err);
+          });
+      });
+    });
+
+    describe('POST /v1/auth/signup', () => {
+      it('it should NOT SIGNUP user if EMAIL already exists', (done) => {
+        const userReq = {
+          username: "Nchabomo",
+          email: "gheti31@yahoo.com",
+          password: "password",
+        };
+        chai.request(app).post('/v1/auth/signup')
+          .send(userReq).end((err, res) => {
+            chai.expect(res).to.have.status(409);
+            chai.expect(res.body).to.be.a('object');
+            chai.expect(res.body).to.have.property('message');
+            chai.expect(res.body).to.have.property('data');
+            chai.expect(res.body.status).to.equal('failed');
+            chai.expect(res.body.message).to
+            .equal('Conflict. Email already exists, consider sign-in');
+            done(err);
+          });
+      });
+    });
+
+    describe('POST /v1/auth/signup', () => {
+      it('it should NOT SIGNUP user if USERNAME already exists', (done) => {
+        const userReq = {
+          username: "umeryui",
+          email: "gheti312@yahoo.com",
+          password: "password",
+        };
+        chai.request(app).post('/v1/auth/signup')
+          .send(userReq).end((err, res) => {
+            chai.expect(res).to.have.status(409);
+            chai.expect(res.body).to.be.a('object');
+            chai.expect(res.body).to.have.property('message');
+            chai.expect(res.body).to.have.property('data');
+            chai.expect(res.body.status).to.equal('failed');
+            chai.expect(res.body.message).to
+            .equal('Conflict. Username already exists, consider sign-in');
+            done(err);
+          });
+      });
+    });
+  });
+
+  //SIGN IN
+  describe('USER SIGNIN', () => {
+    describe('POST /v1/auth/signin', () => {
+      it('it should SIGNIN user if required details are provided', (done) => {
+        const userReq = {
+          username: "umeryui",
+          password: "password",
+        };
+        chai.request(app).post('/v1/auth/signin')
+          .send(userReq).end((err, res) => {
+            chai.expect(res).to.have.status(200);
+            chai.expect(res.body).to.be.a('object');
+            chai.expect(res.body).to.have.property('message');
+            chai.expect(res.body).to.have.property('data');
+            chai.expect(res.body).to.have.property('metadata');
+            chai.expect(res.body.metadata).to.have.property('auth');
+            chai.expect(res.body.metadata).to.have.property('token');
+            chai.expect(res.body.metadata.auth).to.equal(true);
+            chai.expect(res.body.status).to.equal('successful');
+            chai.expect(res.body.message).to
+              .equal('User has been logged in');
+            done(err);
+          });
+      });
+    });
+
+    describe('POST /v1/auth/signin', () => {
+      it('it should NOT SIGNIN user if USERNAME or EMAIL is not provided', (done) => {
+        const userReq = {
+          password: "password",
+        };
+        chai.request(app).post('/v1/auth/signin')
+          .send(userReq).end((err, res) => {
+            chai.expect(res).to.have.status(400);
+            chai.expect(res.body).to.be.a('object');
+            chai.expect(res.body).to.have.property('message');
+            chai.expect(res.body).to.have.property('data');
+            chai.expect(res.body.status).to.equal('failed');
+            chai.expect(res.body.message).to.deep
+            .equal('Bad request. username, email and password are all required');
+            done(err);
+          });
+      });
+    });
+
+    describe('POST /v1/auth/signin', () => {
+      it('it should NOT SIGNIN user if EMAIL does not exists', (done) => {
+        const userReq = {
+          email: "grabby@yahoo.com",
+          password: "password",
+        };
+        chai.request(app).post('/v1/auth/signin')
+          .send(userReq).end((err, res) => {
+            chai.expect(res).to.have.status(404);
+            chai.expect(res.body).to.be.a('object');
+            chai.expect(res.body).to.have.property('message');
+            chai.expect(res.body).to.have.property('data');
+            chai.expect(res.body.status).to.equal('failed');
+            chai.expect(res.body.message).to
+            .equal('User not found, consider signing up.');
+            done(err);
+          });
+      });
+    });
+
+    describe('POST /v1/auth/signin', () => {
+      it('it should NOT SIGNIN user if USERNAME does not exists', (done) => {
+        const userReq = {
+          username: "umeryuiwe",
+          password: "password",
+        };
+        chai.request(app).post('/v1/auth/signin')
+          .send(userReq).end((err, res) => {
+            chai.expect(res).to.have.status(404);
+            chai.expect(res.body).to.be.a('object');
+            chai.expect(res.body).to.have.property('message');
+            chai.expect(res.body).to.have.property('data');
+            chai.expect(res.body.status).to.equal('failed');
+            chai.expect(res.body.message).to
+            .equal('User not found, consider signing up.');
+            done(err);
+          });
+      });
+    });
+  });
+
 });
