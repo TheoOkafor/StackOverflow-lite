@@ -1,5 +1,6 @@
 import express from 'express';
 import logger from 'morgan';
+import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 import { router } from './server/routes';
 import userRouter from './server/routes/users';
@@ -7,7 +8,8 @@ import { fetchDocs } from './server/controllers/fetchDocs';
 import { urlErrHandler } from './server/middlewares/urlErrHandler';
 
 const app = express();
-const port = process.env.PORT || 3000;
+dotenv.config();
+const port = process.env.PORT;
 
 app.use(logger('dev'));
 

@@ -1,4 +1,5 @@
 import promise from 'bluebird';
+import dotenv from 'dotenv';
 
 const options = {
   // Initialization Options
@@ -6,8 +7,8 @@ const options = {
 };
 
 const pgp = require('pg-promise')(options);
-
-const connectionString = 'postgresql://postgres:postgres@localhost:5432/stackLite';
+dotenv.config();
+const connectionString = process.env.DB_URL;
 const db = pgp(connectionString);
 
 export default db;
