@@ -3,9 +3,9 @@ import db from '../db';
 
 /**
  * Handles POST answer requests to the database
- * @param  {JSON Object} req - The user request to the server
- * @param  {JSON Object} res - The response to the user
- * @return {JSON Object}     - Error Message or Success message.
+ * @param  {JSON | object} req - The user request to the server
+ * @param  {JSON | object} res - The response to the user
+ * @return {JSON | object}     - Error Message or Success message.
  */
 const postAnswer = (req, res) => {
   const reqBody = req.body;
@@ -37,13 +37,13 @@ const postAnswer = (req, res) => {
     /**
      * Catches the error from the database
      * @param  {Object} error - contains details about the database error
-     * @return {JSON Object}  - contains error 404 or 500 message sent to the user
+     * @return {JSON | object}  - contains error 404 or 500 message sent to the user
      */
     .catch(error => {
       /**
        * checks for the question ID
        * @param {undefined} error.where - Property of the error object return
-       * @return {JSON Object} - Error 404 or Error 500
+       * @return {JSON | object} - Error 404 or Error 500
        */
       if (error.where === undefined) {
         const err = new Error(`Question ${requestId} Not Found`);

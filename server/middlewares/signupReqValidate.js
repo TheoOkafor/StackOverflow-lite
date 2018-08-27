@@ -4,9 +4,9 @@ import express from 'express';
  * If the request body does not contain the necessary
  * Information required for the request to go through
  * The request will fail.
- * @param  {JSON object}   req  - request parameters and body
+ * @param  {JSON | object}   req  - request parameters and body
  * The request body should have email, username and password.
- * @param  {JSON object}   res  - response to the user
+ * @param  {JSON | object}   res  - response to the user
  * @param  {Function} next - callback function
  * @return {function}        returns the next middleware or controller
  * on the route for execution.

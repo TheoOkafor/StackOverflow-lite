@@ -6,9 +6,9 @@ import db from '../db';
 
 /**
  * Accept answer controller module
- * @param  {JSON object}   req  - request parameters and body
+ * @param  {JSON | object}   req  - request parameters and body
  * The request body should have 'value' property which must be boolean value
- * @param  {JSON object}   res  - response to the user
+ * @param  {JSON | object}   res  - response to the user
  */
 const acceptAnswer = (req, res) => {
   const id = parseInt(req.params.idA);
@@ -30,7 +30,7 @@ const acceptAnswer = (req, res) => {
        * Check whether the request to the database returned 'any' data
        * @param  {Boolean} data.length < 1 
        * Will be ```true``` or ```false```
-       * @return {JSON object} An error 404 message, that question do not exist.
+       * @return {JSON | object} An error 404 message, that question do not exist.
        */
       if (data.length < 1) {
         res.status(404);// Set status to 404
@@ -53,7 +53,7 @@ const acceptAnswer = (req, res) => {
     /**
      * Catch Error call-back
      * @param  {Object} error handles the errors resulting from the request. 
-     * @return {JSON object}  error 501 message.
+     * @return {JSON | object}  error 501 message.
      */
     .catch(error => {
       res.status(501);// Set status to 501

@@ -1,10 +1,10 @@
 import express from 'express';
 /**
  * This middleware validates the accept answer endpoint
- * @param  {JSON Object}   req - contains the request body from user
- * @param  {JSON Object}   res - contains the response to the request
+ * @param  {JSON | object}   req - contains the request body from user
+ * @param  {JSON | object}   res - contains the response to the request
  * @param  {Function} next moves to the next middleware if the request is valid
- * @return {JSON object}
+ * @return {JSON | object}
  */
 
 const acceptAnswerValidate = (req, res, next) => {
@@ -20,7 +20,7 @@ const acceptAnswerValidate = (req, res, next) => {
     /**
      * Checks to see if the value property is defined and has boolean value
      * @param  {boolean} invalidReq 
-     * @return {JSON object} - containing error message
+     * @return {JSON | object} - containing error message
      */
   if (invalidReq) {
     const err = new Error('Bad Request. '

@@ -2,11 +2,11 @@ import express from 'express';
 
 /**
  * This middleware validates the POST question request body
- * @param  {JSON Object}   req - The user request to the API
- * @param  {JSON Object}   res - The server response to the user
+ * @param  {JSON | object}   req - The user request to the API
+ * @param  {JSON | object}   res - The server response to the user
  * @param  {Function} next - sends the request to the next middleware
  *  or controller
- * @return {JSON Object} - Error message or next callback
+ * @return {JSON | object} - Error message or next callback
  */
 const postQuestionValidate = (req, res, next) => {
   const reqBody = req.body;
@@ -16,7 +16,7 @@ const postQuestionValidate = (req, res, next) => {
   /**
    * Checks whether the request is valid or not
    * @param  {Boolean} invalidReq - ```true``` or ```false```
-   * @return {JSON Object} - returns the error message or the next callback
+   * @return {JSON | object} - returns the error message or the next callback
    */
   if (invalidReq) {
     const err = new Error('Bad Request. Question must have a title');

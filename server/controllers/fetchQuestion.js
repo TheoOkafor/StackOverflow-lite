@@ -4,10 +4,10 @@ import db from '../db';
 
 /**
  * Handles the GET one question requests
- * @param  {JSON object}   req  - request parameters and body
+ * @param  {JSON | object}   req  - request parameters and body
  * The req body contains the URL parameter which is the question ID
- * @param  {JSON object}   res  - response to the user
- * @return {JSON object}     Success or error message.
+ * @param  {JSON | object}   res  - response to the user
+ * @return {JSON | object}     Success or error message.
  */
 
 const fetchQuestionCtrl = (req, res) => {
@@ -33,13 +33,13 @@ const fetchQuestionCtrl = (req, res) => {
     /**
      * Catches the database error
      * @param  {Object} error - contains the details about the error
-     * @return {JSON Object} - contains the error 404 or 500 reponse to the user 
+     * @return {JSON | object} - contains the error 404 or 500 reponse to the user 
      */
     .catch(error => {
       /**
        * Checks whether data was received from the database
        * @param  {Number} error.received - is zero if no data was received
-       * @return {JSON Object} - error message
+       * @return {JSON | object} - error message
        */
       if (error.received === 0) {
         res.status(404);// Set status to 404 as question was not found

@@ -8,10 +8,11 @@ import { deleteQuestion } from '../controllers/deleteQuestion';
 import { acceptAnswer } from '../controllers/acceptAnswer';
 import { postQuestion } from '../controllers/postQuestion';
 import { postAnswer } from '../controllers/postAnswer';
-
+import { fetchDocs } from '../controllers/fetchDocs';
 
 
 const router = express.Router();
+//GET THE DOCUMENTATION
 
 // GET ALL QUESTIONS
 router.get('/questions', fetchAllQuestionsCtrl);

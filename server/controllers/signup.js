@@ -11,9 +11,9 @@ import config from '../../config';
 
 /**
  * This function represents the signup controller
- * @param  {JSON object}   req  - request parameters and body
+ * @param  {JSON | object}   req  - request parameters and body
  * The request body should have email or username, and password.
- * @param  {JSON object}   res  - response to the user
+ * @param  {JSON | object}   res  - response to the user
  */
 const signup = (req, res) => {
   const hashedPassword = bcrypt.hashSync(req.body.password, 8);
@@ -71,7 +71,7 @@ const signup = (req, res) => {
     /**
      * Catch Error call-back
      * @param  {Object} error handles the errors resulting from the request. 
-     * @return {JSON object}  error 500 message.
+     * @return {JSON | object}  error 500 message.
      */
     .catch((error) => {
       const usernameExists = `Key (username)=(${username}) already exists.`;
@@ -80,7 +80,7 @@ const signup = (req, res) => {
        * This checks if the error object has the detail property
        * With the values being checked for
        * @param  {String} error.detail a string value
-       * @return {JSON object} Either 409 or 501 error message.
+       * @return {JSON | object} Either 409 or 501 error message.
        */
       if (error.detail === emailExists) {
         res.status(409);
