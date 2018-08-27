@@ -9,12 +9,12 @@ cache:
 services:
   - postgresql
 
+sudo: false
+dist: trusty
 addons:
-  postgresql: "9.5"
-  apt:
-      packages:
-      - postgresql-9.5
-      - postgresql-client-9.5
+    postgresql: "9.5"
+services:
+    - postgresql
 env:
   global:
   - PGPORT=5432
