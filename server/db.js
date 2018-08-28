@@ -13,7 +13,7 @@ const co = {
   port: 5432,
   database: 'stackLite',
   user: 'postgres',
-  password: 'postgres'
+  password: ''
 }
 const connectionString = process.env.DB_URL;
 const db = pgp(co);
