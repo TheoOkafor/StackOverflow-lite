@@ -1,5 +1,5 @@
 import express from 'express';
-import db from '../db';
+import pool from '../db';
 /**
  * This controller handles the deletion of questions
  * @param  {JSON | object}   req  - request parameters and body
@@ -11,27 +11,32 @@ const deleteQuestion = (req, res) => {
   const id = parseInt(req.params.id);
   const request = 'DELETE FROM questions WHERE ID = $1';
 
-  db.result(request, id)
-    .then((result) => {
-      /**
-       * Check whether the result from the DB has a rowCount property
-       * with value less than 1 which means that the question is not there
-       * @param  {boolean} result.rowCount < 1 - ```true``` or ```false```
-       * @return {JSON | object} - An error message or a 'created' response.
-       */
-      if (result.rowCount < 1) {
-        res.status(404);// Set status to 404
-        res.json({
-          status: 'failed',
-          message: `Question ${id} not found`,
-        });
-      } else {
-        res.status(201);
-        res.json({
-          status: 'successful',
-          message: `Question ${id} deleted`,
-        });
-      }
+  pool.connect()
+    .then((client) => {
+      client.query(request, [id])
+        .then((data) => {
+          client.release()
+          data = data.rows;
+          /**
+           * Check whether the result from the DB has a rowCount property
+           * with value less than 1 which means that the question is not there
+           * @param  {boolean} result.rowCount < 1 - ```true``` or ```false```
+           * @return {JSON | object} - An error message or a 'created' response.
+           */
+          if (data.rowCount < 1) {
+            res.status(404);// Set status to 404
+            res.json({
+              status: 'failed',
+              message: `Question ${id} not found`,
+            });
+          } else {
+            res.status(201);
+            res.json({
+              status: 'successful',
+              message: `Question ${id} deleted`,
+            });
+          }
+        })
     })
 
     /**

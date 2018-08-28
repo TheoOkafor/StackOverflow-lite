@@ -1,5 +1,5 @@
 import express from 'express';
-import db from '../db';
+import pool from '../db';
 
 /**
  * Handles the GET all questions requests
@@ -9,15 +9,21 @@ import db from '../db';
  * @return {JSON | object}     Success or error message.
  */
 const fetchAllQuestionsCtrl = (req, res, next) => {
- 	db.any('SELECT * FROM questions')
- 		.then((data) => {
-	  	res.status(200);
-	  	res.json({
-		  	status: 'successful',
-		    message: 'Questions found',
-		  	data,
-      });
-  	})
+
+  pool.connect()
+    .then((client) => {
+      client.query('SELECT * FROM questions')
+        .then((data) => {
+          client.release()
+          data = data.rows;
+        	res.status(200);
+        	res.json({
+      	  	status: 'successful',
+      	    message: 'Questions found',
+      	  	data: data,
+          });
+      })
+    })
     /**
      * Catches the database error when it occurs
      * @param  {object} err - contains details about the error from the DB

@@ -20,7 +20,7 @@
   "scripts": {
     "start": "babel-node app.js",
     "devstart": "nodemon app.js --exec babel-node",
-    "test": "nyc mocha --timeout=3000 --exit --require babel-register test --exec",
+    "test": "nyc mocha --timeout=20000 --exit --require babel-register test --exec",
     "test-nyc": "mocha test --require babel-register --exit",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "migrate": "psql -a -f data/index.sql",

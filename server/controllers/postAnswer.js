@@ -1,5 +1,5 @@
 import express from 'express';
-import db from '../db';
+import pool from '../db';
 
 /**
  * Handles POST answer requests to the database
@@ -22,17 +22,22 @@ const postAnswer = (req, res) => {
       + ' RETURNING ID',
     values: [requestId, reqBody.body, timeNow, reqBody.username, false],
   };
-  db.one(request.text, request.values)
-    .then(data => {
-      res.status(201);
-      res.json({
-        status: 'successful',
-        message: 'New answer added',
-        data: reqBody,
-        metadata: {
-          location: `/v1/questions/${requestId}/answers/${data.id}`,
-        },
-      });
+  pool.connect()
+    .then((client) => {
+      client.query(request.text, request.values)
+        .then((data) => {
+          client.release()
+          data = data.rows;
+          res.status(201);
+          res.json({
+            status: 'successful',
+            message: 'New answer added',
+            data: reqBody,
+            metadata: {
+              location: `/v1/questions/${requestId}/answers/${data.id}`,
+            },
+          });
+        })
     })
     /**
      * Catches the error from the database

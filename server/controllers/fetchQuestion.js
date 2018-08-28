@@ -1,5 +1,5 @@
 import express from 'express';
-import db from '../db';
+import pool from '../db';
 
 
 /**
@@ -16,19 +16,24 @@ const fetchQuestionCtrl = (req, res) => {
    * The SQL statement
    * @type {Object}
    */
-  const query = {
+  const request = {
     name: 'fetch-question',
     text: 'SELECT * FROM questions WHERE id = $1',
     values: [requestId],
   };
-
-  db.one(query.text, requestId)
-    .then((data) => {
-      res.json({
-        status: 'successful',
-        message: `Question ${requestId} found`,
-        data,
-      });
+  pool.connect()
+    .then((client) => {
+      client.query(request.text, request.values)
+        .then((data) => {
+          client.release()
+          data = data.rows;
+          res.status(200);
+          res.json({
+            status: 'successful',
+            message: `Question ${requestId} found`,
+            data: data,
+          });
+        })
     })
     /**
      * Catches the database error
