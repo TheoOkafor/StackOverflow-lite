@@ -9,7 +9,7 @@ const connObj = {
   port: 5432,
   database: 'stackLite',
   user: 'postgres',
-  password: 'postgres'
+  password: ''
 };
 const connectionString = process.env.DB_URL;
 const pool = new Pool(connObj);
