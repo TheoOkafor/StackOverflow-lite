@@ -6,7 +6,7 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
-import db from '../db';
+import pool from '../db';
 import config from '../../config';
 
 /**
@@ -40,38 +40,43 @@ const signup = (req, res) => {
     email: req.body.email,
   };
 
-  db.one(request.text, request.values)
-    .then((data) => {
-      const validPassword = bcrypt.compareSync(password, data.password);
-      if (!validPassword) {
-        res.status(401);
-        res.json({
-          status: 'failed',
-          message: 'Incorrect password',
-          data: userData,
-          metadata: {
-            auth: false,
-            token: null,
-          },
-        });
-      } else {
-      	// create a token
-      	const token = jwt.sign(
-      		{ id: data.id },
-      		config.secret,
-      		{ expiresIn: 86400 }, // expires in 24hours
-      	);
-        res.status(200);
-        res.json({
-          status: 'successful',
-          message: 'User has been logged in',
-          data: userData,
-          metadata: {
-          	auth: true,
-          	token: token,
-          },
-        });
-      }
+  pool.connect()
+    .then((client) => {
+      client.query(request.text, request.values)
+        .then((data) => {
+          client.release();
+          data = data.rows;
+          const validPassword = bcrypt.compareSync(password, data.password);
+          if (!validPassword) {
+            res.status(401);
+            res.json({
+              status: 'failed',
+              message: 'Incorrect password',
+              data: userData,
+              metadata: {
+                auth: false,
+                token: null,
+              },
+            });
+          } else {
+            // create a token
+            const token = jwt.sign(
+              { id: data.id },
+              config.secret,
+              { expiresIn: 86400 }, // expires in 24hours
+            );
+            res.status(200);
+            res.json({
+              status: 'successful',
+              message: 'User has been logged in',
+              data: userData,
+              metadata: {
+                auth: true,
+                token: token,
+              },
+            });
+          }
+        })
     })
     /**
      * Catch Error call-back

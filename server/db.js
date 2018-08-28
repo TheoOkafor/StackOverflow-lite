@@ -1,21 +1,17 @@
-import promise from 'bluebird';
+import pg from 'pg';
 import dotenv from 'dotenv';
 
-const options = {
-  // Initialization Options
-  promiseLib: promise,
-};
+const { Pool } = pg;
 
-const pgp = require('pg-promise')(options);
 dotenv.config();
-const co = {
+const connObj = {
 	host: 'localhost',
   port: 5432,
   database: 'stackLite',
   user: 'postgres',
   password: 'postgres'
-}
+};
 const connectionString = process.env.DB_URL;
-const db = pgp(co);
+const pool = new Pool(connObj);
 
-export default db;
+export default pool;

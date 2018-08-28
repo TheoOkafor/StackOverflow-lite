@@ -292,8 +292,8 @@ describe('USER AUTHENTICATION', () => {
     describe('POST /v1/auth/signup', () => {
       it('it should SIGNUP user if required details are provided', (done) => {
         const userReq = {
-          username: "umeryui",
-          email: "gheti31@yahoo.com",
+          username: "umeryui646",
+          email: "gheti3123@yahoo.com",
           password: "password",
         };
         chai.request(app).post('/v1/auth/signup')
@@ -402,8 +402,8 @@ describe('USER AUTHENTICATION', () => {
     describe('POST /v1/auth/signin', () => {
       it('it should SIGNIN user if required details are provided', (done) => {
         const userReq = {
-          username: "umeryui",
-          password: "password",
+          username: "TheoOkafor",
+          password: "gattusosgood",
         };
         chai.request(app).post('/v1/auth/signin')
           .send(userReq).end((err, res) => {

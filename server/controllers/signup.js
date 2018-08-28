@@ -6,7 +6,7 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
-import db from '../db';
+import pool from '../db';
 import config from '../../config';
 
 /**
@@ -46,27 +46,31 @@ const signup = (req, res) => {
     username: req.body.username,
     email: req.body.email,
   };
-  
-  db.one(request.text, request.values)
-    .then((data) => {
-    	// create a token
-    	const token = jwt.sign(
-    		{ id: data.id },
-    		config.secret,
-    		{ expiresIn: 86400 }, // expires in 24hours
-      );
-      res.status(201);
-      res.json({
-        status: 'successful',
-        message: 'New user created.',
-        data: {
-        	userID: data.id,
-        },
-        metadata: {
-        	auth: true,
-        	token: token,
-        },
-      });
+  pool.connect()
+    .then((client) => {
+      client.query(request.text, request.values)
+        .then((data) => {
+          client.release();
+          data = data.rows;
+        	// create a token
+        	const token = jwt.sign(
+        		{ id: data.id },
+        		config.secret,
+        		{ expiresIn: 86400 }, // expires in 24hours
+          );
+          res.status(201);
+          res.json({
+            status: 'successful',
+            message: 'New user created.',
+            data: {
+            	userID: data.id,
+            },
+            metadata: {
+            	auth: true,
+            	token: token,
+            },
+          });
+        })
     })
     /**
      * Catch Error call-back
