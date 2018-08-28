@@ -80,7 +80,7 @@ const signup = (req, res) => {
        * This checks if the error object has the detail property
        * With the values being checked for
        * @param  {String} error.detail a string value
-       * @return {JSON | object} Either 409 or 501 error message.
+       * @return {JSON | object} Either 409 or 500 error message.
        */
       if (error.detail === emailExists) {
         res.status(409);

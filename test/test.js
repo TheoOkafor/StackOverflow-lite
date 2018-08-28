@@ -184,7 +184,7 @@ describe('POST Answers', () => {
     });
   });
 
-  describe('/POST /v1/questions/1/answers', () => {
+  describe('POST /v1/questions/1/answers', () => {
     it('it should NOT POST Answer if the BODY is Not provided', (done) => {
       const answer = {
         username: 'TheoOkafor',
@@ -202,7 +202,7 @@ describe('POST Answers', () => {
     });
   });
 
-  describe('/POST /v1/questions/1/answers', () => {
+  describe('POST /v1/questions/1/answers', () => {
     it('it should POST answer if all the required'
       + ' fields are provided', (done) => {
       const answer = {

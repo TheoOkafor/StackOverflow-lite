@@ -24,7 +24,7 @@ const fetchAllQuestionsCtrl = (req, res, next) => {
      * @return {JSON | object} - Error message response to user
      */
   	.catch(error => {
-  		res.status(501);// Set status to 501
+  		res.status(500);// Set status to 500
       res.json({
         status: 'failed',
         message: 'Server failed to complete request',

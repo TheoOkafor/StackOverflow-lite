@@ -20,7 +20,7 @@ const deleteQuestion = (req, res) => {
        * @return {JSON | object} - An error message or a 'created' response.
        */
       if (result.rowCount < 1) {
-        res.status(404);// Set status to 501
+        res.status(404);// Set status to 404
         res.json({
           status: 'failed',
           message: `Question ${id} not found`,

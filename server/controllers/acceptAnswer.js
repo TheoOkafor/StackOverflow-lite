@@ -53,10 +53,10 @@ const acceptAnswer = (req, res) => {
     /**
      * Catch Error call-back
      * @param  {Object} error handles the errors resulting from the request. 
-     * @return {JSON | object}  error 501 message.
+     * @return {JSON | object}  error 500 message.
      */
     .catch(error => {
-      res.status(501);// Set status to 501
+      res.status(500);// Set status to 500
       res.json({
         status: 'failed',
         message: 'Server failed to complete request',
