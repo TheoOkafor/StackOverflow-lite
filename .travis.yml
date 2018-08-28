@@ -20,7 +20,6 @@ env:
   - PGPORT=5432
 
 before_script:
-  - psql -c "ALTER USER postgres WITH PASSWORD 'postgres';" -U postgres
   - psql -c "create database stackLite;" -U postgres
   - npm run migrate
 
