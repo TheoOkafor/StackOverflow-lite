@@ -15,7 +15,7 @@ const co = {
   user: 'postgres',
   password: 'postgres'
 }
-const connectionString = process.env.DB_URL;
-const db = pgp(co);
+const connectionString = process.env.DATABASE_URL;
+const db = pgp(connectionString);
 
 export default db;

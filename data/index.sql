@@ -1,6 +1,6 @@
-DROP DATABASE [ IF EXISTS ] stackLite;
-CREATE DATABASE stackLite;
-\c stackLite;
+#DROP DATABASE IF EXISTS stackLite;
+#CREATE DATABASE stackLite;
+#\c stackLite;
 #DROP TABLE answers;
 #DROP TABLE questions;
 #DROP TABLE users;
