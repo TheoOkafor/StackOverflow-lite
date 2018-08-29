@@ -22,10 +22,6 @@ const signupReqValidate = (req, res, next) => {
     res.json({
       status: 'failed',
       message: 'Bad request. username, email and password are all required',
-      data: {
-        email: reqBody.email,
-        username: reqBody.username,
-      },
     });
   } else {
     return next();

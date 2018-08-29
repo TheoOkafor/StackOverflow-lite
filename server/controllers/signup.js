@@ -55,12 +55,13 @@ const signup = (req, res) => {
     		config.secret,
     		{ expiresIn: 86400 }, // expires in 24hours
       );
-      res.status(201);
+      res.header('x-access-token', token);
       res.json({
         status: 'successful',
         message: 'New user created.',
         data: {
-        	userID: data.id,
+          userID: data.id,
+          username: username,
         },
         metadata: {
         	auth: true,
