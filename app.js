@@ -21,7 +21,7 @@ app.use('/v1', router);
 app.use('/v1/auth', userRouter);
 app.use('/v1/docs', fetchDocs);
 app.use('/v1', urlErrHandler);
-
+/*
 // error handler
 app.use((err, req, res, next) => {
   // render the error page
@@ -32,7 +32,7 @@ app.use((err, req, res, next) => {
   	message: 'Server could not complete request',
   });
   next();
-});
+}); */
 
 // listen for requests
 app.listen(port, () => {
