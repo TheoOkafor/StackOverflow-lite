@@ -40,6 +40,7 @@ const deleteQuestion = (req, res) => {
      * @return {JSON | object} - Contains the error message respons to the user
      */
     .catch(error => {
+      console.log(error);
       res.status(500);// Set status to 500
       res.json({
         status: 'failed',

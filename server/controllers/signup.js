@@ -97,6 +97,7 @@ const signup = (req, res) => {
           data: userData,
         });
       } else {
+        console.log(error);
         res.status(500);
         res.json({
           status: 'failed',

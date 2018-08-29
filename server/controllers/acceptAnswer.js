@@ -56,6 +56,7 @@ const acceptAnswer = (req, res) => {
      * @return {JSON | object}  error 500 message.
      */
     .catch(error => {
+      console.log(error);
       res.status(500);// Set status to 500
       res.json({
         status: 'failed',
