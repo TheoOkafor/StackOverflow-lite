@@ -23,7 +23,7 @@
     "test": "nyc mocha --timeout=3000 --exit --require babel-register test --exec",
     "test-nyc": "mocha test --require babel-register --exit",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "migrate": "psql -U postgres -a -f data/index.sql",
+    "migrate": "psql -U postgres -d stacklite -f data/index.sql",
     "eslint-app": "./node_modules/.bin/eslint --fix app.js data server",
     "eslint-test": "./node_modules/.bin/eslint --fix test config.js .eslintrc.js",
     "jsdoc": "jsdoc server/controllers/deleteQuestion.js"
