@@ -9,15 +9,15 @@ import db from '../db';
  * @return {JSON | object}     Success or error message.
  */
 const fetchAllQuestionsCtrl = (req, res, next) => {
- 	db.any('SELECT * FROM questions')
- 		.then((data) => {
-	  	res.status(200);
-	  	res.json({
-		  	status: 'successful',
-		    message: 'Questions found',
-		  	data,
+ 	db.multi('SELECT * FROM questions;SELECT * FROM answers')
+    .then(data => {
+      res.status(200);
+      res.json({
+        status: 'successful',
+        message: 'Questions found',
+        data: data,
       });
-  	})
+    })
     /**
      * Catches the database error when it occurs
      * @param  {object} err - contains details about the error from the DB

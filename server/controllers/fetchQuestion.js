@@ -18,17 +18,26 @@ const fetchQuestionCtrl = (req, res) => {
    */
   const query = {
     name: 'fetch-question',
-    text: 'SELECT * FROM questions WHERE id = $1',
+    text: `SELECT * FROM questions WHERE id = $1;
+      SELECT * FROM answers WHERE questionid = $1`,
     values: [requestId],
   };
 
-  db.one(query.text, requestId)
+  db.multi(query.text, requestId)
     .then((data) => {
-      res.json({
-        status: 'successful',
-        message: `Question ${requestId} found`,
-        data,
-      });
+      if (data[0].length === 0) {
+        res.status(404);// Set status to 404 as question was not found
+        res.json({
+          status: 'failed',
+          message: `Question ${requestId} Not Found`,
+        });
+      } else {
+        res.json({
+          status: 'successful',
+          message: `Question ${requestId} found`,
+          data,
+        });
+      }
     })
     /**
      * Catches the database error
@@ -41,19 +50,11 @@ const fetchQuestionCtrl = (req, res) => {
        * @param  {Number} error.received - is zero if no data was received
        * @return {JSON | object} - error message
        */
-      if (error.received === 0) {
-        res.status(404);// Set status to 404 as question was not found
-        res.json({
-          status: 'failed',
-          message: `Question ${requestId} Not Found`,
-        });
-      } else {
-        res.status(500);// Set status to 500
-        res.json({
-          status: 'failed',
-          message: 'Server failed to complete request',
-        });
-      }
+      res.status(500);// Set status to 500
+      res.json({
+        status: 'failed',
+        message: 'Server failed to complete request',
+      });
     });
 };
 

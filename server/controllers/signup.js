@@ -56,6 +56,7 @@ const signup = (req, res) => {
     		{ expiresIn: 86400 }, // expires in 24hours
       );
       res.header('x-access-token', token);
+      res.status(201);
       res.json({
         status: 'successful',
         message: 'New user created.',
