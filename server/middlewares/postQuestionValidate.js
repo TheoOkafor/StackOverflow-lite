@@ -11,7 +11,7 @@ import express from 'express';
 const postQuestionValidate = (req, res, next) => {
   const reqBody = req.body;
   // Check if all fields are provided and are valid:
-  const invalidReq = reqBody.title === null || reqBody.title === undefined;
+  const invalidReq = !reqBody.title || !reqBody.title || !reqBody.body ;
 
   /**
    * Checks whether the request is valid or not
@@ -19,12 +19,11 @@ const postQuestionValidate = (req, res, next) => {
    * @return {JSON | object} - returns the error message or the next callback
    */
   if (invalidReq) {
-    const err = new Error('Bad Request. Question must have a title');
+    const err = new Error('Question must have title and body');
     res.status(400);
     res.json({
-      status: 'failed',
-      message: err.message,
-      data: reqBody,
+      statusCode: 400,
+      error: err.message,
     });
   } else {
     return next();

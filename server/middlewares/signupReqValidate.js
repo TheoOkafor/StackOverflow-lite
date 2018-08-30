@@ -1,4 +1,5 @@
 import express from 'express';
+import * as emailValidator from 'email-validator';
 /**
  * This function checks the users request body.
  * If the request body does not contain the necessary
@@ -13,15 +14,24 @@ import express from 'express';
  */
 const signupReqValidate = (req, res, next) => {
   const reqBody = req.body;
+  const data = {
+    email: reqBody.email,
+    username: reqBody.username,
+  };
   // Check if all fields are provided and are valid:
-  const invalidReq = reqBody.email === undefined
-    || reqBody.username === undefined || reqBody.password === undefined;
+  const invalidReq = !reqBody.email || !reqBody.username || !reqBody.password;
 
   if (invalidReq) {
     res.status(400);
     res.json({
-      status: 'failed',
-      message: 'Bad request. username, email and password are all required',
+      statusCode: 400,
+      error: 'Username, email and password are all required',
+    });
+  } else if (!emailValidator.validate(reqBody.email)) {
+    res.status(400);
+    res.json({
+      statusCode: 400,
+      error: 'The email provided is invalid',
     });
   } else {
     return next();

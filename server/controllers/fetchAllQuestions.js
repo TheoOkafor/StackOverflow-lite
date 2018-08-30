@@ -13,7 +13,7 @@ const fetchAllQuestionsCtrl = (req, res, next) => {
     .then(data => {
       res.status(200);
       res.json({
-        status: 'successful',
+        statusCode: 200,
         message: 'Questions found',
         data: data,
       });
@@ -27,8 +27,8 @@ const fetchAllQuestionsCtrl = (req, res, next) => {
       console.log(error);
   		res.status(500);// Set status to 500
       res.json({
-        status: 'failed',
-        message: 'Server failed to complete request',
+        statusCode: 500,
+        error: 'Server failed to complete request',
       });
   	});
 };

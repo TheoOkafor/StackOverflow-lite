@@ -1,31 +1,37 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
-import pool from '../db';
+import db from '../db';
 import config from '../../config';
 
-const validateToken = (req, res, next) => {
-	const token = req.headers['x-access-token'];
-  if (!token){
-    res.status(403);
-    res.json({ 
-    	auth: false,
-    	message: 'Token not provided'
+const authValidate = (req, res, next) => {
+  try {
+    const token = req.headers.authorization || req.headers['x-access-token'];
+    if (!token) {
+      res.status(403);
+      res.json({
+      	auth: false,
+      	error: 'Token not provided',
+      });
+      return res;
+    }
+    	jwt.verify(token, config.secret, (error, decoded) => {
+        if (error) {
+          return res.status(401).json({
+            error: "could not authenticate the token"
+          })
+        }
+        req.userId = decoded.id;
+    	  next();
+  	  });
+  } catch (error) {
+    res.status(500);
+    res.json({
+      auth: false,
+      error: 'Server failed to authenticate token',
     });
-  } else {
-  	jwt.verify(token, config.secret, (error, decoded) => {
-	    if (error) {
-  	    res.status(500)
-  	  	res.json({ 
-  	  		auth: false,
-  	  		message: 'Failed to authenticate token'
-  	  	});
-  	  } else {
-  	  	req.id = decoded.id;
-	    	next();
-  	  }
-	  });
-	}
-}
+    return res;
+  }
+};
 
-export default validateToken;
+export default authValidate;

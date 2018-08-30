@@ -12,7 +12,7 @@ const postAnswerValidate = (req, res, next) => {
   const requestId = req.params.id;
   const reqBody = req.body;
   // Check if all fields are provided and are valid:
-  const invalidReq = reqBody.body === null || reqBody.body === undefined;
+  const invalidReq = !reqBody.body;
 
   /**
    * Checks whether the request is valid or not
@@ -20,12 +20,11 @@ const postAnswerValidate = (req, res, next) => {
    * @return {JSON | object} - returns the error message or the next callback
    */
   if (invalidReq) {
-    const err = new Error('Bad Request. Answer must have a body.');
+    const err = new Error('Answer must have a body.');
     res.status(400);
     res.json({
-      status: 'failed',
-      message: err.message,
-      data: reqBody,
+      statusCode: 400,
+      error: err.message,
     });
   } else {
     return next();

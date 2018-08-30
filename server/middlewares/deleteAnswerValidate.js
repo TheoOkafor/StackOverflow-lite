@@ -9,31 +9,17 @@ import db from '../db';
  * @return {JSON | object}
  */
 
-const acceptAnswerValidate = (req, res, next) => {
-  const idA = parseInt(req.params.idA);
-  const idQ = parseInt(req.params.idQ);
+const deleteAnswerValidate = (req, res, next) => {
+  const id = parseInt(req.params.id);
   const reqBody = req.body;
   const reqId = parseInt(req.userId);
 
-  db.any('SELECT * FROM questions WHERE id = $1', [idQ])
+  db.any('SELECT * FROM questions WHERE id = $1', [id])
     .then(data => {
       let ownerId = parseInt(data[0].userid);
 
-      const invalidReq = !reqBody.value || typeof reqBody.value !== 'boolean';
-      /**
-         * Checks to see if the value property is defined and has boolean value
-         * @param  {boolean} invalidReq
-         * @return {JSON | object} - containing error message
-         */
-      if (invalidReq) {
-        res.status(400);
-        res.json({
-          statusCode: 400,
-          error: 'Expected a request body with {value: true || false}',
-        });
-      }
       if (ownerId === reqId) {
-        next();
+        return next();
       } else {
         res.status(403);
         res.json({
@@ -46,7 +32,7 @@ const acceptAnswerValidate = (req, res, next) => {
       res.status(404);
       res.json({
         statusCode: 404,
-        error: `Question ${idQ} not found`,
+        error: `Question ${id} not found`,
       });
     });
   /**
@@ -56,4 +42,4 @@ const acceptAnswerValidate = (req, res, next) => {
    */
 };
 
-export { acceptAnswerValidate };
+export default deleteAnswerValidate;

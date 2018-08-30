@@ -63,7 +63,7 @@ const signup = (req, res) => {
       	);
         res.status(200);
         res.json({
-          status: 'successful',
+          statusCode: 200,
           message: 'User has been logged in',
           data: userData,
           metadata: {
@@ -87,17 +87,15 @@ const signup = (req, res) => {
       if (error.received === 0){
         res.status(404);
         res.json({
-          status: 'failed',
-          message: 'User not found, consider signing up.',
-          data: userData,
+          statusCode: 500,
+          error: 'User not found, consider signing up.',
         });
       } else {
         console.log(error);
         res.status(500);
         res.json({
-          status: 'failed',
-          message: 'Server could not complete request',
-          data: userData,
+          statusCode: 500,
+          error: 'Server could not complete request',
         });
       }
     });

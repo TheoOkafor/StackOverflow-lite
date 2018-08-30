@@ -3,22 +3,24 @@ import db from '../db';
 
 const user = (req, res, next) => {
 	const request = {
-    text: 'SELECT username, email, created, modified FROM users'
-    +' WHERE ID=$1',
-    values: [req.id],
+    text: `SELECT username, email, created, modified FROM users
+    WHERE ID=$1;
+    SELECT * FROM questions WHERE userid=$1;
+    SELECT * FROM answers WHERE userid=$1`,
+    values: [req.params.id],
   };
-	db.one(request.text, request.values) 
+	db.multi(request.text, request.values) 
 		.then((user) => {
     if (!user) { 
 	    	res.status(404);
 	    	res.json({
-	    		status: 'failed',
-	    		message: 'User not found',
+	    		statusCode: 404,
+	    		error: 'User not found',
 	    	});
 	    }
 	    res.status(200);
 	    res.json({
-	    		status: 'successful',
+	    		statusCode: 200,
 	    		message: 'User found',
 	    		data: user,
 	    });
@@ -27,8 +29,8 @@ const user = (req, res, next) => {
 	  	if (error){
 	    	res.status(500);
 	    	res.json({
-	    		status: 'failed',
-	    		massage: 'Error occurred while finding user',
+	    		statusCode: 500,
+	    		error: 'Error occurred while finding user',
 	    	});
 	    }
 	  });

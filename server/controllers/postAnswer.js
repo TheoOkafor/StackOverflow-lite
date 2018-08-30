@@ -10,6 +10,7 @@ import db from '../db';
 const postAnswer = (req, res) => {
   const reqBody = req.body;
   const requestId = req.params.id;
+  const userid = req.userId;
   const timeNow = new Date().toUTCString();
   /**
    * The SQL statement
@@ -17,27 +18,25 @@ const postAnswer = (req, res) => {
    */
   const request = {
     text: 'INSERT INTO answers'
-      + ' (questionID, body, timeSubmitted, username, accepted)'
+      + ' (questionID, body, timeSubmitted, username, userid)'
       + ' VALUES ($1, $2, $3, $4, $5)'
       + ' RETURNING ID',
-    values: [requestId, reqBody.body, timeNow, reqBody.username, false],
+    values: [requestId, reqBody.body, timeNow, reqBody.username, userid],
   };
   db.one(request.text, request.values)
     .then(data => {
       res.status(201);
       res.json({
-        status: 'successful',
+        statusCode: 201,
         message: 'New answer added',
         data: reqBody,
-        metadata: {
-          location: `/v1/questions/${requestId}/answers/${data.id}`,
-        },
       });
     })
     /**
      * Catches the error from the database
      * @param  {Object} error - contains details about the database error
-     * @return {JSON | object}  - contains error 404 or 500 message sent to the user
+     * @return {JSON | object}  - contains error 404 or 
+     * 500 message sent to the user
      */
     .catch(error => {
       /**
@@ -49,17 +48,15 @@ const postAnswer = (req, res) => {
         const err = new Error(`Question ${requestId} Not Found`);
         res.status(404);
         res.json({
-          status: 'failed',
-          message: err.message,
-          data: reqBody,
+          statusCode: 404,
+          error: err.message,
         });
       } else {
         res.status(500);// Set status to 500
         res.json({
-          status: 'failed',
-          message: 'Server failed to complete request',
+          statusCode: 500,
+          error: 'Server failed to complete request',
         });
-        console.log(error);
       }
     });
 };

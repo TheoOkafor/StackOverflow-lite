@@ -9,26 +9,24 @@ import db from '../db';
  */
 const postQuestion = (req, res) => {
   const reqBody = req.body;
+  const userid = req.userId;
   const timeNow = new Date().toUTCString();
   /**
    * The SQL statement sent to the DB
    * @type {Object}
    */
   const request = {
-    text: 'INSERT INTO questions (title, body, timeSubmitted, username)'
-    + ' VALUES ($1, $2, $3, $4) RETURNING id',
-    values: [reqBody.title, reqBody.body, timeNow, reqBody.username],
+    text: 'INSERT INTO questions (title, body, timeSubmitted, username, userid)'
+    + ' VALUES ($1, $2, $3, $4, $5) RETURNING id',
+    values: [reqBody.title, reqBody.body, timeNow, reqBody.username, userid],
   };
   db.one(request.text, request.values)
     .then(data => {
       res.status(201);
       res.json({
-        status: 'successful',
+        statusCode: 201,
         message: 'New question added',
-        data: reqBody,
-        metadata: {
-          location: `/v1/questions/${data.id}`,
-        },
+        data: reqBody
       });
     })
     /**
@@ -40,9 +38,8 @@ const postQuestion = (req, res) => {
       console.log(error);
       res.status(500);// Set status to 500
       res.json({
-        status: 'failed',
-        message: 'Server failed to complete request',
-        data: reqBody,
+        statusCode: 500,
+        error: 'Server failed to complete request'
       });
     });
 }

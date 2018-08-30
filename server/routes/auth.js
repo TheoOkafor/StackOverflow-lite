@@ -5,16 +5,13 @@ import authValidate from '../middlewares/authValidate';
 import signup from '../controllers/signup';
 import signin from '../controllers/signin';
 import logout from '../controllers/logout';
-import user from '../controllers/user';
 
-const userRouter = express.Router();
+const authRouter = express.Router();
 //The user signup router
-userRouter.post('/signup', signupReqValidate, signup);
+authRouter.post('/signup', signupReqValidate, signup);
 //The user signin router
-userRouter.post('/signin', signinReqValidate, signin);
-//The User
-userRouter.get('/auth', authValidate, user);
+authRouter.post('/signin', signinReqValidate, signin);
 //Logout
-userRouter.get('/logout', logout);
+authRouter.get('/logout', logout);
 
-export default userRouter;
+export default authRouter;

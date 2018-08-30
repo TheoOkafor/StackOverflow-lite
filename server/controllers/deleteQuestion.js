@@ -22,13 +22,13 @@ const deleteQuestion = (req, res) => {
       if (result.rowCount < 1) {
         res.status(404);// Set status to 404
         res.json({
-          status: 'failed',
-          message: `Question ${id} not found`,
+          statusCode: 404,
+          error: `Question ${id} not found`,
         });
       } else {
         res.status(201);
         res.json({
-          status: 'successful',
+          statusCode: 201,
           message: `Question ${id} deleted`,
         });
       }
@@ -40,11 +40,10 @@ const deleteQuestion = (req, res) => {
      * @return {JSON | object} - Contains the error message respons to the user
      */
     .catch(error => {
-      console.log(error);
       res.status(500);// Set status to 500
       res.json({
-        status: 'failed',
-        message: 'Server failed to complete request',
+        statusCode: 500,
+        error: 'Server failed to complete request',
       });
     });
 };

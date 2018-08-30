@@ -25,10 +25,9 @@ const signup = (req, res) => {
 
   //The SQL request to the database
   const request = {
-    text: 'INSERT INTO users'
-      + ' (username, email, password, created, modified)'
-      + ' VALUES ($1, $2, $3, $4, $5)'
-      + ' RETURNING ID',
+    text: `INSERT INTO users 
+      (username, email, password, created, modified) 
+      VALUES ($1, $2, $3, $4, $5) RETURNING ID`,
     values: [
     	username,
     	email,
@@ -58,15 +57,11 @@ const signup = (req, res) => {
       res.header('x-access-token', token);
       res.status(201);
       res.json({
-        status: 'successful',
+        statusCode: 201,
         message: 'New user created.',
         data: {
           userID: data.id,
           username: username,
-        },
-        metadata: {
-        	auth: true,
-        	token: token,
         },
       });
     })
@@ -84,27 +79,17 @@ const signup = (req, res) => {
        * @param  {String} error.detail a string value
        * @return {JSON | object} Either 409 or 500 error message.
        */
-      if (error.detail === emailExists) {
+      if (error.detail === emailExists || error.detail === usernameExists) {
         res.status(409);
         res.json({
-          status: 'failed',
-          message: 'Conflict. Email already exists, consider sign-in',
-          data: userData,
-        });
-      } else if (error.detail === usernameExists) {
-        res.status(409);
-        res.json({
-          status: 'failed',
-          message: 'Conflict. Username already exists, consider sign-in',
-          data: userData,
+          statusCode: 409,
+          error: 'Account already exists, consider signing in',
         });
       } else {
-        console.log(error);
         res.status(500);
         res.json({
-          status: 'failed',
-          message: 'Server could not register user',
-          data: userData,
+          statusCode: 500,
+          error: 'Server could not register user',
         });
       }
     }); 

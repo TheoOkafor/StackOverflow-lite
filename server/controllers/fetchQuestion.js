@@ -28,12 +28,12 @@ const fetchQuestionCtrl = (req, res) => {
       if (data[0].length === 0) {
         res.status(404);// Set status to 404 as question was not found
         res.json({
-          status: 'failed',
-          message: `Question ${requestId} Not Found`,
+          statusCode: 404,
+          error: `Question ${requestId} Not Found`,
         });
       } else {
         res.json({
-          status: 'successful',
+          statusCode: 200,
           message: `Question ${requestId} found`,
           data,
         });
@@ -52,8 +52,8 @@ const fetchQuestionCtrl = (req, res) => {
        */
       res.status(500);// Set status to 500
       res.json({
-        status: 'failed',
-        message: 'Server failed to complete request',
+        statusCode: 500,
+        error: 'Server failed to complete request',
       });
     });
 };
