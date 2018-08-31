@@ -19,7 +19,7 @@ const acceptAnswerValidate = (req, res, next) => {
     .then(data => {
       let ownerId = parseInt(data[0].userid);
 
-      const invalidReq = !reqBody.value || typeof reqBody.value !== 'boolean';
+      const invalidReq = !reqBody || typeof reqBody.value !== 'boolean';
       /**
          * Checks to see if the value property is defined and has boolean value
          * @param  {boolean} invalidReq

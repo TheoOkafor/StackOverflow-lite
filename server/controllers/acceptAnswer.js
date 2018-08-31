@@ -18,27 +18,37 @@ const acceptAnswer = (req, res) => {
    * @type {String}
    */
   const query = `UPDATE answers SET accepted=$3 WHERE ID=$1
-     AND questionID=$2`;
+     AND questionID=$2 RETURNING ID`;
   /**
    * The request variable required by the SQL request
    * @type {Array}
    */
-  console.log(req.body.value);
+  
   const request = [id, questionID, req.body.value];
-  db.none(query, request)
-    .then(() => {
+  db.result(query, request)
+    .then((result) => {
       /**
        * Check whether the request to the database returned 'any' data
        * @param  {Boolean} data.length < 1
        * Will be ```true``` or ```false```
        * @return {JSON | object} An error 404 message, that question do not exist.
        */
+      if (result.rowCount < 1) {
+        res.status(404);// Set status to 404
+        res.json({
+          statusCode: 404,
+          error: `Answer ${id} not found`,
+        });
+        return res;
+      } else {
         res.status(201);
         res.json({
           statusCode: 201,
           message: `Answer ${id} has been ${req.body.value
             ? 'accepted' : 'unaccepted'}`,
         });
+        return res;
+      }
     })
     /**
      * Catch Error call-back
@@ -46,12 +56,12 @@ const acceptAnswer = (req, res) => {
      * @return {JSON | object}  error 500 message.
      */
     .catch((error) => {
-      console.log(error);
       res.status(500);// Set status to 500
       res.json({
         statusCode: 500,
         error: 'Server failed to complete request',
       });
+      return res;
     });
 };
 

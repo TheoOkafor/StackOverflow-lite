@@ -7,11 +7,11 @@ import express from 'express';
  * @return {JSON | object}   error message.
  */
 const urlErrHandler = (req, res) => {
-  const err = new Error('URL id: must an integer');
+  const err = new Error('Bad URL and/or request method');
   res.status(400);
   res.json({
     statusCode: 400,
-    message: err.message,
+    error: err.message,
   });
 };
 

@@ -9,7 +9,7 @@ import db from '../db';
  * @return {JSON | object}
  */
 
-const deleteAnswerValidate = (req, res, next) => {
+const deleteQuestionValidate = (req, res, next) => {
   const id = parseInt(req.params.id);
   const reqBody = req.body;
   const reqId = parseInt(req.userId);
@@ -42,4 +42,4 @@ const deleteAnswerValidate = (req, res, next) => {
    */
 };
 
-export default deleteAnswerValidate;
+export default deleteQuestionValidate;

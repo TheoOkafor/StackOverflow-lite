@@ -46,13 +46,8 @@ const signup = (req, res) => {
       if (!validPassword) {
         res.status(401);
         res.json({
-          status: 'failed',
-          message: 'Incorrect password',
-          data: userData,
-          metadata: {
-            auth: false,
-            token: null,
-          },
+          statusCode: 401,
+          error: 'Incorrect password',
         });
       } else {
       	// create a token
@@ -62,14 +57,11 @@ const signup = (req, res) => {
       		{ expiresIn: 86400 }, // expires in 24hours
       	);
         res.status(200);
+        res.header('x-access-token', token);
         res.json({
           statusCode: 200,
           message: 'User has been logged in',
           data: userData,
-          metadata: {
-          	auth: true,
-          	token: token,
-          },
         });
       }
     })
@@ -87,17 +79,10 @@ const signup = (req, res) => {
       if (error.received === 0){
         res.status(404);
         res.json({
-          statusCode: 500,
+          statusCode: 404,
           error: 'User not found, consider signing up.',
         });
-      } else {
-        console.log(error);
-        res.status(500);
-        res.json({
-          statusCode: 500,
-          error: 'Server could not complete request',
-        });
-      }
+      } 
     });
 };
 

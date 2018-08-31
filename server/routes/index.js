@@ -2,7 +2,7 @@ import express from 'express';
 import { acceptAnswerValidate } from '../middlewares/acceptAnswerValidate';
 import { postQuestionValidate } from '../middlewares/postQuestionValidate';
 import { fetchAllQuestionsCtrl } from '../controllers/fetchAllQuestions';
-import deleteAnswerValidate from '../middlewares/deleteAnswerValidate';
+import deleteQuestionValidate from '../middlewares/deleteQuestionValidate';
 import { postAnswerValidate } from '../middlewares/postAnswerValidate';
 import { fetchQuestionCtrl } from '../controllers/fetchQuestion';
 import { deleteQuestion } from '../controllers/deleteQuestion';
@@ -36,7 +36,7 @@ router.post('/questions/:id([0-9]{1,})/answers', authValidate,
 
 // DELETE A QUESTION
 router.delete('/questions/:id([0-9]{1,})', 
-  authValidate, deleteAnswerValidate, deleteQuestion);
+  authValidate, deleteQuestionValidate, deleteQuestion);
 
 // ACCEPT AN ANSWER
 router.put('/questions/:idQ([0-9]{1,})/answers/:idA([0-9]{1,})',
