@@ -31,6 +31,7 @@ const acceptAnswerValidate = (req, res, next) => {
           statusCode: 400,
           error: 'Expected a request body with {value: true || false}',
         });
+        return res;
       }
       if (ownerId === reqId) {
         next();
@@ -40,6 +41,7 @@ const acceptAnswerValidate = (req, res, next) => {
           statusCode: 403,
           error: 'You are not authorised to complete this action',
         });
+        return res;
       }
     })
     .catch(error => {
@@ -48,6 +50,7 @@ const acceptAnswerValidate = (req, res, next) => {
         statusCode: 404,
         error: `Question ${idQ} not found`,
       });
+      return res;
     });
   /**
    * Is true if request has no value property or

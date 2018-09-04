@@ -8,6 +8,7 @@ import db from '../db';
  * @return {JSON | object}     - Error Message or Success message.
  */
 const postQuestion = (req, res) => {
+  console.log('>>>' + req.username);
   const reqBody = req.body;
   const userid = req.userId;
   const timeNow = new Date().toUTCString();
@@ -18,7 +19,7 @@ const postQuestion = (req, res) => {
   const request = {
     text: 'INSERT INTO questions (title, body, timeSubmitted, username, userid)'
     + ' VALUES ($1, $2, $3, $4, $5) RETURNING id',
-    values: [reqBody.title, reqBody.body, timeNow, reqBody.username, userid],
+    values: [reqBody.title, reqBody.body, timeNow, req.username, userid],
   };
   db.one(request.text, request.values)
     .then(data => {

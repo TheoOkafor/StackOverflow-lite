@@ -1,4 +1,5 @@
 import express from 'express';
+import db from '../db';
 
 /**
  * This middleware validates the POST answer request body
@@ -12,7 +13,7 @@ const postAnswerValidate = (req, res, next) => {
   const requestId = req.params.id;
   const reqBody = req.body;
   // Check if all fields are provided and are valid:
-  const invalidReq = !reqBody.body;
+  const invalidReq = !reqBody.body.trim();
 
   /**
    * Checks whether the request is valid or not
@@ -27,7 +28,18 @@ const postAnswerValidate = (req, res, next) => {
       error: err.message,
     });
   } else {
-    return next();
+    db.any('SELECT username FROM users WHERE id = $1', [req.userId])
+      .then(data => {
+        req.username = data[0].username;
+        return next();
+      })
+      .catch(error => {
+        res.status(404);
+        res.json({
+          statusCode: 404,
+          error: `User with user ID: ${id} not found`,
+        });
+      });
   }
 };
 

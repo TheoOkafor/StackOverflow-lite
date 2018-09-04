@@ -32,19 +32,25 @@ const fetchQuestionCtrl = (req, res) => {
           error: `Question ${requestId} Not Found`,
         });
       } else {
+        const result = {
+          question: data[0][0],
+        };
+        result.question.answers = data[1];
+
         res.json({
           statusCode: 200,
           message: `Question ${requestId} found`,
-          data,
+          result,
         });
       }
     })
     /**
      * Catches the database error
      * @param  {Object} error - contains the details about the error
-     * @return {JSON | object} - contains the error 404 or 500 reponse to the user 
+     * @return {JSON | object} - contains the error 404 or 500 reponse
+     *  to the user
      */
-    .catch(error => {
+    .catch((error) => {
       /**
        * Checks whether data was received from the database
        * @param  {Number} error.received - is zero if no data was received

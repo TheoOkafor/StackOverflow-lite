@@ -14,12 +14,9 @@ import * as emailValidator from 'email-validator';
  */
 const signupReqValidate = (req, res, next) => {
   const reqBody = req.body;
-  const data = {
-    email: reqBody.email,
-    username: reqBody.username,
-  };
   // Check if all fields are provided and are valid:
-  const invalidReq = !reqBody.email || !reqBody.username || !reqBody.password;
+  const invalidReq = !reqBody.email.trim() || !reqBody.username.trim()
+    || !reqBody.password.trim();
 
   if (invalidReq) {
     res.status(400);
@@ -27,15 +24,55 @@ const signupReqValidate = (req, res, next) => {
       statusCode: 400,
       error: 'Username, email and password are all required',
     });
-  } else if (!emailValidator.validate(reqBody.email)) {
+    return res;
+  // Check whether EMAIL is valid
+  } if (!emailValidator.validate(reqBody.email)) {
     res.status(400);
     res.json({
       statusCode: 400,
       error: 'The email provided is invalid',
     });
-  } else {
-    return next();
+    return res;
+
+  // Check whether EMAIL length is acceptable
+  } if (reqBody.email.trim().length >= 40) {
+    res.status(400);
+    res.json({
+      statusCode: 400,
+      error: `The email provided is too long.
+       (${reqBody.email.trim().length})`,
+    });
+    return res;
+
+  // Check whether USERNAME length is acceptable
+  } if (reqBody.username.trim().length >= 19) {
+    res.status(400);
+    res.json({
+      statusCode: 400,
+      error: `The username provided is too long.
+       (${reqBody.username.trim().length})`,
+    });
+    return res;
+  } if (reqBody.username.trim().length < 6) {
+    res.status(400);
+    res.json({
+      statusCode: 400,
+      error: `The username provided is too short.
+       (${reqBody.username.trim().length})`,
+    });
+    return res;
+
+  // Check whether PASSWORD length is acceptable
+  } if (reqBody.password.trim().length < 6) {
+    res.status(400);
+    res.json({
+      statusCode: 400,
+      error: `The password provided is too short.
+       (${reqBody.password.trim().length})`,
+    });
+    return res;
   }
+  return next();
 };
 
 export { signupReqValidate };

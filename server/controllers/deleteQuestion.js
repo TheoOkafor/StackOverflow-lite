@@ -25,12 +25,14 @@ const deleteQuestion = (req, res) => {
           statusCode: 404,
           error: `Question ${id} not found`,
         });
+        return res;
       } else {
         res.status(201);
         res.json({
           statusCode: 201,
           message: `Question ${id} deleted`,
         });
+        return res;
       }
     })
 
@@ -45,6 +47,7 @@ const deleteQuestion = (req, res) => {
         statusCode: 500,
         error: 'Server failed to complete request',
       });
+      return res;
     });
 };
 

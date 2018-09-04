@@ -14,19 +14,15 @@ import * as emailValidator from 'email-validator';
  */
 const signinReqValidate = (req, res, next) => {
   const reqBody = req.body;
-  const data = {
-    email: reqBody.email,
-    username: reqBody.username,
-  };
   // Check if all fields are provided and are valid:
-  const invalidReq = !reqBody.email && !reqBody.username || !reqBody.password;
+  const invalidReq = !reqBody.email.trim() || !reqBody.password.trim();
 
 
   if (invalidReq) {
     res.status(400);
     res.json({
       statusCode: 400,
-      error: 'Username, email and password are all required',
+      error: 'email and password are all required',
     });
   } else if (!emailValidator.validate(reqBody.email)) {
     res.status(400);

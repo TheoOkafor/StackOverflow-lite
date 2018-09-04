@@ -325,7 +325,8 @@ describe('POST Answers', () => {
           chai.expect(res.body).to.be.a('object');
           chai.expect(res.body).to.have.property('message');
           chai.expect(res.body.statusCode).to.equal(201);
-          chai.expect(res.body.message).to.equal('Answer 19 has been accepted');
+          chai.expect(res.body.message).to
+            .equal('Answer 19 has been accepted');
           done(err);
         });
     });
@@ -601,7 +602,8 @@ describe('USER AUTHENTICATION', () => {
     });
 
     describe('POST /v1/auth/signin', () => {
-      it('it should NOT SIGNIN user if USERNAME or EMAIL is not provided', (done) => {
+      it(`it should NOT SIGNIN user if USERNAME or EMAIL is 
+          not provided`, (done) => {
         const userReq = {
           password: 'password',
         };

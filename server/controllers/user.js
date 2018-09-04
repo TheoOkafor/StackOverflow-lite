@@ -17,6 +17,7 @@ const user = (req, res, next) => {
 	    		statusCode: 404,
 	    		error: 'User not found',
 	    	});
+	    	return res;
 	    } else {
 		    res.status(200);
 		    res.json({
@@ -24,6 +25,7 @@ const user = (req, res, next) => {
 		    		message: 'User found',
 		    		data: user,
 		    });
+		    return res;
 		  }
 	  })
 	  .catch( error => {
@@ -33,6 +35,7 @@ const user = (req, res, next) => {
 	    		statusCode: 500,
 	    		error: 'Error occurred while finding user',
 	    	});
+	    	return res;
 	    }
 	  });
 }

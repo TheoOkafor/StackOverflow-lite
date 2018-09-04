@@ -21,7 +21,7 @@ const postAnswer = (req, res) => {
       + ' (questionID, body, timeSubmitted, username, userid)'
       + ' VALUES ($1, $2, $3, $4, $5)'
       + ' RETURNING ID',
-    values: [requestId, reqBody.body, timeNow, reqBody.username, userid],
+    values: [requestId, reqBody.body, timeNow, req.username, userid],
   };
   db.one(request.text, request.values)
     .then(data => {

@@ -26,6 +26,7 @@ const deleteQuestionValidate = (req, res, next) => {
           statusCode: 403,
           error: 'You are not authorised to complete this action',
         });
+        return res;
       }
     })
     .catch(error => {
@@ -34,12 +35,8 @@ const deleteQuestionValidate = (req, res, next) => {
         statusCode: 404,
         error: `Question ${id} not found`,
       });
+      return res;
     });
-  /**
-   * Is true if request has no value property or
-   * value of the value property is not boolean.
-   * @type {boolean}
-   */
 };
 
 export default deleteQuestionValidate;
