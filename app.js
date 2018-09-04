@@ -1,11 +1,16 @@
 import express from 'express';
 import logger from 'morgan';
+import dotenv from 'dotenv';
+import cors from 'cors';
 import bodyParser from 'body-parser';
 import { router } from './server/routes';
+import authRouter from './server/routes/auth';
+import { fetchDocs } from './server/controllers/fetchDocs';
 import { urlErrHandler } from './server/middlewares/urlErrHandler';
 
 const app = express();
-const port = process.env.PORT || 5000;
+dotenv.config();
+const port = process.env.PORT || 3000;
 
 app.use(logger('dev'));
 
@@ -13,22 +18,22 @@ app.use(logger('dev'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({ type: 'application/json' }));
 
-app.use('/v1', router);
-app.use('/v1', urlErrHandler);
 
-// catch 404 and forward to error handler
-app.use((req, res, next) => {
-  next(createError(404));
-});
+app.use(cors());
+
+app.use('/v1', router);
+app.use('/v1/auth', authRouter);
+app.use('/v1/docs', fetchDocs);
+app.use('/v1', urlErrHandler);
 
 // error handler
 app.use((err, req, res, next) => {
+  // render the error
 
-  // render the error page
   res.status(err.status || 500);
   res.json(err.body || {
-    status: 'failed',
-  	message: 'Server could not complete request',
+    statusCode: 500,
+  	error: 'Server could not complete request',
   });
   next();
 });

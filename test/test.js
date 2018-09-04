@@ -1,34 +1,37 @@
 // Require the dev-dependencies
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import { data } from '../data/data';
 import { app } from '../app';
 
-const questions = data.questions;
 chai.use(chaiHttp);
 
+const loginDetails = {
+  email: 'theo@email.com',
+  password: 'password',
+};
+
+const registerDetails = {
+  email: 'theo@email.com',
+  username: 'theo',
+  password: 'password',
+};
+
+let token = '';
 // Parent block for QUESTIONS
 describe('Questions', () => {
+
+
   describe('GET QUESTIONS', () => {
     // Test the /GET route
-    describe('GET /questions', () => {
-      it('it should return error 500', (done) => {
-        chai.request(app).get('/questions').end((err, res) => {
-          chai.expect(res).to.have.status(500);
-          chai.expect(res.body).be.a('object');
-          chai.expect(res.body.status).to.equal('failed');
-          done(err);
-        });
-      });
-    });
 
     describe('GET /v1/questions/gabyy', () => {
       it('it should return error 400', (done) => {
         chai.request(app).get('/v1/questions/gabyy').end((err, res) => {
           chai.expect(res).to.have.status(400);
           chai.expect(res.body).be.a('object');
-          chai.expect(res.body.status).to.equal('failed');
-          chai.expect(res.body.message).to.equal('Bad Request, URL ID parameter must be integer');
+          chai.expect(res.body.statusCode).to.equal(400);
+          chai.expect(res.body.error).to
+            .equal('Bad URL and/or request method');
           done(err);
         });
       });
@@ -40,7 +43,7 @@ describe('Questions', () => {
         chai.request(app).get('/v1/questions').end((err, res) => {
           chai.expect(res).to.have.status(200);
           chai.expect(res.body).be.a('object');
-          chai.expect(res.body.status).to.equal('successful');
+          chai.expect(res.body.statusCode).to.equal(200);
           chai.expect(res.body).to.have.property('message');
           chai.expect(res.body.message).to.equal('Questions found');
           done(err);
@@ -54,7 +57,7 @@ describe('Questions', () => {
         chai.request(app).get('/v1/questions/2').end((err, res) => {
           chai.expect(res).to.have.status(200);
           chai.expect(res.body).be.a('object');
-          chai.expect(res.body.status).to.equal('successful');
+          chai.expect(res.body.statusCode).to.equal(200);
           chai.expect(res.body).to.have.property('message');
           chai.expect(res.body.message).to.equal('Question 2 found');
           chai.expect(res.body).to.have.property('data');
@@ -64,12 +67,12 @@ describe('Questions', () => {
     });
 
     describe('/GET /v1/questions/100', () => {
-      it('it should return \'Question 100 Not Found\'', (done) => {
+      it('it should return Question 100 Not Found', (done) => {
         chai.request(app).get('/v1/questions/100').end((err, res) => {
           chai.expect(res).to.have.status(404);
           chai.expect(res.body).be.a('object');
-          chai.expect(res.body.status).to.equal('failed');
-          chai.expect(res.body.message).to.equal('Question 100 Not Found');
+          chai.expect(res.body.statusCode).to.equal(404);
+          chai.expect(res.body.error).to.equal('Question 100 Not Found');
           done(err);
         });
       });
@@ -78,130 +81,608 @@ describe('Questions', () => {
 
   // POST QUESTIONS TEST
   describe('POST QUESTIONS', () => {
-    describe('/POST /v1/questions', () => {
-      it('it should NOT POST Question if the TITLE is Not provided', (done) => {
-        const question = {
-          body: 'Lorem ipsum dolor sit amet, consectetur adipisicing',
-          username: 'TheoOkafor',
-        };
-        chai.request(app).post('/v1/questions').send(question).end((err, res) => {
-          chai.expect(res).to.have.status(400);
-          chai.expect(res.body).to.be.a('object');
-          chai.expect(res.body).to.have.property('message');
-          chai.expect(res.body.message).to.equal('Bad Request. Question must have a title.');
-          done(err);
-        });
+
+    describe('POST /v1/auth/signup', () => {
+      it('it should SIGNUP user if required details are provided', (done) => {
+        
+        chai.request(app).post('/v1/auth/signup')
+          .send(registerDetails).end((err, res) => {
+            chai.expect(res).to.have.status(201);
+              token = res.header['x-access-token'];
+            done(err);
+          });
       });
     });
 
     describe('/POST /v1/questions', () => {
-      it('it should POST Question if all the required\
-       fields are provided', (done) => {
+      it('it should NOT POST Question if the TITLE is Not'
+        + ' provided', (done) => {
+        const question = {
+          body: 'Lorem ipsum dolor sit amet, consectetur adipisicing',
+          username: 'TheoOkafor',
+        };
+        chai.request(app).post('/v1/questions')
+          .set('x-access-token', token)
+          .send(question)
+          .end((err, res) => {
+            chai.expect(res).to.have.status(400);
+            chai.expect(res.body).to.be.a('object');
+            chai.expect(res.body).to.have.property('error');
+            chai.expect(res.body.error).to
+            .equal(`Question must have title and body`);
+            done(err);
+          });
+      });
+    });
+
+    describe('/POST /v1/questions', () => {
+      it('it should POST Question if all the required'
+       + ' fields are provided', (done) => {
         const question = {
           title: 'Why do people hate reading?',
           body: 'Lorem ipsum dolor sit amet, consectetur',
           username: 'TheoOkafor',
         };
-        chai.request(app).post('/v1/questions').send(question).end((err, res) => {
+        chai.request(app).post('/v1/questions')
+          .set('x-access-token', token)
+          .send(question).end((err, res) => {
+            chai.expect(res).to.have.status(201);
+            chai.expect(res.body).to.be.a('object');
+            chai.expect(res.body).to.have.property('message');
+            chai.expect(res.body).to.have.property('data');
+            chai.expect(res.body.statusCode).to.equal(201);
+            chai.expect(res.body.message).to.equal('New question added');
+            done(err);
+          });
+      });
+    });
+
+    describe('POST /v1/questions', () => {
+      it('it should NOT POST question IF NOT LOGGED IN', (done) => {
+        const question = {
+          title: 'Why do people hate reading?',
+          body: 'Lorem ipsum dolor sit amet, consectetur',
+          username: 'TheoOkafor',
+        };
+        chai.request(app).post('/v1/questions')
+          .send(question).end((err, res) => {
+            chai.expect(res).to.have.status(403);
+            chai.expect(res.body).be.a('object');
+            chai.expect(res.body).to.have.property('auth');
+            chai.expect(res.body.error).to.equal('Token not provided');
+            done(err);
+          });
+      });
+    });
+
+    describe('POST /v1/questions', () => {
+      it('it should NOT POST question IF INCORRECT AUTH', (done) => {
+        const question = {
+          title: 'Why do people hate reading?',
+          body: 'Lorem ipsum dolor sit amet, consectetur',
+          username: 'TheoOkafor',
+        };
+        chai.request(app).post('/v1/questions')
+          .set('x-access-token', null)
+          .send(question).end((err, res) => {
+            chai.expect(res).to.have.status(401);
+            chai.expect(res.body).be.a('object');
+            chai.expect(res.body).to.have.property('error');
+            chai.expect(res.body.error).to
+              .equal('could not authenticate the token');
+            done(err);
+          });
+      });
+    });
+
+    describe('DELETE /v1/questions/100', () => {
+      it('it should NOT DELETE question 100', (done) => {
+        chai.request(app).delete('/v1/questions/100')
+          .set('x-access-token', token)
+          .end((err, res) => {
+            chai.expect(res).to.have.status(404);
+            chai.expect(res.body).be.a('object');
+            chai.expect(res.body.statusCode).to.equal(404);
+            chai.expect(res.body).to.have.property('error');
+            chai.expect(res.body.error).to.equal('Question 100 not found');
+            done(err);
+          });
+      });
+    });
+
+    describe('DELETE /v1/questions/3', () => {
+      it('it should NOT DELETE question 3', (done) => {
+        chai.request(app).delete('/v1/questions/3')
+          .set('x-access-token', token)
+          .end((err, res) => {
+            chai.expect(res).to.have.status(403);
+            chai.expect(res.body).be.a('object');
+            chai.expect(res.body.statusCode).to.equal(403);
+            chai.expect(res.body).to.have.property('error');
+            chai.expect(res.body.error).to
+              .equal('You are not authorised to complete this action');
+            done(err);
+          });
+      });
+    });
+
+    describe('DELETE /v1/questions/5', () => {
+      it('it should DELETE question 5', (done) => {
+        chai.request(app).delete('/v1/questions/5')
+          .set('x-access-token', token)
+          .end((err, res) => {
+            chai.expect(res).to.have.status(201);
+            chai.expect(res.body).be.a('object');
+            chai.expect(res.body.statusCode).to.equal(201);
+            chai.expect(res.body).to.have.property('message');
+            chai.expect(res.body.message).to.equal('Question 5 deleted');
+            done(err);
+          });
+      });
+    });
+
+  });
+});
+// Parent block for ANSWERS
+describe('POST Answers', () => {
+  // TESTS FOR ANSWERS
+  // 
+  describe('/POST /v1/questions', () => {
+      it('it should POST Question if all the required'
+       + ' fields are provided', (done) => {
+        const question = {
+          title: 'Why do people hate reading?',
+          body: 'Lorem ipsum dolor sit amet, consectetur',
+          username: 'TheoOkafor',
+        };
+        chai.request(app).post('/v1/questions')
+          .set('x-access-token', token)
+          .send(question).end((err, res) => {
+            chai.expect(res).to.have.status(201);
+            chai.expect(res.body).to.be.a('object');
+            chai.expect(res.body).to.have.property('message');
+            chai.expect(res.body).to.have.property('data');
+            chai.expect(res.body.statusCode).to.equal(201);
+            chai.expect(res.body.message).to.equal('New question added');
+            done(err);
+          });
+      });
+    });
+
+  describe('/POST /v1/questions/100/answers', () => {
+    it('it should NOT POST Answer if question does not exist', (done) => {
+      const answer = {
+        body: 'Lorem ipsum dolor sit amet, consectetur',
+        username: 'TheoOkafor',
+      };
+      chai.request(app).post('/v1/questions/100/answers')
+        .set('x-access-token', token)
+        .send(answer)
+        .end((err, res) => {
+          chai.expect(res).to.have.status(404);
+          chai.expect(res.body).to.be.a('object');
+          chai.expect(res.body).to.have.property('error');
+          chai.expect(res.body.error).to.equal('Question 100 Not Found');
+          done(err);
+        });
+    });
+  });
+
+  describe('POST /v1/questions/6/answers', () => {
+    it('it should NOT POST Answer if the BODY is Not provided', (done) => {
+      const answer = {
+        username: 'TheoOkafor',
+      };
+      chai.request(app).post('/v1/questions/6/answers')
+        .set('x-access-token', token)
+        .send(answer)
+        .end((err, res) => {
+          chai.expect(res).to.have.status(400);
+          chai.expect(res.body).to.be.a('object');
+          chai.expect(res.body).to.have.property('error');
+          chai.expect(res.body.statusCode).to.equal(400);
+          chai.expect(res.body.error).to.equal('Answer must have a body.');
+          done(err);
+        });
+    });
+  });
+
+  describe('POST /v1/questions/6/answers', () => {
+    it('it should POST answer if all the required'
+      + ' fields are provided', (done) => {
+
+      const answer = {
+        body: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit',
+        username: 'TheoOkafor',
+      };
+
+      chai.request(app).post('/v1/questions/6/answers')
+        .set('x-access-token', token)
+        .send(answer)
+        .end((err, res) => {
           chai.expect(res).to.have.status(201);
           chai.expect(res.body).to.be.a('object');
           chai.expect(res.body).to.have.property('message');
           chai.expect(res.body).to.have.property('data');
-          chai.expect(res.body).to.have.property('metadata');
-          chai.expect(res.body.status).to.equal('successful');
-          chai.expect(res.body.message).to.equal('New question added');
+          chai.expect(res.body.statusCode).to.equal(201);
+          chai.expect(res.body.message).to.equal('New answer added');
           done(err);
         });
+    });
+  });
+
+  describe('PUT /v1/questions/6/answers/19', () => {
+    it('it should ACCEPT answer if all the required'
+      + ' fields are provided', (done) => {
+      const answer = {
+        value: true
+      };
+      chai.request(app).put('/v1/questions/6/answers/19')
+        .set('x-access-token', token)
+        .send(answer)
+        .end((err, res) => {
+          chai.expect(res).to.have.status(201);
+          chai.expect(res.body).to.be.a('object');
+          chai.expect(res.body).to.have.property('message');
+          chai.expect(res.body.statusCode).to.equal(201);
+          chai.expect(res.body.message).to.equal('Answer 19 has been accepted');
+          done(err);
+        });
+    });
+  });
+
+  describe('PUT /v1/questions/6/answers/19', () => {
+    it('it should UNACCEPT answer if all the required'
+      + ' fields are provided', (done) => {
+      const answer = {
+        value: false
+      };
+      chai.request(app).put('/v1/questions/6/answers/19')
+        .set('x-access-token', token)
+        .send(answer)
+        .end((err, res) => {
+          //chai.expect(res).to.have.status(201);
+          //chai.expect(res.body).to.be.a('object');
+          chai.expect(res.body).to.have.property('message');
+          chai.expect(res.body.statusCode).to.equal(201);
+          chai.expect(res.body.message).to
+          .equal('Answer 19 has been unaccepted');
+          done(err);
+        });
+    });
+  });
+
+  describe('PUT /v1/questions/6/answers/19', () => {
+    it('it should NOT ACCEPT answer if invalid value'
+      + ' fields are provided', (done) => {
+      const answer = {
+        value: 'true'
+      };
+      chai.request(app).put('/v1/questions/6/answers/19')
+        .set('x-access-token', token)
+        .send(answer)
+        .end((err, res) => {
+          chai.expect(res).to.have.status(400);
+          chai.expect(res.body).to.be.a('object');
+          chai.expect(res.body).to.have.property('error');
+          chai.expect(res.body.statusCode).to.equal(400);
+          chai.expect(res.body.error).to
+            .equal('Expected a request body with {value: true || false}');
+          done(err);
+        });
+    });
+  });
+
+  describe('PUT /v1/questions/61/answers/1', () => {
+    it('it should NOT ACCEPT answer if No Question', (done) => {
+      const answer = {
+        value: true
+      };
+      chai.request(app).put('/v1/questions/61/answers/19')
+        .set('x-access-token', token)
+        .send(answer)
+        .end((err, res) => {
+          chai.expect(res).to.have.status(404);
+          chai.expect(res.body).to.be.a('object');
+          chai.expect(res.body).to.have.property('error');
+          chai.expect(res.body.error).to.equal('Question 61 not found');
+          done(err);
+        });
+    });
+  });
+
+  describe('PUT /v1/questions/6/answers/31', () => {
+    it('it should NOT ACCEPT answer if No Answer'
+      + ' fields are provided', (done) => {
+      const answer = {
+        value: true
+      };
+      chai.request(app).put('/v1/questions/6/answers/31')
+        .set('x-access-token', token)
+        .send(answer)
+        .end((err, res) => {
+          chai.expect(res).to.have.status(404);
+          chai.expect(res.body).to.be.a('object');
+          chai.expect(res.body).to.have.property('error');
+          chai.expect(res.body.error).to.equal('Answer 31 not found');
+          done(err);
+        });
+    });
+  });
+
+});
+
+
+// Parent block for AUTHENTICATION
+// 
+
+describe('USER AUTHENTICATION', () => {
+  // SIGN UP
+  describe('USER SIGN-UP', () => {
+    describe('POST /v1/auth/signup', () => {
+      it('it should SIGNUP user if required details are provided', (done) => {
+        const userReq = {
+          username: 'umeryui',
+          email: 'gheti31@yahoo.com',
+          password: 'password',
+        };
+        chai.request(app).post('/v1/auth/signup')
+          .send(userReq).end((err, res) => {
+            chai.expect(res).to.have.status(201);
+            chai.expect(res.body).to.be.a('object');
+            chai.expect(res.body).to.have.property('message');
+            chai.expect(res.body).to.have.property('data');
+            chai.expect(res.body.statusCode).to.equal(201);
+            chai.expect(res.body.message).to
+              .equal('New user created.');
+            done(err);
+          });
       });
     });
 
-    describe(`/GET /v1/questions/${questions[questions.length - 1].id}`, () => {
-      it(`it should GET the question ${questions[questions.length - 1].id}\
-       that was just POSTed`, (done) => {
-        chai.request(app).get(`/v1/questions/${questions[questions.length - 1].id}`)
-          .end((err, res) => {
+    describe('POST /v1/auth/signup', () => {
+      it('it should NOT SIGNUP user if EMAIL is not provided', (done) => {
+        const userReq = {
+          username: 'umeryui',
+          password: 'password',
+        };
+        chai.request(app).post('/v1/auth/signup')
+          .send(userReq).end((err, res) => {
+            chai.expect(res).to.have.status(400);
+            chai.expect(res.body).to.be.a('object');
+            chai.expect(res.body).to.have.property('error');
+            chai.expect(res.body.statusCode).to.equal(400);
+            chai.expect(res.body.error).to
+              .equal('Username, email and password are all required');
+            done(err);
+          });
+      });
+    });
+
+    describe('POST /v1/auth/signup', () => {
+      it('it should NOT SIGNUP user if EMAIL provided is bad', (done) => {
+        const userReq = {
+          email: 'theookafor@theo',
+          username: 'theo',
+          password: 'password',
+        };
+        chai.request(app).post('/v1/auth/signup')
+          .send(userReq).end((err, res) => {
+            chai.expect(res).to.have.status(400);
+            chai.expect(res.body).to.be.a('object');
+            chai.expect(res.body).to.have.property('error');
+            chai.expect(res.body.statusCode).to.equal(400);
+            chai.expect(res.body.error).to
+              .equal('The email provided is invalid');
+            done(err);
+          });
+      });
+    });
+
+    describe('POST /v1/auth/signup', () => {
+      it('it should NOT SIGNUP user if EMAIL is not provided', (done) => {
+        const userReq = {
+          username: 'umeryui',
+          password: 'password',
+        };
+        chai.request(app).post('/v1/auth/signup')
+          .send(userReq).end((err, res) => {
+            chai.expect(res).to.have.status(400);
+            chai.expect(res.body).to.be.a('object');
+            chai.expect(res.body).to.have.property('error');
+            chai.expect(res.body.statusCode).to.equal(400);
+            chai.expect(res.body.error).to
+              .equal('Username, email and password are all required');
+            done(err);
+          });
+      });
+    });
+
+    describe('POST /v1/auth/signup', () => {
+      it('it should NOT SIGNUP user if EMAIL already exists', (done) => {
+        const userReq = {
+          username: 'Nchabomo',
+          email: 'gheti31@yahoo.com',
+          password: 'password',
+        };
+        chai.request(app).post('/v1/auth/signup')
+          .send(userReq).end((err, res) => {
+            chai.expect(res).to.have.status(409);
+            chai.expect(res.body).to.be.a('object');
+            chai.expect(res.body).to.have.property('error');
+            chai.expect(res.body.statusCode).to.equal(409);
+            chai.expect(res.body.error).to
+              .equal('Account already exists, consider signing in');
+            done(err);
+          });
+      });
+    });
+
+    describe('POST /v1/auth/signup', () => {
+      it('it should NOT SIGNUP user if USERNAME already exists', (done) => {
+        const userReq = {
+          username: 'umeryui',
+          email: 'gheti312@yahoo.com',
+          password: 'password',
+        };
+        chai.request(app).post('/v1/auth/signup')
+          .send(userReq).end((err, res) => {
+            chai.expect(res).to.have.status(409);
+            chai.expect(res.body).to.be.a('object');
+            chai.expect(res.body).to.have.property('error');
+            chai.expect(res.body.statusCode).to.equal(409);
+            chai.expect(res.body.error).to
+              .equal('Account already exists, consider signing in');
+            done(err);
+          });
+      });
+    });
+  });
+
+  // SIGN IN
+  describe('USER SIGNIN', () => {
+    describe('POST /v1/auth/signin', () => {
+      it('it should SIGNIN user if required details are provided', (done) => {
+        const userReq = {
+          username: 'gheti31@yahoo.com',
+          password: 'password',
+        };
+        chai.request(app).post('/v1/auth/signin')
+          .send(loginDetails).end((err, res) => {
             chai.expect(res).to.have.status(200);
-            chai.expect(res.body).be.a('object');
-            chai.expect(res.body.status).to.equal('successful');
+            chai.expect(res.header).to.have.property('x-access-token');
+            chai.expect(res.body).to.be.a('object');
             chai.expect(res.body).to.have.property('message');
             chai.expect(res.body).to.have.property('data');
+            chai.expect(res.body.statusCode).to.equal(200);
+            chai.expect(res.body.message).to
+              .equal('User has been logged in');
+            done(err);
+          });
+      });
+    });
+
+    describe('POST /v1/auth/signin', () => {
+      it('it should NOT SIGNIN user if EMAIL provided is bad', (done) => {
+        const userReq = {
+          email: 'theookafor@theo',
+          password: 'password',
+        };
+        chai.request(app).post('/v1/auth/signin')
+          .send(userReq).end((err, res) => {
+            chai.expect(res).to.have.status(400);
+            chai.expect(res.body).to.be.a('object');
+            chai.expect(res.body).to.have.property('error');
+            chai.expect(res.body.statusCode).to.equal(400);
+            chai.expect(res.body.error).to
+              .equal('The email provided is invalid');
+            done(err);
+          });
+      });
+    });
+
+    describe('POST /v1/auth/signin', () => {
+      it('it should NOT SIGNIN user if PASSWORD is incorrect', (done) => {
+        const userReq = {
+          email: 'theo@email.com',
+          password: 'password1',
+        };
+        chai.request(app).post('/v1/auth/signin')
+          .send(userReq).end((err, res) => {
+            chai.expect(res).to.have.status(401);
+            chai.expect(res.body).to.be.a('object');
+            chai.expect(res.body).to.have.property('error');
+            chai.expect(res.body.statusCode).to.equal(401);
+            chai.expect(res.body.error).to
+              .equal('Incorrect password');
+            done(err);
+          });
+      });
+    });
+
+    describe('POST /v1/auth/signin', () => {
+      it('it should NOT SIGNIN user if USERNAME or EMAIL is not provided', (done) => {
+        const userReq = {
+          password: 'password',
+        };
+        chai.request(app).post('/v1/auth/signin')
+          .send(userReq).end((err, res) => {
+            chai.expect(res).to.have.status(400);
+            chai.expect(res.body).to.be.a('object');
+            chai.expect(res.body).to.have.property('error');
+            chai.expect(res.body.statusCode).to.equal(400);
+            chai.expect(res.body.error).to
+              .equal('Username, email and password are all required');
+            done(err);
+          });
+      });
+    });
+
+    describe('POST /v1/auth/signin', () => {
+      it('it should NOT SIGNIN user if EMAIL does not exists', (done) => {
+        const userReq = {
+          email: 'theo234@yahoo.com',
+          password: 'password',
+        };
+        chai.request(app).post('/v1/auth/signin')
+          .send(userReq).end((err, res) => {
+            chai.expect(res).to.have.status(404);
+            chai.expect(res.body).to.be.a('object');
+            chai.expect(res.body).to.have.property('error');
+            chai.expect(res.body.statusCode).to.equal(404);
+            chai.expect(res.body.error).to
+              .equal('User not found, consider signing up.');
+            done(err);
+          });
+      });
+    });
+
+    describe('POST /v1/auth/logout', () => {
+      it('it SIGNOUT user', (done) => {        
+        chai.request(app).get('/v1/auth/logout')
+          .end((err, res) => {
+            chai.expect(res).to.have.status(200);
+            chai.expect(res.body).to.be.a('object');
+            chai.expect(res.header['x-access-token']).to.equal('null');
+            chai.expect(res.body.statusCode).to.equal(200);
+            chai.expect(res.body.message).to.equal('User has been logged out');
             done(err);
           });
       });
     });
   });
 });
-// Parent block for ANSWERS
-describe('POST Answers', () => {
-  // TESTS FOR ANSWERS
-  describe('/POST /v1/questions/16/answers', () => {
-    it('it should NOT POST Answer if question does not exist', (done) => {
-      const answer = {
-        body: 'Lorem ipsum dolor sit amet, consectetur',
-        username: 'TheoOkafor',
-      };
-      chai.request(app).post('/v1/questions/16/answers').send(answer).end((err, res) => {
-        chai.expect(res).to.have.status(404);
-        chai.expect(res.body).to.be.a('object');
-        chai.expect(res.body).to.have.property('message');
-        chai.expect(res.body.message).to.equal('Question 16 Not Found');
-        done(err);
-      });
+
+// Parent block for USERS
+describe('GET User', () => {
+  // TESTS FOR USER
+  describe('POST /v1/users/2', () => {
+    it('it should GET USER', (done) => {
+      chai.request(app).get('/v1/users/2')
+        .send(loginDetails).end((err, res) => {
+          chai.expect(res).to.have.status(200);
+          chai.expect(res.body).to.be.a('object');
+          chai.expect(res.body).to.have.property('message');
+          chai.expect(res.body).to.have.property('data');
+          chai.expect(res.body.statusCode).to.equal(200);
+          chai.expect(res.body.message).to.equal('User found');
+          done(err);
+        });
     });
   });
 
-  describe('/POST /v1/questions/1/answers', () => {
-    it('it should NOT POST Answer if the BODY is Not provided', (done) => {
-      const answer = {
-        username: 'TheoOkafor',
-      };
-      chai.request(app).post('/v1/questions/1/answers').send(answer).end((err, res) => {
-        chai.expect(res).to.have.status(400);
-        chai.expect(res.body).to.be.a('object');
-        chai.expect(res.body).to.have.property('message');
-        chai.expect(res.body.status).to.equal('failed');
-        chai.expect(res.body.message).to.equal('Bad Request. Answer must have a body.');
-        done(err);
-      });
+  describe('POST /v1/users/100', () => {
+    it('it should not GET USER that does not exist', (done) => {
+      chai.request(app).get('/v1/users/100')
+        .send(loginDetails).end((err, res) => {
+          chai.expect(res).to.have.status(404);
+          chai.expect(res.body).to.be.a('object');
+          chai.expect(res.body).to.have.property('error');
+          chai.expect(res.body.statusCode).to.equal(404);
+          chai.expect(res.body.error).to.equal('User not found');
+          done(err);
+        });
     });
   });
 
-  describe(`POST /v1/questions/${questions[questions.length - 1].id}`, () => {
-      it(`it should POST the answer to question that was just POSTed`, (done) => {
-        const answer = {
-          body: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit',
-          username: 'TheoOkafor',
-        };
-        chai.request(app).post(`/v1/questions/${questions[questions.length - 1].id}/answers`)
-          .send(answer).end((err, res) => {
-            chai.expect(res).to.have.status(201);
-            chai.expect(res.body).be.a('object');
-            chai.expect(res.body).to.have.property('message');
-            chai.expect(res.body).to.have.property('data');
-            chai.expect(res.body).to.have.property('metadata');
-            chai.expect(res.body.status).to.equal('successful');
-            chai.expect(res.body.message).to.equal('New answer added.');
-            done(err);
-          });
-      });
-    })
-
-  describe('/POST /v1/questions/1/answers', () => {
-    it('it should POST answer if all the required fields are provided', (done) => {
-      const answer = {
-        body: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit',
-        username: 'TheoOkafor',
-      };
-      chai.request(app).post('/v1/questions/1/answers').send(answer).end((err, res) => {
-        chai.expect(res).to.have.status(201);
-        chai.expect(res.body).to.be.a('object');
-        chai.expect(res.body).to.have.property('message');
-        chai.expect(res.body).to.have.property('data');
-        chai.expect(res.body).to.have.property('metadata');
-        chai.expect(res.body.status).to.equal('successful');
-        chai.expect(res.body.message).to.equal('New answer added.');
-        done(err);
-      });
-    });
-  });
 });
