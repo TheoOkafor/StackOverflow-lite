@@ -24,12 +24,17 @@ Assuming you already have `git` preinstalled in your local engine,
 ### Testable URIs
 |HTTP Verb|Endpoint         |Description                   |
 |---------|-----------------|------------------------------|
-|GET      | v1/questions    | Fetch all questions          |
-|GET      | v1/questions/id | Fetch a particular question  |
-|POST     | v1/questions    | Add a question               |
-|POST     | v1/questions/id | Add an answer to a question  |
+|GET      | /v1/questions    | Fetch all questions          |
+|GET      | /v1/questions/:id | Fetch a particular question  |
+|POST     | /v1/questions    | Add a question               |
+|POST     | /v1/questions/:id | Add an answer to a question  |
+|DELETE | /v1/questions/:id | Delete a question |
+|PUT | /v1/questions/:id/answers/:id | Accept an answer |
+|GET | /v1/users/:id | Fetch a user with the id |
+
+Test the endpoints Using POSTMAN
 
 ### Live App
 UI - https://theookafor.github.io/StackOverflow-lite/UI/home.html
 
-API - https://stackoverflow-by-theo.herokuapp.com/
+API - https://stackoverflow-by-theo1.herokuapp.com/
