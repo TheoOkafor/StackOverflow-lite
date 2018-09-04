@@ -29,6 +29,7 @@ app.use('/v1', urlErrHandler);
 // error handler
 app.use((err, req, res, next) => {
   // render the error
+
   res.status(err.status || 500);
   res.json(err.body || {
     statusCode: 500,

@@ -8,6 +8,7 @@ import express from 'express';
  */
 const urlErrHandler = (req, res) => {
   const err = new Error('Bad URL and/or request method');
+
   res.status(400);
   res.json({
     statusCode: 400,

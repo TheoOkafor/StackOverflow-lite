@@ -290,10 +290,12 @@ describe('POST Answers', () => {
   describe('POST /v1/questions/6/answers', () => {
     it('it should POST answer if all the required'
       + ' fields are provided', (done) => {
+
       const answer = {
         body: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit',
         username: 'TheoOkafor',
       };
+
       chai.request(app).post('/v1/questions/6/answers')
         .set('x-access-token', token)
         .send(answer)
