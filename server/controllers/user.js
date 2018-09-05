@@ -11,7 +11,7 @@ const user = (req, res, next) => {
   };
 	db.multi(request.text, request.values) 
 		.then((user) => {
-    if (user[0].length<1) { 
+    	if (user[0].length<1) { 
 	    	res.status(404);
 	    	res.json({
 	    		statusCode: 404,
@@ -19,11 +19,18 @@ const user = (req, res, next) => {
 	    	});
 	    	return res;
 	    } else {
+	    	const userDetails = user[0][0];
+	    	const data = {
+	    		userDetails,
+	    	};
+	    	data.userDetails.questions= user[1];
+	    	data.userDetails.answers= user[2];
+
 		    res.status(200);
 		    res.json({
 		    		statusCode: 200,
 		    		message: 'User found',
-		    		data: user,
+		    		data,
 		    });
 		    return res;
 		  }

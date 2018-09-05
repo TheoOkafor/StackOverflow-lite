@@ -13,27 +13,12 @@ const deleteQuestion = (req, res) => {
 
   db.result(request, id)
     .then((result) => {
-      /**
-       * Check whether the result from the DB has a rowCount property
-       * with value less than 1 which means that the question is not there
-       * @param  {boolean} result.rowCount < 1 - ```true``` or ```false```
-       * @return {JSON | object} - An error message or a 'created' response.
-       */
-      if (result.rowCount < 1) {
-        res.status(404);// Set status to 404
-        res.json({
-          statusCode: 404,
-          error: `Question ${id} not found`,
-        });
-        return res;
-      } else {
-        res.status(201);
-        res.json({
-          statusCode: 201,
-          message: `Question ${id} deleted`,
-        });
-        return res;
-      }
+      res.status(201);
+      res.json({
+        statusCode: 201,
+        message: `Question ${id} deleted`,
+      });
+      return res;
     })
 
     /**
@@ -41,7 +26,7 @@ const deleteQuestion = (req, res) => {
      * @param  {Object} error - contains the details on the error
      * @return {JSON | object} - Contains the error message respons to the user
      */
-    .catch(error => {
+    .catch((error) => {
       res.status(500);// Set status to 500
       res.json({
         statusCode: 500,

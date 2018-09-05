@@ -8,7 +8,6 @@ import db from '../db';
  * @return {JSON | object}     - Error Message or Success message.
  */
 const postQuestion = (req, res) => {
-  console.log('>>>' + req.username);
   const reqBody = req.body;
   const userid = req.userId;
   const timeNow = new Date().toUTCString();
@@ -17,17 +16,22 @@ const postQuestion = (req, res) => {
    * @type {Object}
    */
   const request = {
-    text: 'INSERT INTO questions (title, body, timeSubmitted, username, userid)'
-    + ' VALUES ($1, $2, $3, $4, $5) RETURNING id',
+    text: `INSERT INTO questions (title, body, timeSubmitted, username, userid)
+      VALUES ($1, $2, $3, $4, $5) RETURNING id`,
     values: [reqBody.title, reqBody.body, timeNow, req.username, userid],
   };
   db.one(request.text, request.values)
     .then(data => {
+      const result = {
+        questionid: data.id,
+        title: reqBody.title,
+        body: reqBody.body,
+      }
       res.status(201);
       res.json({
         statusCode: 201,
         message: 'New question added',
-        data: reqBody
+        data: result,
       });
     })
     /**
@@ -36,7 +40,6 @@ const postQuestion = (req, res) => {
      * @return {JSON | object}  - contains error 500 message sent to the user
      */
     .catch(error => {
-      console.log(error);
       res.status(500);// Set status to 500
       res.json({
         statusCode: 500,

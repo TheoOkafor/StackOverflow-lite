@@ -15,21 +15,20 @@ const deleteQuestionValidate = (req, res, next) => {
   const reqId = parseInt(req.userId);
 
   db.any('SELECT * FROM questions WHERE id = $1', [id])
-    .then(data => {
-      let ownerId = parseInt(data[0].userid);
+    .then((data) => {
+      const ownerId = parseInt(data[0].userid);
 
       if (ownerId === reqId) {
         return next();
-      } else {
-        res.status(403);
-        res.json({
-          statusCode: 403,
-          error: 'You are not authorised to complete this action',
-        });
-        return res;
       }
+      res.status(403);
+      res.json({
+        statusCode: 403,
+        error: 'You are not authorised to complete this action',
+      });
+      return res;
     })
-    .catch(error => {
+    .catch((error) => {
       res.status(404);
       res.json({
         statusCode: 404,

@@ -6,13 +6,13 @@ import { app } from '../app';
 chai.use(chaiHttp);
 
 const loginDetails = {
-  email: 'theo@email.com',
+  email: 'testertheo@email.com',
   password: 'password',
 };
 
 const registerDetails = {
-  email: 'theo@email.com',
-  username: 'theo',
+  email: 'testertheo@email.com',
+  username: 'testertheo',
   password: 'password',
 };
 
@@ -32,6 +32,19 @@ describe('Questions', () => {
           chai.expect(res.body.statusCode).to.equal(400);
           chai.expect(res.body.error).to
             .equal('Bad URL and/or request method');
+          done(err);
+        });
+      });
+    });
+
+    describe('GET /v1/questions', () => {
+      it('it should return error 405', (done) => {
+        chai.request(app).patch('/v1/questions').end((err, res) => {
+          chai.expect(res).to.have.status(405);
+          chai.expect(res.body).be.a('object');
+          chai.expect(res.body.statusCode).to.equal(405);
+          chai.expect(res.body.error).to
+            .equal('Current HTTP request method is not allowed on this URI');
           done(err);
         });
       });
@@ -60,7 +73,7 @@ describe('Questions', () => {
           chai.expect(res.body.statusCode).to.equal(200);
           chai.expect(res.body).to.have.property('message');
           chai.expect(res.body.message).to.equal('Question 2 found');
-          chai.expect(res.body).to.have.property('data');
+          chai.expect(res.body).to.have.property('result');
           done(err);
         });
       });
@@ -110,6 +123,28 @@ describe('Questions', () => {
             chai.expect(res.body).to.have.property('error');
             chai.expect(res.body.error).to
             .equal(`Question must have title and body`);
+            done(err);
+          });
+      });
+    });
+
+    describe('/POST /v1/questions', () => {
+      it('it should NOT POST Question if the TITLE provided'
+        + ' is empty', (done) => {
+        const question = {
+          title: '     ',
+          body: 'hghsg hsghsdg shdgshdgssgdh',
+          username: 'TheoOkafor',
+        };
+        chai.request(app).post('/v1/questions')
+          .set('x-access-token', token)
+          .send(question)
+          .end((err, res) => {
+            chai.expect(res).to.have.status(400);
+            chai.expect(res.body).to.be.a('object');
+            chai.expect(res.body).to.have.property('error');
+            chai.expect(res.body.error).to
+            .equal(`Question title and body must not be empty`);
             done(err);
           });
       });
@@ -269,6 +304,27 @@ describe('POST Answers', () => {
   });
 
   describe('POST /v1/questions/6/answers', () => {
+    it('it should NOT POST Answer if the BODY is empty', (done) => {
+      const answer = {
+        body: '    ',
+        username: 'TheoOkafor',
+      };
+      chai.request(app).post('/v1/questions/6/answers')
+        .set('x-access-token', token)
+        .send(answer)
+        .end((err, res) => {
+          chai.expect(res).to.have.status(400);
+          chai.expect(res.body).to.be.a('object');
+          chai.expect(res.body).to.have.property('error');
+          chai.expect(res.body.statusCode).to.equal(400);
+          chai.expect(res.body.error).to
+            .equal('Answer body must not be empty');
+          done(err);
+        });
+    });
+  });
+
+  describe('POST /v1/questions/6/answers', () => {
     it('it should NOT POST Answer if the BODY is Not provided', (done) => {
       const answer = {
         username: 'TheoOkafor',
@@ -281,7 +337,7 @@ describe('POST Answers', () => {
           chai.expect(res.body).to.be.a('object');
           chai.expect(res.body).to.have.property('error');
           chai.expect(res.body.statusCode).to.equal(400);
-          chai.expect(res.body.error).to.equal('Answer must have a body.');
+          chai.expect(res.body.error).to.equal('Answer must have a body');
           done(err);
         });
     });
@@ -374,6 +430,30 @@ describe('POST Answers', () => {
     });
   });
 
+  describe('PUT /v1/questions/6/answers/19', () => {
+    it('it should NOT ACCEPT answer if user is not authenticated', (done) => {
+      const answer = {
+        value: true,
+      };
+      const fakeToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9'
+      +'.eyJpZCI6OCwiaWF0IjoxNTM2MDg1NTczLCJleHAiOjE1MzYxNzE5NzN9'
+      +'.yEE9UulijewrpLKmzL5o4_sE8dPgqLT0GGnsXyrJWb0';
+
+      chai.request(app).put('/v1/questions/6/answers/19')
+        .set('x-access-token', fakeToken)
+        .send(answer)
+        .end((err, res) => {
+          chai.expect(res).to.have.status(403);
+          chai.expect(res.body).to.be.a('object');
+          chai.expect(res.body).to.have.property('error');
+          chai.expect(res.body.statusCode).to.equal(403);
+          chai.expect(res.body.error).to
+            .equal('You are not authorised to complete this action');
+          done(err);
+        });
+    });
+  });
+
   describe('PUT /v1/questions/61/answers/1', () => {
     it('it should NOT ACCEPT answer if No Question', (done) => {
       const answer = {
@@ -461,6 +541,27 @@ describe('USER AUTHENTICATION', () => {
     });
 
     describe('POST /v1/auth/signup', () => {
+      it(`it should NOT SIGNUP user if EMAIL or USERNAME
+        is provided is just spaces`, (done) => {
+        const userReq = {
+          email: '     ',
+          username: 'umeryui',
+          password: 'password',
+        };
+        chai.request(app).post('/v1/auth/signup')
+          .send(userReq).end((err, res) => {
+            chai.expect(res).to.have.status(400);
+            chai.expect(res.body).to.be.a('object');
+            chai.expect(res.body).to.have.property('error');
+            chai.expect(res.body.statusCode).to.equal(400);
+            chai.expect(res.body.error).to
+              .equal('Username, email and/or password should not be empty');
+            done(err);
+          });
+      });
+    });
+
+    describe('POST /v1/auth/signup', () => {
       it('it should NOT SIGNUP user if EMAIL provided is bad', (done) => {
         const userReq = {
           email: 'theookafor@theo',
@@ -475,6 +576,69 @@ describe('USER AUTHENTICATION', () => {
             chai.expect(res.body.statusCode).to.equal(400);
             chai.expect(res.body.error).to
               .equal('The email provided is invalid');
+            done(err);
+          });
+      });
+    });
+
+    describe('POST /v1/auth/signup', () => {
+      it(`it should NOT SIGNUP user if USERNAME 
+          provided is too long`, (done) => {
+        const userReq = {
+          email: 'theookafor@theo.com',
+          username: 'theowhisterrastatfaraiyihsgdhgjgjgnfgfh',
+          password: 'password',
+        };
+        chai.request(app).post('/v1/auth/signup')
+          .send(userReq).end((err, res) => {
+            chai.expect(res).to.have.status(400);
+            chai.expect(res.body).to.be.a('object');
+            chai.expect(res.body).to.have.property('error');
+            chai.expect(res.body.statusCode).to.equal(400);
+            chai.expect(res.body.error).to
+              .equal('The username provided is too long. (max-length: 19)');
+            done(err);
+          });
+      });
+    });
+
+    describe('POST /v1/auth/signup', () => {
+      it(`it should NOT SIGNUP user if USERNAME 
+          provided is too short`, (done) => {
+        const userReq = {
+          email: 'theookafor@theo.com',
+          username: 'theo',
+          password: 'password',
+        };
+        chai.request(app).post('/v1/auth/signup')
+          .send(userReq).end((err, res) => {
+            chai.expect(res).to.have.status(400);
+            chai.expect(res.body).to.be.a('object');
+            chai.expect(res.body).to.have.property('error');
+            chai.expect(res.body.statusCode).to.equal(400);
+            chai.expect(res.body.error).to
+              .equal('The username provided is too short. (min-length: 6)');
+            done(err);
+          });
+      });
+    });
+
+    describe('POST /v1/auth/signup', () => {
+      it(`it should NOT SIGNUP user if PASSWORD 
+          provided is too short`, (done) => {
+        const userReq = {
+          email: 'theookafor@theo.com',
+          username: 'theotester',
+          password: 'pass',
+        };
+        chai.request(app).post('/v1/auth/signup')
+          .send(userReq).end((err, res) => {
+            chai.expect(res).to.have.status(400);
+            chai.expect(res.body).to.be.a('object');
+            chai.expect(res.body).to.have.property('error');
+            chai.expect(res.body.statusCode).to.equal(400);
+            chai.expect(res.body.error).to
+              .equal('The password provided is too short. (min-length: 6)');
             done(err);
           });
       });
@@ -583,9 +747,28 @@ describe('USER AUTHENTICATION', () => {
     });
 
     describe('POST /v1/auth/signin', () => {
+      it('it should NOT SIGNIN user if EMAIL or password provided is empty', (done) => {
+        const userReq = {
+          email: '       ',
+          password: 'password',
+        };
+        chai.request(app).post('/v1/auth/signin')
+          .send(userReq).end((err, res) => {
+            chai.expect(res).to.have.status(400);
+            chai.expect(res.body).to.be.a('object');
+            chai.expect(res.body).to.have.property('error');
+            chai.expect(res.body.statusCode).to.equal(400);
+            chai.expect(res.body.error).to
+              .equal('email or password should not be empty');
+            done(err);
+          });
+      });
+    });
+
+    describe('POST /v1/auth/signin', () => {
       it('it should NOT SIGNIN user if PASSWORD is incorrect', (done) => {
         const userReq = {
-          email: 'theo@email.com',
+          email: 'testertheo@email.com',
           password: 'password1',
         };
         chai.request(app).post('/v1/auth/signin')
@@ -614,7 +797,7 @@ describe('USER AUTHENTICATION', () => {
             chai.expect(res.body).to.have.property('error');
             chai.expect(res.body.statusCode).to.equal(400);
             chai.expect(res.body.error).to
-              .equal('Username, email and password are all required');
+              .equal('email and password are required');
             done(err);
           });
       });

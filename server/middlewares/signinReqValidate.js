@@ -14,24 +14,31 @@ import * as emailValidator from 'email-validator';
  */
 const signinReqValidate = (req, res, next) => {
   const reqBody = req.body;
-  // Check if all fields are provided and are valid:
-  const invalidReq = !reqBody.email.trim() || !reqBody.password.trim();
+  if ( reqBody.email && reqBody.password) {
+    // Check if all fields are provided and are valid:
+    const invalidReq = !reqBody.email.trim() || !reqBody.password.trim();
 
-
-  if (invalidReq) {
-    res.status(400);
-    res.json({
-      statusCode: 400,
-      error: 'email and password are all required',
-    });
-  } else if (!emailValidator.validate(reqBody.email)) {
-    res.status(400);
-    res.json({
-      statusCode: 400,
-      error: 'The email provided is invalid',
-    });
+    if (invalidReq) {
+      res.status(400);
+      res.json({
+        statusCode: 400,
+        error: 'email or password should not be empty',
+      });
+    } else if (!emailValidator.validate(reqBody.email)) {
+      res.status(400);
+      res.json({
+        statusCode: 400,
+        error: 'The email provided is invalid',
+      });
+    } else {
+      return next();
+    }
   } else {
-    return next();
+    res.status(400);
+    res.json({
+      statusCode: 400,
+      error: 'email and password are required',
+    });
   }
 };
 

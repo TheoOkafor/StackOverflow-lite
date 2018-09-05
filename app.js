@@ -5,7 +5,6 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import { router } from './server/routes';
 import authRouter from './server/routes/auth';
-import { fetchDocs } from './server/controllers/fetchDocs';
 import getValidate from './server/middlewares/getValidate';
 import { urlErrHandler } from './server/middlewares/urlErrHandler';
 
@@ -24,7 +23,6 @@ app.use(cors());
 
 app.use('/v1', router);
 app.use('/v1/auth', authRouter);
-app.use('/v1/docs', fetchDocs);
 app.use('/v1', getValidate, urlErrHandler);
 
 // error handler
