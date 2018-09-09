@@ -62,6 +62,7 @@ const signup = (req, res) => {
         data: {
           userID: data.id,
           username: username,
+          'x-access-token': token
         },
       });
     })

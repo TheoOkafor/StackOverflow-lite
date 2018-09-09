@@ -31,15 +31,6 @@ const signup = (req, res) => {
     ],
   };
 
-  /**
-   * [userData - The public part of the user request data]
-   * @type {Object}
-   */
-  const userData = {
-    username: req.body.username,
-    email: req.body.email,
-  };
-
   db.one(request.text, request.values)
     .then((data) => {
       const validPassword = bcrypt.compareSync(password, data.password);
@@ -56,6 +47,16 @@ const signup = (req, res) => {
       		config.secret,
       		{ expiresIn: 86400 }, // expires in 24hours
       	);
+
+        /**
+         * [userData - The public part of the user request data]
+         * @type {Object}
+         */
+        const userData = {
+          id: data.id,
+          username: data.username,
+          'x-access-token': token,
+        };
         res.status(200);
         res.header('x-access-token', token);
         res.json({
