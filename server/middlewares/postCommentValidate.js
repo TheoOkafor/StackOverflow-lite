@@ -9,8 +9,8 @@ import db from '../db';
  *  or controller
  * @return {JSON | object} - Error message or next callback
  */
-const postAnswerValidate = (req, res, next) => {
-  const requestId = req.params.idQ;
+const postCommentValidate = (req, res, next) => {
+  const requestId = req.params.id;
   const reqBody = req.body;
 
   if (reqBody.body) {
@@ -26,7 +26,7 @@ const postAnswerValidate = (req, res, next) => {
       res.status(400);
       res.json({
         statusCode: 400,
-        error: 'Answer body must not be empty',
+        error: 'Comment body must not be empty',
       });
     } else {
       db.any('SELECT username FROM users WHERE id = $1', [req.userId])
@@ -40,10 +40,10 @@ const postAnswerValidate = (req, res, next) => {
     res.status(400);
     res.json({
       statusCode: 400,
-      error: 'Answer must have a body',
+      error: 'Comment must have a body',
     });
     return res;
   }
 };
 
-export { postAnswerValidate };
+export default postCommentValidate;
