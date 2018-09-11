@@ -31,6 +31,7 @@ const fetchAllQuestionsCtrl = (req, res, next) => {
           }
         });
         question.answers = answers;
+        question.numAnswers = answers.length;
         return question;
       });
       res.status(200);
