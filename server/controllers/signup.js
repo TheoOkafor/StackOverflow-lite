@@ -87,11 +87,7 @@ const signup = (req, res) => {
           error: 'Account already exists, consider signing in',
         });
       } else {
-        res.status(500);
-        res.json({
-          statusCode: 500,
-          error: 'Server could not register user',
-        });
+        console.log(error);
       }
     }); 
 };

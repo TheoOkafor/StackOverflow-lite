@@ -12,36 +12,63 @@ import db from '../db';
 
 const fetchQuestionCtrl = (req, res) => {
   const requestId = parseInt(req.params.id);
-  /**
-   * The SQL statement
-   * @type {Object}
-   */
-  const query = {
-    name: 'fetch-question',
-    text: `SELECT * FROM questions WHERE id = $1;
-      SELECT * FROM answers WHERE questionid = $1`,
-    values: [requestId],
-  };
 
-  db.multi(query.text, requestId)
-    .then((data) => {
-      if (data[0].length === 0) {
+  db.task('get-question-everything', t => {
+    return t.one(`SELECT * FROM questions WHERE id = $1;`, requestId)
+      .then(result => {
+        const question = [];
+        question.push(result);
+        return t.map(`SELECT * FROM answers WHERE questionid=$1;`, requestId, answer => {
+          return t.any('SELECT * FROM votes WHERE answerid=$1', answer.id)
+            .then(votes => {
+              // Makes the array of downvotes in each answer
+              let downvotes = votes.filter(voteItem => {
+                if(voteItem.vote === 'downvote'){
+                  return true;
+                }
+              });
+              // Makes the array of upvotes in each answer
+              let upvotes = votes.filter(voteItem => {
+                if(voteItem.vote === 'upvote'){
+                  return true;
+                }
+              });
+
+              let votesCount = upvotes.length - downvotes.length;
+
+              answer.upvotes = upvotes.length;
+              answer.downvotes = downvotes.length;
+              answer.votesCount = votesCount;
+              question.push(answer);
+              return question;
+            })
+        });
+      }).then(t.batch);
+  })
+    .then(output => {
+      if (output.length<1) { 
         res.status(404);// Set status to 404 as question was not found
         res.json({
           statusCode: 404,
           error: `Question ${requestId} Not Found`,
         });
+        return res;
       } else {
-        const result = {
-          question: data[0][0],
-        };
-        result.question.answers = data[1];
+        let result = output[0];
+        let answers = [];
+        for (let i=1; i<result.length; i++) {
+          answers.push(result[i]);
+        }
 
+        let data = result[0];
+        data.answers = answers;
+        res.status(200);
         res.json({
           statusCode: 200,
           message: `Question ${requestId} found`,
-          result,
+          data,
         });
+        return res;
       }
     })
     /**
@@ -51,6 +78,7 @@ const fetchQuestionCtrl = (req, res) => {
      *  to the user
      */
     .catch((error) => {
+      console.log(error);
       /**
        * Checks whether data was received from the database
        * @param  {Number} error.received - is zero if no data was received
