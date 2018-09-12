@@ -19,16 +19,18 @@ const fetchQuestionCtrl = (req, res) => {
         const question = [];
         question.push(result);
         return t.map(`SELECT * FROM answers WHERE questionid=$1;`, requestId, answer => {
-          return t.any('SELECT * FROM votes WHERE answerid=$1', answer.id)
-            .then(votes => {
+          return t.multi(`SELECT * FROM votes WHERE answerid=$1;
+            SELECT * FROM comments WHERE answerid=$1`, answer.id)
+            .then( data => {
+              // VOTES
               // Makes the array of downvotes in each answer
-              let downvotes = votes.filter(voteItem => {
+              let downvotes = data[0].filter(voteItem => {
                 if(voteItem.vote === 'downvote'){
                   return true;
                 }
               });
               // Makes the array of upvotes in each answer
-              let upvotes = votes.filter(voteItem => {
+              let upvotes = data[0].filter(voteItem => {
                 if(voteItem.vote === 'upvote'){
                   return true;
                 }
@@ -39,6 +41,10 @@ const fetchQuestionCtrl = (req, res) => {
               answer.upvotes = upvotes.length;
               answer.downvotes = downvotes.length;
               answer.votesCount = votesCount;
+
+              // COMMENTS
+              answer.comments = data[1];
+
               question.push(answer);
               return question;
             })
