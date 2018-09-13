@@ -7,6 +7,7 @@ import { postAnswerValidate } from '../middlewares/postAnswerValidate';
 import postCommentValidate from '../middlewares/postCommentValidate';
 import { fetchQuestionCtrl } from '../controllers/fetchQuestion';
 import { deleteQuestion } from '../controllers/deleteQuestion';
+import getUserValidate from '../middlewares/getUserValidate';
 import { acceptAnswer } from '../controllers/acceptAnswer';
 import upvoteDownvote from '../controllers/upvoteDownvote';
 import { postQuestion } from '../controllers/postQuestion';
@@ -28,7 +29,7 @@ router.get('/questions', fetchAllQuestionsCtrl);
 router.get('/questions/:id([0-9]{1,})', fetchQuestionCtrl);
 
 // GET A USER
-router.get('/users/:id', user);
+router.get('/users/:id', getUserValidate, user);
 
 // POST A QUESTION
 router.post('/questions', authValidate,

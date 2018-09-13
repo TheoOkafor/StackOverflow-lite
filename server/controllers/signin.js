@@ -45,7 +45,7 @@ const signup = (req, res) => {
       	const token = jwt.sign(
       		{ id: data.id },
       		config.secret,
-      		{ expiresIn: 86400 }, // expires in 24hours
+      		{ expiresIn: 604800 }, // expires in 1week
       	);
 
         /**

@@ -16,7 +16,14 @@ const registerDetails = {
   password: 'password',
 };
 
+const otherSignup = {
+  email: 'teddy12@email.com',
+  username: 'teddy12',
+  password: 'password',
+}
+
 let token = '';
+let otherToken = '';
 // Parent block for QUESTIONS
 describe('Questions', () => {
 
@@ -73,7 +80,7 @@ describe('Questions', () => {
           chai.expect(res.body.statusCode).to.equal(200);
           chai.expect(res.body).to.have.property('message');
           chai.expect(res.body.message).to.equal('Question 2 found');
-          chai.expect(res.body).to.have.property('result');
+          chai.expect(res.body).to.have.property('data');
           done(err);
         });
       });
@@ -429,15 +436,24 @@ describe('POST Answers', () => {
         });
     });
   });
+  describe('POST /v1/auth/signup', () => {
+      it('it should SIGNUP user if required details are provided', (done) => {
+        
+        chai.request(app).post('/v1/auth/signup')
+          .send(otherSignup).end((err, res) => {
+            chai.expect(res).to.have.status(201);
+              otherToken = res.header['x-access-token'];
+            done(err);
+          });
+      });
+    });
 
   describe('PUT /v1/questions/6/answers/19', () => {
     it('it should NOT ACCEPT answer if user is not authenticated', (done) => {
       const answer = {
         value: true,
       };
-      const fakeToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9'
-      +'.eyJpZCI6OCwiaWF0IjoxNTM2MDg1NTczLCJleHAiOjE1MzYxNzE5NzN9'
-      +'.yEE9UulijewrpLKmzL5o4_sE8dPgqLT0GGnsXyrJWb0';
+      const fakeToken = otherToken;
 
       chai.request(app).put('/v1/questions/6/answers/19')
         .set('x-access-token', fakeToken)

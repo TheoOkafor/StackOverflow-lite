@@ -13,46 +13,13 @@ import db from '../db';
 const fetchQuestionCtrl = (req, res) => {
   const requestId = parseInt(req.params.id);
 
-  db.task('get-question-everything', t => {
-    return t.one(`SELECT * FROM questions WHERE id = $1;`, requestId)
-      .then(result => {
-        const question = [];
-        question.push(result);
-        return t.map(`SELECT * FROM answers WHERE questionid=$1;`, requestId, answer => {
-          return t.multi(`SELECT * FROM votes WHERE answerid=$1;
-            SELECT * FROM comments WHERE answerid=$1`, answer.id)
-            .then( data => {
-              // VOTES
-              // Makes the array of downvotes in each answer
-              let downvotes = data[0].filter(voteItem => {
-                if(voteItem.vote === 'downvote'){
-                  return true;
-                }
-              });
-              // Makes the array of upvotes in each answer
-              let upvotes = data[0].filter(voteItem => {
-                if(voteItem.vote === 'upvote'){
-                  return true;
-                }
-              });
-
-              let votesCount = upvotes.length - downvotes.length;
-
-              answer.upvotes = upvotes.length;
-              answer.downvotes = downvotes.length;
-              answer.votesCount = votesCount;
-
-              // COMMENTS
-              answer.comments = data[1];
-
-              question.push(answer);
-              return question;
-            })
-        });
-      }).then(t.batch);
-  })
+  db.multi(`
+    SELECT * FROM questions WHERE id = $1;
+    SELECT * FROM answers WHERE questionid=$1; 
+    SELECT * FROM votes WHERE questionid=$1;
+    SELECT * FROM comments WHERE questionid=$1;`, requestId)
     .then(output => {
-      if (output.length<1) { 
+      if (output[0].length<1) { 
         res.status(404);// Set status to 404 as question was not found
         res.json({
           statusCode: 404,
@@ -60,14 +27,50 @@ const fetchQuestionCtrl = (req, res) => {
         });
         return res;
       } else {
-        let result = output[0];
-        let answers = [];
-        for (let i=1; i<result.length; i++) {
-          answers.push(result[i]);
-        }
+        let question = output[0][0];
+        let dbAnswers = output[1];
+        let dbVotes = output[2];
+        let dbComments = output[3];
 
-        let data = result[0];
-        data.answers = answers;
+        dbAnswers.map(answer => {
+          // VOTES
+          // Put the votes in the corresponding answers
+          let answerVotes = dbVotes.filter(vote => {
+            if(vote.answerid === answer.id){
+              return true;
+            }
+          });
+
+          // Makes the array of downvotes in each answer
+          let downvotes = answerVotes.filter(voteItem => {
+            if(voteItem.vote === 'downvote'){
+              return true;
+            }
+          });
+          // Makes the array of upvotes in each answer
+          let upvotes = answerVotes.filter(voteItem => {
+            if(voteItem.vote === 'upvote'){
+              return true;
+            }
+          });
+
+          let votesCount = upvotes.length - downvotes.length;
+
+          answer.upvotes = upvotes.length;
+          answer.downvotes = downvotes.length;
+          answer.votesCount = votesCount;
+
+          // COMMENTS
+          let answerComments = dbComments.filter(comment => {
+            if(comment.answerid === answer.id){
+              return true;
+            }
+          });
+          answer.comments = answerComments;
+        });
+
+        question.answers = dbAnswers;
+        let data = question;
         res.status(200);
         res.json({
           statusCode: 200,

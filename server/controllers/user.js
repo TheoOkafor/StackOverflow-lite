@@ -2,13 +2,7 @@ import express from 'express';
 import db from '../db';
 
 const user = (req, res, next) => {
-	const request = {
-    text: `SELECT username, email, created, modified FROM users
-    WHERE ID=$1;
-    SELECT * FROM questions WHERE userid=$1;
-    SELECT * FROM answers WHERE userid=$1`,
-    values: [req.params.id],
-  };
+	const requestId = req.params.id;
 
   db.task('get-user-everything', t => {
   	return t.multi(`SELECT username, email, created, modified FROM users
@@ -27,30 +21,22 @@ const user = (req, res, next) => {
   		}).then(t.batch);
   })
   	.then(output => {
-  		if (output.length<1) { 
-	    	res.status(404);
-	    	res.json({
-	    		statusCode: 404,
-	    		error: 'User not found',
-	    	});
-	    	return res;
-	    } else {
-	    	let result = output[0];
-	    	let questions = [];
-	    	for (let i=1; i<result.length; i++) {
-	    		questions.push(result[i]);
-	    	}
-	    	let data = result[0][0][0];
-	    	data.answers = result[0][1];
-	    	data.questions = questions;
-				res.status(200);
-		    res.json({
-		    		statusCode: 200,
-		    		message: 'User found',
-		    		data,
-		    });
-		    return res;
-	  	}
+    	let result = output[0];
+    	let questions = [];
+    	for (let i=1; i<result.length; i++) {
+    		questions.push(result[i]);
+    	}
+    	let data = result[0][0][0];
+    	data.questions = questions;
+    	data.answers = result[0][1];
+
+			res.status(200);
+	    res.json({
+	    		statusCode: 200,
+	    		message: 'User found',
+	    		data,
+	    });
+	    return res;
   	})
 	  .catch( error => {
 	  	console.log(error);

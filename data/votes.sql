@@ -1,9 +1,9 @@
 CREATE TABLE votes (
   ID SERIAL PRIMARY KEY,
   vote TEXT NOT NULL,
-  answerID INTEGER REFERENCES answers(ID) ON DELETE CASCADE,
-  questionID INTEGER REFERENCES questions(ID) ON DELETE CASCADE,
-  username VARCHAR (20) REFERENCES users(username) ON DELETE CASCADE,
-  userid INTEGER NOT NULL REFERENCES users(id),
+  answerID INTEGER,
+  questionID INTEGER,
+  username VARCHAR (20),
+  userid INTEGER NOT NULL,
   timeSubmitted TIMESTAMP
 );
