@@ -114,6 +114,19 @@ describe('Questions', () => {
       });
     });
 
+    describe('POST /v1/auth/signup', () => {
+      it('it should SIGNUP user if required details are provided', (done) => {
+        
+        chai.request(app).post('/v1/auth/signup')
+          .send(otherSignup).end((err, res) => {
+            chai.expect(res).to.have.status(201);
+              otherToken = res.header['x-access-token'];
+            done(err);
+          });
+      });
+    });
+
+
     describe('/POST /v1/questions', () => {
       it('it should NOT POST Question if the TITLE is Not'
         + ' provided', (done) => {
@@ -374,6 +387,29 @@ describe('POST Answers', () => {
     });
   });
 
+  describe('POST /v1/questions/6/answers', () => {
+    it('it should POST answer if all the required'
+      + ' fields are provided', (done) => {
+
+      const answer = {
+        body: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit',
+      };
+
+      chai.request(app).post('/v1/questions/6/answers')
+        .set('x-access-token', otherToken)
+        .send(answer)
+        .end((err, res) => {
+          chai.expect(res).to.have.status(201);
+          chai.expect(res.body).to.be.a('object');
+          chai.expect(res.body).to.have.property('message');
+          chai.expect(res.body).to.have.property('data');
+          chai.expect(res.body.statusCode).to.equal(201);
+          chai.expect(res.body.message).to.equal('New answer added');
+          done(err);
+        });
+    });
+  });
+
   describe('PUT /v1/questions/6/answers/19', () => {
     it('it should ACCEPT answer if all the required'
       + ' fields are provided', (done) => {
@@ -436,18 +472,92 @@ describe('POST Answers', () => {
         });
     });
   });
-  describe('POST /v1/auth/signup', () => {
-      it('it should SIGNUP user if required details are provided', (done) => {
-        
-        chai.request(app).post('/v1/auth/signup')
-          .send(otherSignup).end((err, res) => {
-            chai.expect(res).to.have.status(201);
-              otherToken = res.header['x-access-token'];
-            done(err);
-          });
-      });
-    });
 
+  // Update Answer
+  describe('PUT /v1/questions/6/answers/19', () => {
+    it('it should UPDATE answer if all the required'
+      + ' fields are provided', (done) => {
+      const update = {
+        body: "This is how it goes"
+      };
+      chai.request(app).put('/v1/questions/6/answers/19')
+        .set('x-access-token', token)
+        .send(update)
+        .end((err, res) => {
+          chai.expect(res).to.have.status(201);
+          chai.expect(res.body).to.be.a('object');
+          chai.expect(res.body).to.have.property('message');
+          chai.expect(res.body.statusCode).to.equal(201);
+          chai.expect(res.body.message).to
+            .equal('Answer 19 has been updated');
+          done(err);
+        });
+    });
+  });
+
+  describe('PUT /v1/questions/6/answers/19', () => {
+    it('it should not UPDATE answer if body is empty spaces',
+     (done) => {
+      const update = {
+        body: "  "
+      };
+      chai.request(app).put('/v1/questions/6/answers/19')
+        .set('x-access-token', token)
+        .send(update)
+        .end((err, res) => {
+          chai.expect(res).to.have.status(400);
+          chai.expect(res.body).to.be.a('object');
+          chai.expect(res.body).to.have.property('error');
+          chai.expect(res.body.statusCode).to.equal(400);
+          chai.expect(res.body.error).to
+            .equal('Answer body must not be empty');
+          done(err);
+        });
+    });
+  });
+
+  describe('PUT /v1/questions/6/answers/19', () => {
+    it('it should not UPDATE answer if answer is not there',
+      (done) => {
+      const update = {
+        body: " Technical reeber "
+      };
+      chai.request(app).put('/v1/questions/6/answers/90')
+        .set('x-access-token', token)
+        .send(update)
+        .end((err, res) => {
+          chai.expect(res).to.have.status(404);
+          chai.expect(res.body).to.be.a('object');
+          chai.expect(res.body).to.have.property('error');
+          chai.expect(res.body.statusCode).to.equal(404);
+          chai.expect(res.body.error).to
+            .equal('Question 6 or answer 90 not found');
+          done(err);
+        });
+    });
+  });
+
+  describe('PUT /v1/questions/6/answers/20', () => {
+    it('it should not UPDATE answer if body is not provided',
+     (done) => {
+      const update = {
+        value: "bigger you I pray"
+      };
+      chai.request(app).put('/v1/questions/6/answers/20')
+        .set('x-access-token', otherToken)
+        .send(update)
+        .end((err, res) => {
+          chai.expect(res).to.have.status(400);
+          chai.expect(res.body).to.be.a('object');
+          chai.expect(res.body).to.have.property('error');
+          chai.expect(res.body.statusCode).to.equal(400);
+          chai.expect(res.body.error).to
+            .equal('Answer must have a body');
+          done(err);
+        });
+    });
+  });
+  
   describe('PUT /v1/questions/6/answers/19', () => {
     it('it should NOT ACCEPT answer if user is not authenticated', (done) => {
       const answer = {
@@ -508,6 +618,216 @@ describe('POST Answers', () => {
   });
 
 });
+
+// Parent Block for COMMENTS
+describe('COMMENTS', () => {
+  describe('POST /v1/questions/6/answers/20/comments', () => {
+    it('it should post COMMENT', (done) => {
+      const update = {
+        body: " Technical reeber, haha"
+      };
+      chai.request(app).post('/v1/questions/6/answers/20/comments')
+        .set('x-access-token', otherToken)
+        .send(update)
+        .end((err, res) => {
+          chai.expect(res).to.have.status(201);
+          chai.expect(res.body).to.be.a('object');
+          chai.expect(res.body).to.have.property('message');
+          chai.expect(res.body.statusCode).to.equal(201);
+          chai.expect(res.body.message).to
+            .equal('New comment added');
+          done(err);
+        });
+    });
+  });
+
+  describe('POST /v1/questions/6/answers/19/comments', () => {
+    it('it should not post COMMENT without body', (done) => {
+      const update = {
+        body: '    '
+      };
+      chai.request(app).post('/v1/questions/6/answers/19/comments')
+        .set('x-access-token', token)
+        .send(update)
+        .end((err, res) => {
+          chai.expect(res).to.have.status(400);
+          chai.expect(res.body).to.be.a('object');
+          chai.expect(res.body).to.have.property('error');
+          chai.expect(res.body.statusCode).to.equal(400);
+          chai.expect(res.body.error).to
+            .equal('Comment body must not be empty');
+          done(err);
+        });
+    });
+  });
+
+  describe('POST /v1/questions/6/answers/19/comments', () => {
+    it('it should not post COMMENT without body', (done) => {
+      const update = {
+        value: 'How we role' 
+      };
+      chai.request(app).post('/v1/questions/6/answers/19/comments')
+        .set('x-access-token', token)
+        .send(update)
+        .end((err, res) => {
+          chai.expect(res).to.have.status(400);
+          chai.expect(res.body).to.be.a('object');
+          chai.expect(res.body).to.have.property('error');
+          chai.expect(res.body.statusCode).to.equal(400);
+          chai.expect(res.body.error).to
+            .equal('Comment must have a body');
+          done(err);
+        });
+    });
+  });
+
+  describe('POST /v1/questions/19/answers/19/comments', () => {
+    it('it should not post COMMENT if Question do not exist', (done) => {
+      const update = {
+        body: 'How we role' 
+      };
+      chai.request(app).post('/v1/questions/19/answers/19/comments')
+        .set('x-access-token', token)
+        .send(update)
+        .end((err, res) => {
+          chai.expect(res).to.have.status(404);
+          chai.expect(res.body).to.be.a('object');
+          chai.expect(res.body).to.have.property('error');
+          chai.expect(res.body.statusCode).to.equal(404);
+          chai.expect(res.body.error).to
+            .equal('Question 19 or answer 19 not found');
+          done(err);
+        });
+    });
+  });
+
+}); // End of COMMENTS block
+
+
+// Parent Block for VOTES
+describe('VOTES', () => {
+  describe('POST /v1/questions/6/answers/20', () => {
+    it('it should post UPVOTE', (done) => {
+      const update = {
+        vote: 'upvote'
+      };
+      chai.request(app).post('/v1/questions/6/answers/20')
+        .set('x-access-token', token)
+        .send(update)
+        .end((err, res) => {
+          chai.expect(res).to.have.status(201);
+          chai.expect(res.body).to.be.a('object');
+          chai.expect(res.body).to.have.property('message');
+          chai.expect(res.body.statusCode).to.equal(201);
+          chai.expect(res.body.message).to
+            .equal('Answer 20 upvoted');
+          done(err);
+        });
+    });
+  });
+
+  describe('POST /v1/questions/6/answers/20', () => {
+    it('it should post DOWNVOTE', (done) => {
+      const update = {
+        vote: 'downvote'
+      };
+      chai.request(app).post('/v1/questions/6/answers/20')
+        .set('x-access-token', token)
+        .send(update)
+        .end((err, res) => {
+          chai.expect(res).to.have.status(201);
+          chai.expect(res.body).to.be.a('object');
+          chai.expect(res.body).to.have.property('message');
+          chai.expect(res.body.statusCode).to.equal(201);
+          chai.expect(res.body.message).to
+            .equal('Answer 20 downvoted');
+          done(err);
+        });
+    });
+  });
+
+  describe('POST /v1/questions/6/answers/20', () => {
+    it('it should not post vote more than once', (done) => {
+      const update = {
+        vote: 'upvote' 
+      };
+      chai.request(app).post('/v1/questions/6/answers/20')
+        .set('x-access-token', token)
+        .send(update)
+        .end((err, res) => {
+          chai.expect(res).to.have.status(409);
+          chai.expect(res.body).to.be.a('object');
+          chai.expect(res.body).to.have.property('error');
+          chai.expect(res.body.statusCode).to.equal(409);
+          chai.expect(res.body.error).to
+            .equal('You have voted on this answer before');
+          done(err);
+        });
+    });
+  });
+
+  describe('POST /v1/questions/19/answers/19', () => {
+    it('it should not post VOTE if Question do not exist', (done) => {
+      const update = {
+        vote: 'upvote' 
+      };
+      chai.request(app).post('/v1/questions/19/answers/19')
+        .set('x-access-token', token)
+        .send(update)
+        .end((err, res) => {
+          chai.expect(res).to.have.status(404);
+          chai.expect(res.body).to.be.a('object');
+          chai.expect(res.body).to.have.property('error');
+          chai.expect(res.body.statusCode).to.equal(404);
+          chai.expect(res.body.error).to
+            .equal('Question 19 or answer 19 not found');
+          done(err);
+        });
+    });
+  });
+
+  describe('POST /v1/questions/6/answers/19', () => {
+    it('it should not post empty VOTE', (done) => {
+      const update = {
+        vote: '    ' 
+      };
+      chai.request(app).post('/v1/questions/6/answers/19')
+        .set('x-access-token', token)
+        .send(update)
+        .end((err, res) => {
+          chai.expect(res).to.have.status(400);
+          chai.expect(res.body).to.be.a('object');
+          chai.expect(res.body).to.have.property('error');
+          chai.expect(res.body.statusCode).to.equal(400);
+          chai.expect(res.body.error).to
+            .equal('Vote must not be empty (UPVOTE or DOWNVOTE)');
+          done(err);
+        });
+    });
+  });
+
+  describe('POST /v1/questions/6/answers/19', () => {
+    it('it should not post if VOTE is not provided', (done) => {
+      const update = {
+        body: 'upvote' 
+      };
+      chai.request(app).post('/v1/questions/6/answers/19')
+        .set('x-access-token', token)
+        .send(update)
+        .end((err, res) => {
+          chai.expect(res).to.have.status(400);
+          chai.expect(res.body).to.be.a('object');
+          chai.expect(res.body).to.have.property('error');
+          chai.expect(res.body.statusCode).to.equal(400);
+          chai.expect(res.body.error).to
+            .equal('Vote must be specified (UPVOTE or DOWNVOTE)');
+          done(err);
+        });
+    });
+  });
+
+}); //End of Votes Block
+
 
 
 // Parent block for AUTHENTICATION

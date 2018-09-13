@@ -8,7 +8,7 @@ const votesValidate = (req, res, next) => {
 
   if (vote) {
     // Check if all fields are provided and are valid:
-    const invalidReq = !vote.trim() || vote.toLowerCase() !== 'upvote' 
+    const invalidReq = !vote.trim() || vote.toLowerCase() !== 'upvote'
       && vote.toLowerCase() !== 'downvote';
 
     /**
@@ -22,17 +22,29 @@ const votesValidate = (req, res, next) => {
         statusCode: 400,
         error: 'Vote must not be empty (UPVOTE or DOWNVOTE)',
       });
+      return res;
     } else {
-      db.multi(`SELECT username FROM users WHERE id = $1;
-        SELECT userid, vote FROM votes WHERE answerid = $2`, [req.userId, answerId])
-        .then(data => {
+      db.multi(`
+        SELECT username FROM users WHERE id = $1;
+        SELECT userid, vote FROM votes WHERE answerid = $2;
+        SELECT * FROM questions WHERE id = $3;
+        SELECT * FROM answers WHERE id = $2;`,
+      [req.userId, answerId, questionId])
+        .then((data) => {
           const votes = data[1];
-          const conflictVote = votes.filter(voteItem => {
-            if ( parseInt(voteItem.userid) === parseInt(req.userId) 
+          if (data[2].length <= 0 || data[3].length <= 0) {
+            res.status(404);
+            res.json({
+              statusCode: 404,
+              error: `Question ${questionId} or answer ${answerId} not found`,
+            });
+          }
+          const conflictVote = votes.filter((voteItem) => {
+            if (parseInt(voteItem.userid) === parseInt(req.userId)
               && voteItem.vote === vote.toLowerCase()) {
               return true;
             }
-          })
+          });
           if (conflictVote.length > 0) {
             res.status(409);
             res.json({
@@ -40,11 +52,10 @@ const votesValidate = (req, res, next) => {
               error: 'You have voted on this answer before',
             });
             return res;
-          } else {
-            req.username = data[0][0].username;
-            return next();
           }
-        })
+          req.username = data[0][0].username;
+          return next();
+        });
     }
   } else {
     res.status(400);

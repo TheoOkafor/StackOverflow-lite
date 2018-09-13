@@ -47,28 +47,13 @@ const acceptAnswer = (req, res, next) => {
         const request = [id, questionID, req.body.value];
         db.result(query, request)
           .then((result) => {
-            /**
-             * Check whether the request to the database returned 'any' data
-             * @param  {Boolean} data.length < 1
-             * Will be ```true``` or ```false```
-             * @return {JSON | object} An error 404 message, that question do not exist.
-             */
-            if (result.rowCount < 1) {
-              res.status(404);// Set status to 404
-              res.json({
-                statusCode: 404,
-                error: `Answer ${id} not found`,
-              });
-              return res;
-            } else {
-              res.status(201);
-              res.json({
-                statusCode: 201,
-                message: `Answer ${id} has been ${req.body.value
-                  ? 'accepted' : 'unaccepted'}`,
-              });
-              return res;
-            }
+            res.status(201);
+            res.json({
+              statusCode: 201,
+              message: `Answer ${id} has been ${req.body.value
+                ? 'accepted' : 'unaccepted'}`,
+            });
+            return res;
           })
           /**
            * Catch Error call-back

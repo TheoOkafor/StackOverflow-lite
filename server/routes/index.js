@@ -15,13 +15,11 @@ import votesValidate from '../middlewares/votesValidate';
 import authValidate from '../middlewares/authValidate';
 import updateAnswer from '../controllers/updateAnswer';
 import { postAnswer } from '../controllers/postAnswer';
-import { fetchDocs } from '../controllers/fetchDocs';
 import postComment from '../controllers/postComment';
 import user from '../controllers/user';
 
 
 const router = express.Router();
-// GET THE DOCUMENTATION
 
 // GET ALL QUESTIONS
 router.get('/questions', fetchAllQuestionsCtrl);

@@ -40,26 +40,7 @@ const postComment = (req, res) => {
      * 500 message sent to the user
      */
     .catch(error => {
-      /**
-       * checks for the question ID
-       * @param {undefined} error.where - Property of the error object return
-       * @return {JSON | object} - Error 404 or Error 500
-       */
-      if (error.where === undefined) {
-        const err = new Error(`Question ${requestId} Not Found`);
-        res.status(404);
-        res.json({
-          statusCode: 404,
-          error: err.message,
-        });
-      } else {
-        res.status(500);// Set status to 500
-        res.json({
-          statusCode: 500,
-          error: 'Server failed to complete request',
-        });
-      }
-
+      console.log(error);
     });
 };
 

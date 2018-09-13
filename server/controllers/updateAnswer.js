@@ -37,27 +37,12 @@ const updateAnswer = (req, res) => {
       const request = [idA, idQ, req.body.body];
       db.result(query, request)
         .then( (result) => {
-          /**
-           * Check whether the request to the database returned 'result' data
-           * @param  {Boolean} result.rowCount < 1
-           * Will be ```true``` or ```false```
-           * @return {JSON | object} An error 404 message, that question do not exist.
-           */
-          if (result.rowCount < 1) {
-            res.status(404);// Set status to 404
-            res.json({
-              statusCode: 404,
-              error: `Answer ${idA} not found`,
-            });
-            return res;
-          } else {
-            res.status(201);
-            res.json({
-              statusCode: 201,
-              message: `Answer ${idA} has been updated`,
-            });
-            return res;
-          }
+          res.status(201);
+          res.json({
+            statusCode: 201,
+            message: `Answer ${idA} has been updated`,
+          });
+          return res;
         })
         /**
          * Catch Error call-back

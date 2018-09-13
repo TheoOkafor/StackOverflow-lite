@@ -63,11 +63,6 @@ const updateAnswerValidate = (req, res, next) => {
     .catch(error => {
       console.log(error)
     });
-  /**
-   * Is true if request has no value property or
-   * value of the value property is not boolean.
-   * @type {boolean}
-   */
 };
 
 export { updateAnswerValidate };

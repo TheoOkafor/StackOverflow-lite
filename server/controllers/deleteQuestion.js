@@ -27,12 +27,7 @@ const deleteQuestion = (req, res) => {
      * @return {JSON | object} - Contains the error message respons to the user
      */
     .catch((error) => {
-      res.status(500);// Set status to 500
-      res.json({
-        statusCode: 500,
-        error: 'Server failed to complete request',
-      });
-      return res;
+      console.log(error);
     });
 };
 
