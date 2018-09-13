@@ -9,7 +9,7 @@ const getUserValidate = (req, res, next) => {
     SELECT * FROM questions WHERE userid = $1;
     SELECT * FROM answers WHERE userid = $1`, userId)
     .then(data => {
-      if (!data[0]){
+      if (!data[0][0]){
         res.status(404);
         res.json({
           statusCode: 404,
