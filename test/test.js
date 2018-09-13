@@ -470,7 +470,7 @@ describe('POST Answers', () => {
     });
   });
 
-  describe('PUT /v1/questions/61/answers/1', () => {
+  describe('PUT /v1/questions/61/answers/19', () => {
     it('it should NOT ACCEPT answer if No Question', (done) => {
       const answer = {
         value: true
@@ -482,7 +482,7 @@ describe('POST Answers', () => {
           chai.expect(res).to.have.status(404);
           chai.expect(res.body).to.be.a('object');
           chai.expect(res.body).to.have.property('error');
-          chai.expect(res.body.error).to.equal('Question 61 not found');
+          chai.expect(res.body.error).to.equal('Question 61 or answer 19 not found');
           done(err);
         });
     });
@@ -501,7 +501,7 @@ describe('POST Answers', () => {
           chai.expect(res).to.have.status(404);
           chai.expect(res.body).to.be.a('object');
           chai.expect(res.body).to.have.property('error');
-          chai.expect(res.body.error).to.equal('Answer 31 not found');
+          chai.expect(res.body.error).to.equal('Question 6 or answer 31 not found');
           done(err);
         });
     });

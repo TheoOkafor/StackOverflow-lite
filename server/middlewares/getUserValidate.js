@@ -18,6 +18,8 @@ const getUserValidate = (req, res, next) => {
         return res;
       }
       else if(data[0] && data[1].length <= 0 || data[2].length <= 0){
+        data[0][0].questions = data[1];
+        data[0][0].answers = data[2];
         res.status(200);
         res.json({
             statusCode: 200,
