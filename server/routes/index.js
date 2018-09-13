@@ -1,5 +1,5 @@
 import express from 'express';
-import { acceptAnswerValidate } from '../middlewares/acceptAnswerValidate';
+import { updateAnswerValidate } from '../middlewares/updateAnswerValidate';
 import { postQuestionValidate } from '../middlewares/postQuestionValidate';
 import deleteQuestionValidate from '../middlewares/deleteQuestionValidate';
 import { fetchAllQuestionsCtrl } from '../controllers/fetchAllQuestions';
@@ -13,6 +13,7 @@ import upvoteDownvote from '../controllers/upvoteDownvote';
 import { postQuestion } from '../controllers/postQuestion';
 import votesValidate from '../middlewares/votesValidate';
 import authValidate from '../middlewares/authValidate';
+import updateAnswer from '../controllers/updateAnswer';
 import { postAnswer } from '../controllers/postAnswer';
 import { fetchDocs } from '../controllers/fetchDocs';
 import postComment from '../controllers/postComment';
@@ -51,8 +52,8 @@ router.post('/questions/:idQ([0-9]{1,})/answers/:idA([0-9]{1,})/comments', authV
 router.delete('/questions/:id([0-9]{1,})', 
   authValidate, deleteQuestionValidate, deleteQuestion);
 
-// ACCEPT AN ANSWER
+// PUT AN ANSWER
 router.put('/questions/:idQ([0-9]{1,})/answers/:idA([0-9]{1,})',
-  authValidate, acceptAnswerValidate, acceptAnswer);
+  authValidate, updateAnswerValidate, acceptAnswer, updateAnswer);
 
 export { router };
