@@ -1,4 +1,3 @@
-import express from 'express';
 import db from '../db';
 
 /**
@@ -12,9 +11,9 @@ import db from '../db';
 const postQuestionValidate = (req, res, next) => {
   const reqBody = req.body;
 
-  if ( reqBody.title && reqBody.body) {
+  if (reqBody.title && reqBody.body) {
     // Check if all fields are provided and are valid:
-    const invalidReq = !reqBody.title.trim() || !reqBody.body.trim() ;
+    const invalidReq = !reqBody.title.trim() || !reqBody.body.trim();
 
     /**
      * Checks whether the request is valid or not
@@ -28,14 +27,12 @@ const postQuestionValidate = (req, res, next) => {
         error: 'Question title and body must not be empty',
       });
       return res;
-
-    } else {
-      db.any('SELECT username FROM users WHERE id = $1', [req.userId])
-        .then(data => {
-          req.username = data[0].username;
-          return next();
-        })
     }
+    db.any('SELECT username FROM users WHERE id = $1', [req.userId])
+      .then((data) => {
+        req.username = data[0].username;
+        return next();
+      });
   } else {
     res.status(400);
     res.json({
@@ -46,4 +43,4 @@ const postQuestionValidate = (req, res, next) => {
   }
 };
 
-export { postQuestionValidate };
+export default postQuestionValidate;

@@ -1,4 +1,3 @@
-import express from 'express';
 import db from '../db';
 
 const votesValidate = (req, res, next) => {
@@ -23,40 +22,39 @@ const votesValidate = (req, res, next) => {
         error: 'Vote must not be empty (UPVOTE or DOWNVOTE)',
       });
       return res;
-    } else {
-      db.multi(`
+    }
+    db.multi(`
         SELECT username FROM users WHERE id = $1;
         SELECT userid, vote FROM votes WHERE answerid = $2;
         SELECT * FROM questions WHERE id = $3;
         SELECT * FROM answers WHERE id = $2;`,
-      [req.userId, answerId, questionId])
-        .then((data) => {
-          const votes = data[1];
-          if (data[2].length <= 0 || data[3].length <= 0) {
-            res.status(404);
-            res.json({
-              statusCode: 404,
-              error: `Question ${questionId} or answer ${answerId} not found`,
-            });
-          }
-          const conflictVote = votes.filter((voteItem) => {
-            if (parseInt(voteItem.userid) === parseInt(req.userId)
-              && voteItem.vote === vote.toLowerCase()) {
-              return true;
-            }
+    [req.userId, answerId, questionId])
+      .then((data) => {
+        const votes = data[1];
+        if (data[2].length <= 0 || data[3].length <= 0) {
+          res.status(404);
+          res.json({
+            statusCode: 404,
+            error: `Question ${questionId} or answer ${answerId} not found`,
           });
-          if (conflictVote.length > 0) {
-            res.status(409);
-            res.json({
-              statusCode: 409,
-              error: 'You have voted on this answer before',
-            });
-            return res;
+        }
+        const conflictVote = votes.filter((voteItem) => {
+          if (parseInt(voteItem.userid, 10) === parseInt(req.userId, 10)
+              && voteItem.vote === vote.toLowerCase()) {
+            return true;
           }
-          req.username = data[0][0].username;
-          return next();
         });
-    }
+        if (conflictVote.length > 0) {
+          res.status(409);
+          res.json({
+            statusCode: 409,
+            error: 'You have voted on this answer before',
+          });
+          return res;
+        }
+        req.username = data[0][0].username;
+        return next();
+      });
   } else {
     res.status(400);
     res.json({

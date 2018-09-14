@@ -1,7 +1,7 @@
 // Require the dev-dependencies
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import { app } from '../app';
+import app from '../app';
 
 chai.use(chaiHttp);
 
@@ -20,14 +20,12 @@ const otherSignup = {
   email: 'teddy12@email.com',
   username: 'teddy12',
   password: 'password',
-}
+};
 
 let token = '';
 let otherToken = '';
 // Parent block for QUESTIONS
 describe('Questions', () => {
-
-
   describe('GET QUESTIONS', () => {
     // Test the /GET route
 
@@ -101,14 +99,12 @@ describe('Questions', () => {
 
   // POST QUESTIONS TEST
   describe('POST QUESTIONS', () => {
-
     describe('POST /v1/auth/signup', () => {
       it('it should SIGNUP user if required details are provided', (done) => {
-        
         chai.request(app).post('/v1/auth/signup')
           .send(registerDetails).end((err, res) => {
             chai.expect(res).to.have.status(201);
-              token = res.header['x-access-token'];
+            token = res.header['x-access-token'];
             done(err);
           });
       });
@@ -116,11 +112,10 @@ describe('Questions', () => {
 
     describe('POST /v1/auth/signup', () => {
       it('it should SIGNUP user if required details are provided', (done) => {
-        
         chai.request(app).post('/v1/auth/signup')
           .send(otherSignup).end((err, res) => {
             chai.expect(res).to.have.status(201);
-              otherToken = res.header['x-access-token'];
+            otherToken = res.header['x-access-token'];
             done(err);
           });
       });
@@ -142,7 +137,7 @@ describe('Questions', () => {
             chai.expect(res.body).to.be.a('object');
             chai.expect(res.body).to.have.property('error');
             chai.expect(res.body.error).to
-            .equal(`Question must have title and body`);
+              .equal('Question must have title and body');
             done(err);
           });
       });
@@ -164,7 +159,7 @@ describe('Questions', () => {
             chai.expect(res.body).to.be.a('object');
             chai.expect(res.body).to.have.property('error');
             chai.expect(res.body.error).to
-            .equal(`Question title and body must not be empty`);
+              .equal('Question title and body must not be empty');
             done(err);
           });
       });
@@ -180,7 +175,8 @@ describe('Questions', () => {
         };
         chai.request(app).post('/v1/questions')
           .set('x-access-token', token)
-          .send(question).end((err, res) => {
+          .send(question)
+          .end((err, res) => {
             chai.expect(res).to.have.status(201);
             chai.expect(res.body).to.be.a('object');
             chai.expect(res.body).to.have.property('message');
@@ -219,7 +215,8 @@ describe('Questions', () => {
         };
         chai.request(app).post('/v1/questions')
           .set('x-access-token', null)
-          .send(question).end((err, res) => {
+          .send(question)
+          .end((err, res) => {
             chai.expect(res).to.have.status(401);
             chai.expect(res.body).be.a('object');
             chai.expect(res.body).to.have.property('error');
@@ -275,34 +272,34 @@ describe('Questions', () => {
           });
       });
     });
-
   });
 });
 // Parent block for ANSWERS
 describe('POST Answers', () => {
   // TESTS FOR ANSWERS
-  // 
+  //
   describe('/POST /v1/questions', () => {
-      it('it should POST Question if all the required'
+    it('it should POST Question if all the required'
        + ' fields are provided', (done) => {
-        const question = {
-          title: 'Why do people hate reading?',
-          body: 'Lorem ipsum dolor sit amet, consectetur',
-          username: 'TheoOkafor',
-        };
-        chai.request(app).post('/v1/questions')
-          .set('x-access-token', token)
-          .send(question).end((err, res) => {
-            chai.expect(res).to.have.status(201);
-            chai.expect(res.body).to.be.a('object');
-            chai.expect(res.body).to.have.property('message');
-            chai.expect(res.body).to.have.property('data');
-            chai.expect(res.body.statusCode).to.equal(201);
-            chai.expect(res.body.message).to.equal('New question added');
-            done(err);
-          });
-      });
+      const question = {
+        title: 'Why do people hate reading?',
+        body: 'Lorem ipsum dolor sit amet, consectetur',
+        username: 'TheoOkafor',
+      };
+      chai.request(app).post('/v1/questions')
+        .set('x-access-token', token)
+        .send(question)
+        .end((err, res) => {
+          chai.expect(res).to.have.status(201);
+          chai.expect(res.body).to.be.a('object');
+          chai.expect(res.body).to.have.property('message');
+          chai.expect(res.body).to.have.property('data');
+          chai.expect(res.body.statusCode).to.equal(201);
+          chai.expect(res.body.message).to.equal('New question added');
+          done(err);
+        });
     });
+  });
 
   describe('/POST /v1/questions/100/answers', () => {
     it('it should NOT POST Answer if question does not exist', (done) => {
@@ -366,7 +363,6 @@ describe('POST Answers', () => {
   describe('POST /v1/questions/6/answers', () => {
     it('it should POST answer if all the required'
       + ' fields are provided', (done) => {
-
       const answer = {
         body: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit',
         username: 'TheoOkafor',
@@ -390,7 +386,6 @@ describe('POST Answers', () => {
   describe('POST /v1/questions/6/answers', () => {
     it('it should POST answer if all the required'
       + ' fields are provided', (done) => {
-
       const answer = {
         body: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit',
       };
@@ -414,7 +409,7 @@ describe('POST Answers', () => {
     it('it should ACCEPT answer if all the required'
       + ' fields are provided', (done) => {
       const answer = {
-        value: true
+        value: true,
       };
       chai.request(app).put('/v1/questions/6/answers/19')
         .set('x-access-token', token)
@@ -435,18 +430,18 @@ describe('POST Answers', () => {
     it('it should UNACCEPT answer if all the required'
       + ' fields are provided', (done) => {
       const answer = {
-        value: false
+        value: false,
       };
       chai.request(app).put('/v1/questions/6/answers/19')
         .set('x-access-token', token)
         .send(answer)
         .end((err, res) => {
-          //chai.expect(res).to.have.status(201);
-          //chai.expect(res.body).to.be.a('object');
+          // chai.expect(res).to.have.status(201);
+          // chai.expect(res.body).to.be.a('object');
           chai.expect(res.body).to.have.property('message');
           chai.expect(res.body.statusCode).to.equal(201);
           chai.expect(res.body.message).to
-          .equal('Answer 19 has been unaccepted');
+            .equal('Answer 19 has been unaccepted');
           done(err);
         });
     });
@@ -456,7 +451,7 @@ describe('POST Answers', () => {
     it('it should NOT ACCEPT answer if invalid value'
       + ' fields are provided', (done) => {
       const answer = {
-        value: 'true'
+        value: 'true',
       };
       chai.request(app).put('/v1/questions/6/answers/19')
         .set('x-access-token', token)
@@ -478,7 +473,7 @@ describe('POST Answers', () => {
     it('it should UPDATE answer if all the required'
       + ' fields are provided', (done) => {
       const update = {
-        body: "This is how it goes"
+        body: 'This is how it goes',
       };
       chai.request(app).put('/v1/questions/6/answers/19')
         .set('x-access-token', token)
@@ -497,67 +492,67 @@ describe('POST Answers', () => {
 
   describe('PUT /v1/questions/6/answers/19', () => {
     it('it should not UPDATE answer if body is empty spaces',
-     (done) => {
-      const update = {
-        body: "  "
-      };
-      chai.request(app).put('/v1/questions/6/answers/19')
-        .set('x-access-token', token)
-        .send(update)
-        .end((err, res) => {
-          chai.expect(res).to.have.status(400);
-          chai.expect(res.body).to.be.a('object');
-          chai.expect(res.body).to.have.property('error');
-          chai.expect(res.body.statusCode).to.equal(400);
-          chai.expect(res.body.error).to
-            .equal('Answer body must not be empty');
-          done(err);
-        });
-    });
+      (done) => {
+        const update = {
+          body: '  ',
+        };
+        chai.request(app).put('/v1/questions/6/answers/19')
+          .set('x-access-token', token)
+          .send(update)
+          .end((err, res) => {
+            chai.expect(res).to.have.status(400);
+            chai.expect(res.body).to.be.a('object');
+            chai.expect(res.body).to.have.property('error');
+            chai.expect(res.body.statusCode).to.equal(400);
+            chai.expect(res.body.error).to
+              .equal('Answer body must not be empty');
+            done(err);
+          });
+      });
   });
 
   describe('PUT /v1/questions/6/answers/19', () => {
     it('it should not UPDATE answer if answer is not there',
       (done) => {
-      const update = {
-        body: " Technical reeber "
-      };
-      chai.request(app).put('/v1/questions/6/answers/90')
-        .set('x-access-token', token)
-        .send(update)
-        .end((err, res) => {
-          chai.expect(res).to.have.status(404);
-          chai.expect(res.body).to.be.a('object');
-          chai.expect(res.body).to.have.property('error');
-          chai.expect(res.body.statusCode).to.equal(404);
-          chai.expect(res.body.error).to
-            .equal('Question 6 or answer 90 not found');
-          done(err);
-        });
-    });
+        const update = {
+          body: ' Technical reeber ',
+        };
+        chai.request(app).put('/v1/questions/6/answers/90')
+          .set('x-access-token', token)
+          .send(update)
+          .end((err, res) => {
+            chai.expect(res).to.have.status(404);
+            chai.expect(res.body).to.be.a('object');
+            chai.expect(res.body).to.have.property('error');
+            chai.expect(res.body.statusCode).to.equal(404);
+            chai.expect(res.body.error).to
+              .equal('Question 6 or answer 90 not found');
+            done(err);
+          });
+      });
   });
 
   describe('PUT /v1/questions/6/answers/20', () => {
     it('it should not UPDATE answer if body is not provided',
-     (done) => {
-      const update = {
-        value: "bigger you I pray"
-      };
-      chai.request(app).put('/v1/questions/6/answers/20')
-        .set('x-access-token', otherToken)
-        .send(update)
-        .end((err, res) => {
-          chai.expect(res).to.have.status(400);
-          chai.expect(res.body).to.be.a('object');
-          chai.expect(res.body).to.have.property('error');
-          chai.expect(res.body.statusCode).to.equal(400);
-          chai.expect(res.body.error).to
-            .equal('Answer must have a body');
-          done(err);
-        });
-    });
+      (done) => {
+        const update = {
+          value: 'bigger you I pray',
+        };
+        chai.request(app).put('/v1/questions/6/answers/20')
+          .set('x-access-token', otherToken)
+          .send(update)
+          .end((err, res) => {
+            chai.expect(res).to.have.status(400);
+            chai.expect(res.body).to.be.a('object');
+            chai.expect(res.body).to.have.property('error');
+            chai.expect(res.body.statusCode).to.equal(400);
+            chai.expect(res.body.error).to
+              .equal('Answer must have a body');
+            done(err);
+          });
+      });
   });
-  
+
   describe('PUT /v1/questions/6/answers/19', () => {
     it('it should NOT ACCEPT answer if user is not authenticated', (done) => {
       const answer = {
@@ -583,7 +578,7 @@ describe('POST Answers', () => {
   describe('PUT /v1/questions/61/answers/19', () => {
     it('it should NOT ACCEPT answer if No Question', (done) => {
       const answer = {
-        value: true
+        value: true,
       };
       chai.request(app).put('/v1/questions/61/answers/19')
         .set('x-access-token', token)
@@ -592,7 +587,8 @@ describe('POST Answers', () => {
           chai.expect(res).to.have.status(404);
           chai.expect(res.body).to.be.a('object');
           chai.expect(res.body).to.have.property('error');
-          chai.expect(res.body.error).to.equal('Question 61 or answer 19 not found');
+          chai.expect(res.body.error).to
+            .equal('Question 61 or answer 19 not found');
           done(err);
         });
     });
@@ -602,7 +598,7 @@ describe('POST Answers', () => {
     it('it should NOT ACCEPT answer if No Answer'
       + ' fields are provided', (done) => {
       const answer = {
-        value: true
+        value: true,
       };
       chai.request(app).put('/v1/questions/6/answers/31')
         .set('x-access-token', token)
@@ -611,12 +607,12 @@ describe('POST Answers', () => {
           chai.expect(res).to.have.status(404);
           chai.expect(res.body).to.be.a('object');
           chai.expect(res.body).to.have.property('error');
-          chai.expect(res.body.error).to.equal('Question 6 or answer 31 not found');
+          chai.expect(res.body.error).to
+            .equal('Question 6 or answer 31 not found');
           done(err);
         });
     });
   });
-
 });
 
 // Parent Block for COMMENTS
@@ -624,7 +620,7 @@ describe('COMMENTS', () => {
   describe('POST /v1/questions/6/answers/20/comments', () => {
     it('it should post COMMENT', (done) => {
       const update = {
-        body: " Technical reeber, haha"
+        body: ' Technical reeber, haha',
       };
       chai.request(app).post('/v1/questions/6/answers/20/comments')
         .set('x-access-token', otherToken)
@@ -644,7 +640,7 @@ describe('COMMENTS', () => {
   describe('POST /v1/questions/6/answers/19/comments', () => {
     it('it should not post COMMENT without body', (done) => {
       const update = {
-        body: '    '
+        body: '    ',
       };
       chai.request(app).post('/v1/questions/6/answers/19/comments')
         .set('x-access-token', token)
@@ -664,7 +660,7 @@ describe('COMMENTS', () => {
   describe('POST /v1/questions/6/answers/19/comments', () => {
     it('it should not post COMMENT without body', (done) => {
       const update = {
-        value: 'How we role' 
+        value: 'How we role',
       };
       chai.request(app).post('/v1/questions/6/answers/19/comments')
         .set('x-access-token', token)
@@ -684,7 +680,7 @@ describe('COMMENTS', () => {
   describe('POST /v1/questions/19/answers/19/comments', () => {
     it('it should not post COMMENT if Question do not exist', (done) => {
       const update = {
-        body: 'How we role' 
+        body: 'How we role',
       };
       chai.request(app).post('/v1/questions/19/answers/19/comments')
         .set('x-access-token', token)
@@ -700,7 +696,6 @@ describe('COMMENTS', () => {
         });
     });
   });
-
 }); // End of COMMENTS block
 
 
@@ -709,7 +704,7 @@ describe('VOTES', () => {
   describe('POST /v1/questions/6/answers/20', () => {
     it('it should post UPVOTE', (done) => {
       const update = {
-        vote: 'upvote'
+        vote: 'upvote',
       };
       chai.request(app).post('/v1/questions/6/answers/20')
         .set('x-access-token', token)
@@ -729,7 +724,7 @@ describe('VOTES', () => {
   describe('POST /v1/questions/6/answers/20', () => {
     it('it should post DOWNVOTE', (done) => {
       const update = {
-        vote: 'downvote'
+        vote: 'downvote',
       };
       chai.request(app).post('/v1/questions/6/answers/20')
         .set('x-access-token', token)
@@ -749,7 +744,7 @@ describe('VOTES', () => {
   describe('POST /v1/questions/6/answers/20', () => {
     it('it should not post vote more than once', (done) => {
       const update = {
-        vote: 'upvote' 
+        vote: 'upvote',
       };
       chai.request(app).post('/v1/questions/6/answers/20')
         .set('x-access-token', token)
@@ -769,7 +764,7 @@ describe('VOTES', () => {
   describe('POST /v1/questions/19/answers/19', () => {
     it('it should not post VOTE if Question do not exist', (done) => {
       const update = {
-        vote: 'upvote' 
+        vote: 'upvote',
       };
       chai.request(app).post('/v1/questions/19/answers/19')
         .set('x-access-token', token)
@@ -789,7 +784,7 @@ describe('VOTES', () => {
   describe('POST /v1/questions/6/answers/19', () => {
     it('it should not post empty VOTE', (done) => {
       const update = {
-        vote: '    ' 
+        vote: '    ',
       };
       chai.request(app).post('/v1/questions/6/answers/19')
         .set('x-access-token', token)
@@ -809,7 +804,7 @@ describe('VOTES', () => {
   describe('POST /v1/questions/6/answers/19', () => {
     it('it should not post if VOTE is not provided', (done) => {
       const update = {
-        body: 'upvote' 
+        body: 'upvote',
       };
       chai.request(app).post('/v1/questions/6/answers/19')
         .set('x-access-token', token)
@@ -825,13 +820,11 @@ describe('VOTES', () => {
         });
     });
   });
-
-}); //End of Votes Block
-
+}); // End of Votes Block
 
 
 // Parent block for AUTHENTICATION
-// 
+//
 
 describe('USER AUTHENTICATION', () => {
   // SIGN UP
@@ -1044,10 +1037,6 @@ describe('USER AUTHENTICATION', () => {
   describe('USER SIGNIN', () => {
     describe('POST /v1/auth/signin', () => {
       it('it should SIGNIN user if required details are provided', (done) => {
-        const userReq = {
-          username: 'gheti31@yahoo.com',
-          password: 'password',
-        };
         chai.request(app).post('/v1/auth/signin')
           .send(loginDetails).end((err, res) => {
             chai.expect(res).to.have.status(200);
@@ -1083,7 +1072,8 @@ describe('USER AUTHENTICATION', () => {
     });
 
     describe('POST /v1/auth/signin', () => {
-      it('it should NOT SIGNIN user if EMAIL or password provided is empty', (done) => {
+      it('it should NOT SIGNIN user if EMAIL or password provided is empty', 
+          (done) => {
         const userReq = {
           email: '       ',
           password: 'password',
@@ -1159,7 +1149,7 @@ describe('USER AUTHENTICATION', () => {
     });
 
     describe('POST /v1/auth/logout', () => {
-      it('it SIGNOUT user', (done) => {        
+      it('it SIGNOUT user', (done) => {
         chai.request(app).get('/v1/auth/logout')
           .end((err, res) => {
             chai.expect(res).to.have.status(200);
@@ -1205,5 +1195,4 @@ describe('GET User', () => {
         });
     });
   });
-
 });

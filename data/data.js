@@ -209,4 +209,4 @@ data.users = [
   },
 ];
 
-export { data };
+export default data;

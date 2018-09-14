@@ -1,10 +1,8 @@
-import express from 'express';
 import db from '../db';
 
 const updateAnswer = (req, res) => {
   const idA = parseInt(req.params.idA);
   const idQ = parseInt(req.params.idQ);
-  const reqBody = req.body;
   /**
    * Check the ID of requester is the same as the id of answer creator
    * {string} reqId - the ID of the requester
@@ -33,10 +31,10 @@ const updateAnswer = (req, res) => {
        * The request variable required by the SQL request
        * @type {Array}
        */
-    
+
       const request = [idA, idQ, req.body.body];
       db.result(query, request)
-        .then( (result) => {
+        .then((result) => {
           res.status(201);
           res.json({
             statusCode: 201,
@@ -53,7 +51,6 @@ const updateAnswer = (req, res) => {
         });
     }
   } else {
-
     res.status(400);
     res.json({
       statusCode: 400,

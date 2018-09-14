@@ -1,4 +1,3 @@
-import express from 'express';
 import db from '../db';
 
 /**
@@ -24,7 +23,7 @@ const postAnswer = (req, res) => {
     values: [requestId, reqBody.body, timeNow, req.username, userid],
   };
   db.one(request.text, request.values)
-    .then(data => {
+    .then((data) => {
       res.status(201);
       res.json({
         statusCode: 201,
@@ -35,10 +34,10 @@ const postAnswer = (req, res) => {
     /**
      * Catches the error from the database
      * @param  {Object} error - contains details about the database error
-     * @return {JSON | object}  - contains error 404 or 
+     * @return {JSON | object}  - contains error 404 or
      * 500 message sent to the user
      */
-    .catch(error => {
+    .catch((error) => {
       /**
        * checks for the question ID
        * @param {undefined} error.where - Property of the error object return
@@ -58,8 +57,7 @@ const postAnswer = (req, res) => {
           error: 'Server failed to complete request',
         });
       }
-
     });
 };
 
-export { postAnswer };
+export default postAnswer;

@@ -3,7 +3,6 @@
  * Bcrypt is use to encrypt the password stored in the Database
  * db is the Database setup module
  */
-import express from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import db from '../db';
@@ -21,12 +20,12 @@ const signup = (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
 
-  //The SQL request to the database
+  // The SQL request to the database
   const request = {
     text: 'SELECT * FROM users'
       + ' WHERE email = $1 OR username = $2',
     values: [
-    	email,
+      email,
       username,
     ],
   };
@@ -41,12 +40,12 @@ const signup = (req, res) => {
           error: 'Incorrect password',
         });
       } else {
-      	// create a token
-      	const token = jwt.sign(
-      		{ id: data.id },
-      		config.secret,
-      		{ expiresIn: 604800 }, // expires in 1week
-      	);
+        // create a token
+        const token = jwt.sign(
+      	  { id: data.id },
+      	  config.secret,
+      	  { expiresIn: 604800 }, // expires in 1week
+        );
 
         /**
          * [userData - The public part of the user request data]
@@ -68,7 +67,7 @@ const signup = (req, res) => {
     })
     /**
      * Catch Error call-back
-     * @param  {Object} error handles the errors resulting from the request. 
+     * @param  {Object} error handles the errors resulting from the request.
      * @return {JSON | object}  error 404 or 500 message.
      */
     .catch((error) => {
@@ -77,13 +76,13 @@ const signup = (req, res) => {
        * @param  {Number} error.received - Zero if no DB data was received.
        * @return {JSON | object} - Error message to the user.
        */
-      if (error.received === 0){
+      if (error.received === 0) {
         res.status(404);
         res.json({
           statusCode: 404,
           error: 'User not found, consider signing up.',
         });
-      } 
+      }
     });
 };
 

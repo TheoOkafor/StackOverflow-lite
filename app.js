@@ -3,10 +3,10 @@ import logger from 'morgan';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import bodyParser from 'body-parser';
-import { router } from './server/routes';
+import router from './server/routes';
 import authRouter from './server/routes/auth';
 import getValidate from './server/middlewares/getValidate';
-import { urlErrHandler } from './server/middlewares/urlErrHandler';
+import urlErrHandler from './server/middlewares/urlErrHandler';
 
 const app = express();
 dotenv.config();
@@ -28,11 +28,10 @@ app.use('/v1', getValidate, urlErrHandler);
 // error handler
 app.use((err, req, res, next) => {
   // render the error
-  console.log(err);
   res.status(err.status || 500);
   res.json(err.body || {
     statusCode: 500,
-  	error: 'Server could not complete request',
+    error: 'Server could not complete request',
   });
   next();
 });
@@ -42,4 +41,4 @@ app.listen(port, () => {
   console.log(`Server is listening on port ${port}`);
 });
 
-export { app };
+export default app;

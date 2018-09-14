@@ -1,4 +1,3 @@
-import express from 'express';
 import db from '../db';
 
 /**
@@ -10,13 +9,12 @@ import db from '../db';
  */
 
 const deleteQuestionValidate = (req, res, next) => {
-  const id = parseInt(req.params.id);
-  const reqBody = req.body;
-  const reqId = parseInt(req.userId);
+  const id = parseInt(req.params.id, 10);
+  const reqId = parseInt(req.userId, 10);
 
   db.any('SELECT * FROM questions WHERE id = $1', [id])
     .then((data) => {
-      const ownerId = parseInt(data[0].userid);
+      const ownerId = parseInt(data[0].userid, 10);
 
       if (ownerId === reqId) {
         return next();
@@ -29,6 +27,7 @@ const deleteQuestionValidate = (req, res, next) => {
       return res;
     })
     .catch((error) => {
+      console.log(error);
       res.status(404);
       res.json({
         statusCode: 404,

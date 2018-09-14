@@ -3,7 +3,6 @@
  * Bcrypt is use to encrypt the password stored in the Database
  * db is the Database setup module
  */
-import express from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import db from '../db';
@@ -23,7 +22,7 @@ const signup = (req, res) => {
   const created = timeNow;
   const modified = timeNow;
 
-  //The SQL request to the database
+  // The SQL request to the database
   const request = {
     text: `INSERT INTO users 
       (username, email, password, created, modified) 
@@ -37,15 +36,6 @@ const signup = (req, res) => {
     ],
   };
 
-  /**
-   * [userData - The public part of the user request data]
-   * @type {Object}
-   */
-  const userData = {
-    username: req.body.username,
-    email: req.body.email,
-  };
-  
   db.one(request.text, request.values)
     .then((data) => {
     	// create a token
@@ -61,14 +51,14 @@ const signup = (req, res) => {
         message: 'New user created.',
         data: {
           userID: data.id,
-          username: username,
-          'x-access-token': token
+          username,
+          'x-access-token': token,
         },
       });
     })
     /**
      * Catch Error call-back
-     * @param  {Object} error handles the errors resulting from the request. 
+     * @param  {Object} error handles the errors resulting from the request.
      * @return {JSON | object}  error 500 message.
      */
     .catch((error) => {
@@ -86,10 +76,8 @@ const signup = (req, res) => {
           statusCode: 409,
           error: 'Account already exists, consider signing in',
         });
-      } else {
-        console.log(error);
       }
-    }); 
+    });
 };
 
 export default signup;

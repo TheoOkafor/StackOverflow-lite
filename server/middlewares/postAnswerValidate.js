@@ -1,4 +1,3 @@
-import express from 'express';
 import db from '../db';
 
 /**
@@ -10,7 +9,6 @@ import db from '../db';
  * @return {JSON | object} - Error message or next callback
  */
 const postAnswerValidate = (req, res, next) => {
-  const requestId = req.params.idQ;
   const reqBody = req.body;
 
   if (reqBody.body) {
@@ -30,13 +28,12 @@ const postAnswerValidate = (req, res, next) => {
       });
     } else {
       db.any('SELECT username FROM users WHERE id = $1', [req.userId])
-        .then(data => {
+        .then((data) => {
           req.username = data[0].username;
           return next();
-        })
+        });
     }
   } else {
-
     res.status(400);
     res.json({
       statusCode: 400,
@@ -46,4 +43,4 @@ const postAnswerValidate = (req, res, next) => {
   }
 };
 
-export { postAnswerValidate };
+export default postAnswerValidate;

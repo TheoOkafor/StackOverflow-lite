@@ -1,4 +1,3 @@
-import express from 'express';
 import db from '../db';
 
 /**
@@ -10,18 +9,18 @@ import db from '../db';
  * @return {JSON | object} - Error message or next callback
  */
 const postCommentValidate = (req, res, next) => {
-  const idA = parseInt(req.params.idA);
-  const idQ = parseInt(req.params.idQ);
+  const idA = parseInt(req.params.idA, 10);
+  const idQ = parseInt(req.params.idQ, 10);
   const reqBody = req.body;
-  const reqId = parseInt(req.userId);
+  const reqId = parseInt(req.userId, 10);
 
   db.multi(`
     SELECT * FROM questions WHERE id = $1;
     SELECT * FROM answers WHERE id = $2`, [idQ, idA])
-    .then(data => {
+    .then((data) => {
       /**
        * Check whether the question or answer exists
-       * @param  {boolean} !data[0][0] ||            !data[1][0] 
+       * @param  {boolean} !data[0][0] ||            !data[1][0]
        * [question or answer array]
        * @return {JSON | object}             [Error 404 if true]
        */
@@ -36,40 +35,40 @@ const postCommentValidate = (req, res, next) => {
 
       if (reqBody.body) {
       // Check if all fields are provided and are valid:
-      const invalidReq = !reqBody.body.trim();
+        const invalidReq = !reqBody.body.trim();
 
-      /**
+        /**
        * Checks whether the request is valid or not
        * @param  {Boolean} invalidReq - ```true``` or ```false```
-       * @return {JSON | object} - returns the error message or the next callback
+       * @return {JSON | object} - returns the error message
+       * or the next callback
        */
-      if (invalidReq) {
+        if (invalidReq) {
+          res.status(400);
+          res.json({
+            statusCode: 400,
+            error: 'Comment body must not be empty',
+          });
+        } else {
+          db.any('SELECT username FROM users WHERE id = $1', [req.userId])
+            .then((result) => {
+              req.username = result[0].username;
+              return next();
+            });
+        }
+      } else {
         res.status(400);
         res.json({
           statusCode: 400,
-          error: 'Comment body must not be empty',
+          error: 'Comment must have a body',
         });
-      } else {
-        db.any('SELECT username FROM users WHERE id = $1', [req.userId])
-          .then(data => {
-            req.username = data[0].username;
-            return next();
-          })
+        return res;
       }
-    } else {
-
-      res.status(400);
-      res.json({
-        statusCode: 400,
-        error: 'Comment must have a body',
-      });
-      return res;
-    }
-  })
-  .catch(error => {
-      console.log(error)
-  });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 };
-    
+
 
 export default postCommentValidate;

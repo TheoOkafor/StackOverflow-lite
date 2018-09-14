@@ -1,4 +1,3 @@
-import express from 'express';
 /**
  * Handles the URL errors that comes with requests
  * @param  {JSON | object}   req  - request parameters and body
@@ -7,16 +6,15 @@ import express from 'express';
  * @return {JSON | object}   error message.
  */
 const getValidate = (req, res, next) => {
-	if (req.method !== 'GET') {
+  if (req.method !== 'GET') {
     res.status(405);
     res.json({
       statusCode: 405,
       error: 'Current HTTP request method is not allowed on this URI',
     });
     return res;
-  } else {
-  	return next();
   }
+  	return next();
 };
 
 export default getValidate;

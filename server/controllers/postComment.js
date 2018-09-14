@@ -1,4 +1,3 @@
-import express from 'express';
 import db from '../db';
 
 /**
@@ -22,10 +21,17 @@ const postComment = (req, res) => {
     (answerId, questionId, body, username, userid, timeSubmitted)
     VALUES ($1, $2, $3, $4, $5, $6)
     RETURNING ID`;
-  const values = [answerId, questionId, reqBody.body, username, userId, timeNow];
+  const values = [
+    answerId,
+    questionId,
+    reqBody.body,
+    username,
+    userId,
+    timeNow,
+  ];
 
   db.one(request, values)
-    .then(data => {
+    .then((data) => {
       res.status(201);
       res.json({
         statusCode: 201,
@@ -36,10 +42,10 @@ const postComment = (req, res) => {
     /**
      * Catches the error from the database
      * @param  {Object} error - contains details about the database error
-     * @return {JSON | object}  - contains error 404 or 
+     * @return {JSON | object}  - contains error 404 or
      * 500 message sent to the user
      */
-    .catch(error => {
+    .catch((error) => {
       console.log(error);
     });
 };

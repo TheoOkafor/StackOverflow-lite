@@ -1,4 +1,3 @@
-import express from 'express';
 import db from '../db';
 
 /**
@@ -10,18 +9,17 @@ import db from '../db';
  */
 
 const updateAnswerValidate = (req, res, next) => {
-  const idA = parseInt(req.params.idA);
-  const idQ = parseInt(req.params.idQ);
-  const reqBody = req.body;
-  const reqId = parseInt(req.userId);
+  const idA = parseInt(req.params.idA, 10);
+  const idQ = parseInt(req.params.idQ, 10);
+  const reqId = parseInt(req.userId, 10);
 
   db.multi(`
     SELECT * FROM questions WHERE id = $1;
     SELECT * FROM answers WHERE id = $2`, [idQ, idA])
-    .then(data => {
+    .then((data) => {
       /**
        * Check whether the question or answer exists
-       * @param  {boolean} !data[0][0] ||            !data[1][0] 
+       * @param  {boolean} !data[0][0] ||            !data[1][0]
        * [question or answer array]
        * @return {JSON | object}             [Error 404 if true]
        */
@@ -32,37 +30,32 @@ const updateAnswerValidate = (req, res, next) => {
           error: `Question ${idQ} or answer ${idA} not found`,
         });
         return res;
-
-      } else {
-        let questionOwnerId = parseInt(data[0][0].userid);
-        let answerOwnerId = parseInt(data[1][0].userid);
-
-        /**
+      }
+      const questionOwnerId = parseInt(data[0][0].userid, 10);
+      const answerOwnerId = parseInt(data[1][0].userid, 10);
+      /**
          * Check the ID of requester is the same as the id of question creator
          * @param  {string} reqId - the ID of the requester
          *                  questionOwnerId - the ID of question owner
          * @return {JSON | object}  Error message or OK response
          */
-        if(reqId === questionOwnerId || reqId === answerOwnerId) {
-          req.questionOwner = questionOwnerId;
-          req.answerOwner = answerOwnerId;
-          req.reqId = reqId;
+      if (reqId === questionOwnerId || reqId === answerOwnerId) {
+        req.questionOwner = questionOwnerId;
+        req.answerOwner = answerOwnerId;
+        req.reqId = reqId;
 
-          next();
-        } else {
-          res.status(403);
-          res.json({
-            statusCode: 403,
-            error: 'You are not authorised to complete this action',
-          });
-          return res;
-        } 
-        
+        return next();
       }
+      res.status(403);
+      res.json({
+        statusCode: 403,
+        error: 'You are not authorised to complete this action',
+      });
+      return res;
     })
-    .catch(error => {
-      console.log(error)
+    .catch((error) => {
+      console.log(error);
     });
 };
 
-export { updateAnswerValidate };
+export default updateAnswerValidate;

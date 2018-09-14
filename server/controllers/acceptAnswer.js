@@ -1,7 +1,6 @@
 /**
  * db is the Database setup module
  */
-import express from 'express';
 import db from '../db';
 
 /**
@@ -11,8 +10,8 @@ import db from '../db';
  * @param  {JSON | object}   res  - response to the user
  */
 const acceptAnswer = (req, res, next) => {
-  const id = parseInt(req.params.idA);
-  const questionID = parseInt(req.params.idQ);
+  const id = parseInt(req.params.idA, 10);
+  const questionID = parseInt(req.params.idQ, 10);
   const reqBody = req.body;
 
   if (req.reqId === req.questionOwner) {
@@ -32,21 +31,22 @@ const acceptAnswer = (req, res, next) => {
           error: 'Expected a request body with {value: true || false}',
         });
         return res;
-      } else {
-        /**
+      }
+      /**
          * The SQL request
          * @type {String}
          */
-        const query = `UPDATE answers SET accepted=$3 WHERE ID=$1
+      const query = `UPDATE answers SET accepted=$3 WHERE ID=$1
            AND questionID=$2 RETURNING ID`;
         /**
          * The request variable required by the SQL request
          * @type {Array}
          */
-        
-        const request = [id, questionID, req.body.value];
-        db.result(query, request)
-          .then((result) => {
+
+      const request = [id, questionID, req.body.value];
+      db.result(query, request)
+        .then((result) => {
+          if (result) {
             res.status(201);
             res.json({
               statusCode: 201,
@@ -54,27 +54,26 @@ const acceptAnswer = (req, res, next) => {
                 ? 'accepted' : 'unaccepted'}`,
             });
             return res;
-          })
-          /**
-           * Catch Error call-back
-           * @param  {Object} error handles the errors resulting from the request.
-           * @return {JSON | object}  error 500 message.
-           */
-          .catch((error) => {
-            res.status(500);// Set status to 500
-            res.json({
-              statusCode: 500,
-              error: 'Server failed to complete request',
-            });
-            return res;
+          }
+        })
+      /**
+       * Catch Error call-back
+       * @param  {Object} error handles the errors resulting from the request.
+       * @return {JSON | object}  error 500 message.
+       */
+        .catch((error) => {
+          res.status(500);// Set status to 500
+          res.json({
+            statusCode: 500,
+            error: 'Server failed to complete request',
+            data: error,
           });
-      } 
+          return res;
+        });
     }
-      
   } else {
-    next();
-
+    return next();
   }
 };
 
-export { acceptAnswer };
+export default acceptAnswer;

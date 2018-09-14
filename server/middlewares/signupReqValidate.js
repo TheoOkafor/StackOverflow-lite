@@ -1,4 +1,3 @@
-import express from 'express';
 import * as emailValidator from 'email-validator';
 /**
  * This function checks the users request body.
@@ -35,7 +34,7 @@ const signupReqValidate = (req, res, next) => {
         error: 'The email provided is invalid',
       });
       return res;
-      
+
     // Check whether USERNAME length is acceptable
     } if (reqBody.username.trim().length >= 19) {
       res.status(400);
@@ -68,6 +67,7 @@ const signupReqValidate = (req, res, next) => {
     statusCode: 400,
     error: 'Username, email and password are all required',
   });
+  return res;
 };
 
-export { signupReqValidate };
+export default signupReqValidate;

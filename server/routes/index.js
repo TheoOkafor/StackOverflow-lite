@@ -1,21 +1,21 @@
 import express from 'express';
-import { updateAnswerValidate } from '../middlewares/updateAnswerValidate';
-import { postQuestionValidate } from '../middlewares/postQuestionValidate';
+import updateAnswerValidate from '../middlewares/updateAnswerValidate';
+import postQuestionValidate from '../middlewares/postQuestionValidate';
 import deleteQuestionValidate from '../middlewares/deleteQuestionValidate';
-import { fetchAllQuestionsCtrl } from '../controllers/fetchAllQuestions';
-import { postAnswerValidate } from '../middlewares/postAnswerValidate';
+import fetchAllQuestionsCtrl from '../controllers/fetchAllQuestions';
+import postAnswerValidate from '../middlewares/postAnswerValidate';
 import postCommentValidate from '../middlewares/postCommentValidate';
-import { fetchQuestionCtrl } from '../controllers/fetchQuestion';
-import { deleteQuestion } from '../controllers/deleteQuestion';
+import fetchQuestionCtrl from '../controllers/fetchQuestion';
+import deleteQuestion from '../controllers/deleteQuestion';
 import getUserValidate from '../middlewares/getUserValidate';
-import { acceptAnswer } from '../controllers/acceptAnswer';
+import acceptAnswer from '../controllers/acceptAnswer';
 import upvoteDownvote from '../controllers/upvoteDownvote';
-import { postQuestion } from '../controllers/postQuestion';
+import postQuestion from '../controllers/postQuestion';
 import votesValidate from '../middlewares/votesValidate';
 import authValidate from '../middlewares/authValidate';
 import updateAnswer from '../controllers/updateAnswer';
-import { postAnswer } from '../controllers/postAnswer';
 import postComment from '../controllers/postComment';
+import postAnswer from '../controllers/postAnswer';
 import user from '../controllers/user';
 
 
@@ -32,7 +32,7 @@ router.get('/users/:id', getUserValidate, user);
 
 // POST A QUESTION
 router.post('/questions', authValidate,
- postQuestionValidate, postQuestion);
+  postQuestionValidate, postQuestion);
 
 // POST AN ANSWER
 router.post('/questions/:id([0-9]{1,})/answers', authValidate,
@@ -43,15 +43,15 @@ router.post('/questions/:idQ([0-9]{1,})/answers/:idA([0-9]{1,})', authValidate,
   votesValidate, upvoteDownvote);
 
 // POST COMMENT ON ANSWER
-router.post('/questions/:idQ([0-9]{1,})/answers/:idA([0-9]{1,})/comments', authValidate,
-  postCommentValidate, postComment);
+router.post('/questions/:idQ([0-9]{1,})/answers/:idA([0-9]{1,})/comments',
+  authValidate, postCommentValidate, postComment);
 
 // DELETE A QUESTION
-router.delete('/questions/:id([0-9]{1,})', 
+router.delete('/questions/:id([0-9]{1,})',
   authValidate, deleteQuestionValidate, deleteQuestion);
 
 // PUT AN ANSWER
 router.put('/questions/:idQ([0-9]{1,})/answers/:idA([0-9]{1,})',
   authValidate, updateAnswerValidate, acceptAnswer, updateAnswer);
 
-export { router };
+export default router;

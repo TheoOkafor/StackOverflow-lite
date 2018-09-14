@@ -1,4 +1,3 @@
-import express from 'express';
 import db from '../db';
 /**
  * This controller handles the deletion of questions
@@ -8,7 +7,7 @@ import db from '../db';
  * @return {JSON | object}     Success or error message.
  */
 const deleteQuestion = (req, res) => {
-  const id = parseInt(req.params.id);
+  const id = parseInt(req.params.id, 10);
   const request = 'DELETE FROM questions WHERE ID = $1';
 
   db.result(request, id)
@@ -31,4 +30,4 @@ const deleteQuestion = (req, res) => {
     });
 };
 
-export { deleteQuestion };
+export default deleteQuestion;
