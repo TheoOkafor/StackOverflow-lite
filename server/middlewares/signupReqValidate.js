@@ -14,10 +14,11 @@ import * as emailValidator from 'email-validator';
 const signupReqValidate = (req, res, next) => {
   const reqBody = req.body;
 
-  if (reqBody.email && reqBody.username && reqBody.password) {
+  if (reqBody.email && reqBody.username && reqBody.password 
+      && reqBody.confirmpassword) {
     // Check if all fields are provided and are valid:
     const invalidReq = !reqBody.email.trim() || !reqBody.username.trim()
-      || !reqBody.password.trim();
+      || !reqBody.password.trim() || !reqBody.confirmpassword.trim();
 
     if (invalidReq) {
       res.status(400);
@@ -59,13 +60,21 @@ const signupReqValidate = (req, res, next) => {
         error: 'The password provided is too short. (min-length: 6)',
       });
       return res;
+    // Check password validation
+    } if (reqBody.confirmpassword !== reqBody.password) {
+      res.status(400);
+      res.json({
+        statusCode: 400,
+        error: 'The passwords provided do not match',
+      });
+      return res;
     }
     return next();
   }
   res.status(400);
   res.json({
     statusCode: 400,
-    error: 'Username, email and password are all required',
+    error: 'Username, email and passwords are all required',
   });
   return res;
 };

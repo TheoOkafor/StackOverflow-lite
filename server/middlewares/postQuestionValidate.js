@@ -27,6 +27,20 @@ const postQuestionValidate = (req, res, next) => {
         error: 'Question title and body must not be empty',
       });
       return res;
+    } else if (reqBody.title.trim().length >= 50) {
+      res.status(400);
+      res.json({
+        statusCode: 400,
+        error: 'The title provided is too long. (max-characters: 50)',
+      });
+      return res;
+    } if (reqBody.title.trim().length <= 20) {
+      res.status(400);
+      res.json({
+        statusCode: 400,
+        error: 'The title provided is too short. (min-characters: 20)',
+      });
+      return res;
     }
     db.any('SELECT username FROM users WHERE id = $1', [req.userId])
       .then((data) => {

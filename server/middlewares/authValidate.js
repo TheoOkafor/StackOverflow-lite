@@ -7,14 +7,15 @@ const authValidate = (req, res, next) => {
     res.status(403);
     res.json({
     	auth: false,
-    	error: 'Token not provided',
+    	error: 'Token not provided, Please sign in',
     });
     return res;
   }
   	jwt.verify(token, config.secret, (error, decoded) => {
     if (error) {
       return res.status(401).json({
-        error: 'could not authenticate the token',
+        statusCode: 401,
+        error: 'Authentication failed, please sign in',
       });
     }
     req.userId = decoded.id;
