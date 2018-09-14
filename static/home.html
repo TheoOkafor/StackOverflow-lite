@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Stack Overflow-lite </title>
+	<meta name="description" content="StackOverflow-lite is a platform where people can ask questions and provide answers.">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" type="image/png" href="./images/favicon/favicon.png">
+	<link rel="stylesheet" href="./stylesheets/style.css">
+<!--	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Ubuntu"> -->
+</head>
+<body>
+	<header class="home">
+		<div class="logo">
+			<a href="/"><p class="home">StackOverflow<small>-lite</small></p></a>
+		</div>
+
+		<nav class="top-link right margin-top-25">
+			
+		</nav>
+
+	</header>
+
+	<div class="row-container home">
+		<div class="sd-margin-12 d-margin-1">
+		</div>
+
+		<div class="sd-margin-12 d-margin-7 margin-top-15">
+			<div class="row-container">
+				<div class="card center" id="home-notif">
+					<button class="inherit right close" onclick="closeNotif()" >x</button>
+					<h3 class="">Updates to our Privacy Policy</h3>
+					<p class="">We have updated our privacy policy. Learn more <a href="/error" class="inherit">here</a>.</p>
+				</div>
+
+				<div class="card margin-top-15">
+					<h5><span  id="username"> </span> <small>(you)</small></h5>
+					<p id="server-message"></p>
+					<div class="question-form">
+						<input type="text" name="question-input" placeholder="What is your question?" id="title">
+						<textarea placeholder="Description" id="description"></textarea>
+						<div class="btn-group">
+							<button class="btn primary question-btn" id="send-btn">Ask Question</button>
+							<input type="reset" value="Cancel">
+						</div>
+					</div>
+				</div>
+				<div id="root">
+					<div class="loader"></div>
+				</div>
+
+			</div>
+		</div>
+
+		<div class="sd-margin-12 d-margin-4">
+			<h3 class="side-title">Top Questions with Most Answers</h3>
+			<div>
+				<table class="table" id="top-questions">
+					
+				</table>
+			</div>
+		</div>
+
+
+	</div><!--End of Row Container -->
+
+	<footer class="home center">
+		<p class="sitemap margin-bottom-30"><small><a href="/" class="inherit">Home</a> | <a href="/signup" class="inherit">Signup page</a> | <a href="/signin" class="inherit">Signin page</a></small></p>
+		<p><small>Created by Theodore Okafor as part of Andela Developer Challenge</small></p>
+	</footer>
+	<script type="text/javascript">
+		const signupBtn = document.getElementById('sign-up');
+	</script>
+	<script src="javascript/custom.js"></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<script src="javascript/fetchAllQuestions.js"></script>
+	<script src="./javascript/fetchTopQuestions.js"></script>
+	<script src="javascript/postQuestion.js"></script>
+
+	<script>
+		window.addEventListener('load', fetchAllQuestions);
+		window.addEventListener('load', fetchTopQuestions);
+	</script>
+</body>
+</html>

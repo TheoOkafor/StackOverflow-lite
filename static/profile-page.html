@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Coco-maiko Profile - Stack Overflow-lite </title>
+	<meta name="description" content="StackOverflow-lite is a platform where people can ask questions and provide answers.">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<base href="/">
+	<link rel="icon" type="image/png" href="./images/favicon/favicon.png">
+	<link rel="stylesheet" href="./stylesheets/style.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Ubuntu">
+</head>
+<body>
+	<header class="home">
+		<div class="logo">
+			<a href=""><p class="home">StackOverflow<small>-lite</small></p></a>
+		</div>
+
+		<nav class="top-link right margin-top-25">
+			<a href="home.html" class="inherit">Ask Question</a>
+			<a href="profile-page.html" class="inherit"><b>coco-maiko</b></a>
+			<a href="signin.html" class="inherit">logout</a>
+		</nav>
+
+	</header>
+
+	<div class="row-container home">
+		<div class="sd-margin-12 d-margin-3">
+			<div class="card margin-top-30" id="profile-summary">
+
+			</div>
+		</div>
+
+		<div class="sd-margin-12 d-margin-6 margin-bottom-30">
+			<div class="row-container margin-top-30 margin-bottom-20">
+				<h3>Recent Questions by <span class="profile-username">coco-maiko</span></h3>
+
+				<table class="table user-table">
+					
+				</table>
+			</div>
+
+			<div class="row-container">
+				<h3>All <span id="all-questions">10</span> Questions by <span class="profile-username">coco-maiko</span></h3>
+				
+				<table class="table user-table">
+
+				</table>
+			</div>
+		</div>
+
+		<div class="sd-margin-12 d-margin-3">
+			<div>	
+				<h3 class="side-title">Top Questions with Most Answers</h3>
+				<table class="table" id="top-questions">
+					
+				</table>
+			</div>
+		</div>
+
+
+	</div><!--End of Row Container -->
+
+	<footer class="home center margin-top-30">
+		<p class="sitemap margin-bottom-30"><small><a href="/" class="inherit">Home</a> | <a href="/signup" class="inherit">Signup page</a> | <a href="/signin" class="inherit">Signin page</a></small></p>
+		<p><small>Created by Theodore Okafor as part of Andela Developer Challenge</small></p>
+	</footer>
+	<script src="./javascript/custom.js"></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<script src="./javascript/fetchUser.js"></script>
+	<script src="./javascript/fetchTopQuestions.js"></script>
+	<script>
+		window.addEventListener('load', fetchUser);
+		window.addEventListener('load', fetchTopQuestions);
+
+	</script>
+</body>
+</html>

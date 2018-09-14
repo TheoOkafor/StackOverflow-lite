@@ -3,6 +3,7 @@ import logger from 'morgan';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import bodyParser from 'body-parser';
+import routes from './server/routes/routes';
 import router from './server/routes';
 import authRouter from './server/routes/auth';
 import getValidate from './server/middlewares/getValidate';
@@ -21,6 +22,8 @@ app.use(bodyParser.json({ type: 'application/json' }));
 
 app.use(cors());
 
+app.use(express.static('static'));
+app.use('', routes);
 app.use('/v1', router);
 app.use('/v1/auth', authRouter);
 app.use('/v1', getValidate, urlErrHandler);
