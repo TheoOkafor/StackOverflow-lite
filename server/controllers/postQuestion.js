@@ -1,4 +1,3 @@
-import express from 'express';
 import db from '../db';
 
 /**
@@ -16,17 +15,28 @@ const postQuestion = (req, res) => {
    * @type {Object}
    */
   const request = {
-    text: 'INSERT INTO questions (title, body, timeSubmitted, username, userid)'
-    + ' VALUES ($1, $2, $3, $4, $5) RETURNING id',
-    values: [reqBody.title, reqBody.body, timeNow, reqBody.username, userid],
+    text: `INSERT INTO questions (title, body, timeSubmitted, username, userid)
+      VALUES ($1, $2, $3, $4, $5) RETURNING id`,
+    values: [
+      reqBody.title,
+      reqBody.body,
+      timeNow,
+      req.username,
+      userid,
+    ],
   };
   db.one(request.text, request.values)
-    .then(data => {
+    .then((data) => {
+      const result = {
+        questionid: data.id,
+        title: reqBody.title,
+        body: reqBody.body,
+      };
       res.status(201);
       res.json({
         statusCode: 201,
         message: 'New question added',
-        data: reqBody
+        data: result,
       });
     })
     /**
@@ -34,14 +44,14 @@ const postQuestion = (req, res) => {
      * @param  {Object} error - contains details about the database error
      * @return {JSON | object}  - contains error 500 message sent to the user
      */
-    .catch(error => {
-      console.log(error);
+    .catch((error) => {
       res.status(500);// Set status to 500
       res.json({
         statusCode: 500,
-        error: 'Server failed to complete request'
+        error: 'Server failed to complete request',
+        data: error,
       });
     });
-}
+};
 
-export { postQuestion };
+export default postQuestion;

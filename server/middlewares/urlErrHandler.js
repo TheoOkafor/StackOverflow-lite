@@ -1,4 +1,3 @@
-import express from 'express';
 /**
  * Handles the URL errors that comes with requests
  * @param  {JSON | object}   req  - request parameters and body
@@ -14,6 +13,7 @@ const urlErrHandler = (req, res) => {
     statusCode: 400,
     error: err.message,
   });
+  return res;
 };
 
-export { urlErrHandler };
+export default urlErrHandler;

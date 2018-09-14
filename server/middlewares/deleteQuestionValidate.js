@@ -1,4 +1,3 @@
-import express from 'express';
 import db from '../db';
 
 /**
@@ -10,36 +9,32 @@ import db from '../db';
  */
 
 const deleteQuestionValidate = (req, res, next) => {
-  const id = parseInt(req.params.id);
-  const reqBody = req.body;
-  const reqId = parseInt(req.userId);
+  const id = parseInt(req.params.id, 10);
+  const reqId = parseInt(req.userId, 10);
 
   db.any('SELECT * FROM questions WHERE id = $1', [id])
-    .then(data => {
-      let ownerId = parseInt(data[0].userid);
+    .then((data) => {
+      const ownerId = parseInt(data[0].userid, 10);
 
       if (ownerId === reqId) {
         return next();
-      } else {
-        res.status(403);
-        res.json({
-          statusCode: 403,
-          error: 'You are not authorised to complete this action',
-        });
       }
+      res.status(403);
+      res.json({
+        statusCode: 403,
+        error: 'You are not authorised to complete this action',
+      });
+      return res;
     })
-    .catch(error => {
+    .catch((error) => {
+      console.log(error);
       res.status(404);
       res.json({
         statusCode: 404,
         error: `Question ${id} not found`,
       });
+      return res;
     });
-  /**
-   * Is true if request has no value property or
-   * value of the value property is not boolean.
-   * @type {boolean}
-   */
 };
 
 export default deleteQuestionValidate;

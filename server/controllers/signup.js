@@ -3,7 +3,6 @@
  * Bcrypt is use to encrypt the password stored in the Database
  * db is the Database setup module
  */
-import express from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import db from '../db';
@@ -23,7 +22,7 @@ const signup = (req, res) => {
   const created = timeNow;
   const modified = timeNow;
 
-  //The SQL request to the database
+  // The SQL request to the database
   const request = {
     text: `INSERT INTO users 
       (username, email, password, created, modified) 
@@ -37,22 +36,13 @@ const signup = (req, res) => {
     ],
   };
 
-  /**
-   * [userData - The public part of the user request data]
-   * @type {Object}
-   */
-  const userData = {
-    username: req.body.username,
-    email: req.body.email,
-  };
-  
   db.one(request.text, request.values)
     .then((data) => {
     	// create a token
     	const token = jwt.sign(
     		{ id: data.id },
     		config.secret,
-    		{ expiresIn: 86400 }, // expires in 24hours
+    		{ expiresIn: 604800 }, // expires in 24hours
       );
       res.header('x-access-token', token);
       res.status(201);
@@ -61,13 +51,14 @@ const signup = (req, res) => {
         message: 'New user created.',
         data: {
           userID: data.id,
-          username: username,
+          username,
+          'x-access-token': token,
         },
       });
     })
     /**
      * Catch Error call-back
-     * @param  {Object} error handles the errors resulting from the request. 
+     * @param  {Object} error handles the errors resulting from the request.
      * @return {JSON | object}  error 500 message.
      */
     .catch((error) => {
@@ -85,14 +76,8 @@ const signup = (req, res) => {
           statusCode: 409,
           error: 'Account already exists, consider signing in',
         });
-      } else {
-        res.status(500);
-        res.json({
-          statusCode: 500,
-          error: 'Server could not register user',
-        });
       }
-    }); 
+    });
 };
 
 export default signup;

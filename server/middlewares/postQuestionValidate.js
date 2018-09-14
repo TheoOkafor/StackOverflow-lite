@@ -1,4 +1,4 @@
-import express from 'express';
+import db from '../db';
 
 /**
  * This middleware validates the POST question request body
@@ -10,24 +10,37 @@ import express from 'express';
  */
 const postQuestionValidate = (req, res, next) => {
   const reqBody = req.body;
-  // Check if all fields are provided and are valid:
-  const invalidReq = !reqBody.title || !reqBody.title || !reqBody.body ;
 
-  /**
-   * Checks whether the request is valid or not
-   * @param  {Boolean} invalidReq - ```true``` or ```false```
-   * @return {JSON | object} - returns the error message or the next callback
-   */
-  if (invalidReq) {
-    const err = new Error('Question must have title and body');
+  if (reqBody.title && reqBody.body) {
+    // Check if all fields are provided and are valid:
+    const invalidReq = !reqBody.title.trim() || !reqBody.body.trim();
+
+    /**
+     * Checks whether the request is valid or not
+     * @param  {Boolean} invalidReq - ```true``` or ```false```
+     * @return {JSON | object} - returns the error message or the next callback
+     */
+    if (invalidReq) {
+      res.status(400);
+      res.json({
+        statusCode: 400,
+        error: 'Question title and body must not be empty',
+      });
+      return res;
+    }
+    db.any('SELECT username FROM users WHERE id = $1', [req.userId])
+      .then((data) => {
+        req.username = data[0].username;
+        return next();
+      });
+  } else {
     res.status(400);
     res.json({
       statusCode: 400,
-      error: err.message,
+      error: 'Question must have title and body',
     });
-  } else {
-    return next();
+    return res;
   }
 };
 
-export { postQuestionValidate };
+export default postQuestionValidate;

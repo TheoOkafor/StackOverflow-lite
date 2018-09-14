@@ -3,10 +3,11 @@ import logger from 'morgan';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import bodyParser from 'body-parser';
-import { router } from './server/routes';
+import routes from './server/routes/routes';
+import router from './server/routes';
 import authRouter from './server/routes/auth';
-import { fetchDocs } from './server/controllers/fetchDocs';
-import { urlErrHandler } from './server/middlewares/urlErrHandler';
+import getValidate from './server/middlewares/getValidate';
+import urlErrHandler from './server/middlewares/urlErrHandler';
 
 const app = express();
 dotenv.config();
@@ -21,19 +22,19 @@ app.use(bodyParser.json({ type: 'application/json' }));
 
 app.use(cors());
 
+app.use(express.static('static'));
+app.use('', routes);
 app.use('/v1', router);
 app.use('/v1/auth', authRouter);
-app.use('/v1/docs', fetchDocs);
-app.use('/v1', urlErrHandler);
+app.use('/v1', getValidate, urlErrHandler);
 
 // error handler
 app.use((err, req, res, next) => {
   // render the error
-
   res.status(err.status || 500);
   res.json(err.body || {
     statusCode: 500,
-  	error: 'Server could not complete request',
+    error: 'Server could not complete request',
   });
   next();
 });
@@ -43,4 +44,4 @@ app.listen(port, () => {
   console.log(`Server is listening on port ${port}`);
 });
 
-export { app };
+export default app;

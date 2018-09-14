@@ -1,4 +1,4 @@
-import express from 'express';
+import db from '../db';
 
 /**
  * This middleware validates the POST answer request body
@@ -9,26 +9,38 @@ import express from 'express';
  * @return {JSON | object} - Error message or next callback
  */
 const postAnswerValidate = (req, res, next) => {
-  const requestId = req.params.id;
   const reqBody = req.body;
-  // Check if all fields are provided and are valid:
-  const invalidReq = !reqBody.body;
 
-  /**
-   * Checks whether the request is valid or not
-   * @param  {Boolean} invalidReq - ```true``` or ```false```
-   * @return {JSON | object} - returns the error message or the next callback
-   */
-  if (invalidReq) {
-    const err = new Error('Answer must have a body.');
+  if (reqBody.body) {
+    // Check if all fields are provided and are valid:
+    const invalidReq = !reqBody.body.trim();
+
+    /**
+     * Checks whether the request is valid or not
+     * @param  {Boolean} invalidReq - ```true``` or ```false```
+     * @return {JSON | object} - returns the error message or the next callback
+     */
+    if (invalidReq) {
+      res.status(400);
+      res.json({
+        statusCode: 400,
+        error: 'Answer body must not be empty',
+      });
+    } else {
+      db.any('SELECT username FROM users WHERE id = $1', [req.userId])
+        .then((data) => {
+          req.username = data[0].username;
+          return next();
+        });
+    }
+  } else {
     res.status(400);
     res.json({
       statusCode: 400,
-      error: err.message,
+      error: 'Answer must have a body',
     });
-  } else {
-    return next();
+    return res;
   }
 };
 
-export { postAnswerValidate };
+export default postAnswerValidate;
