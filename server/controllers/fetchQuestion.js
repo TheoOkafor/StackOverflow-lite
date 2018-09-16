@@ -36,16 +36,16 @@ const fetchQuestionCtrl = (req, res) => {
         // VOTES
         // Put the votes in the corresponding answers
         const answerVotes = dbVotes.filter((vote) => {
-          vote.answerid === answer.id;
+          return vote.answerid === answer.id;
         });
 
         // Makes the array of downvotes in each answer
         const downvotes = answerVotes.filter((voteItem) => {
-          voteItem.vote === 'downvote';
+          return voteItem.vote === 'downvote';
         });
           // Makes the array of upvotes in each answer
         const upvotes = answerVotes.filter((voteItem) => {
-          voteItem.vote === 'upvote';
+          return voteItem.vote === 'upvote';
         });
 
         const votesCount = upvotes.length - downvotes.length;
