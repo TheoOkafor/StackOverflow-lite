@@ -14,12 +14,21 @@ const registerDetails = {
   email: 'testertheo@email.com',
   username: 'testertheo',
   password: 'password',
+  confirmpassword: 'password'
+};
+
+const unmatchSignup = {
+  email: 'teddy13@email.com',
+  username: 'teddy13',
+  password: 'password',
+  confirmpassword: 'password1',
 };
 
 const otherSignup = {
   email: 'teddy12@email.com',
   username: 'teddy12',
   password: 'password',
+  confirmpassword: 'password',
 };
 
 let token = '';
@@ -166,6 +175,79 @@ describe('Questions', () => {
     });
 
     describe('/POST /v1/questions', () => {
+      it('it should NOT POST Question if the TITLE provided'
+        + ' is too long', (done) => {
+        const question = {
+          title: 'hghsg hsghsdg shdgshdgssgdh hghsg hsghsdg shdgshdgssgdh',
+          body: 'hghsg hsghsdg shdgshdgssgdh',
+          username: 'TheoOkafor',
+        };
+        chai.request(app).post('/v1/questions')
+          .set('x-access-token', token)
+          .send(question)
+          .end((err, res) => {
+            chai.expect(res).to.have.status(400);
+            chai.expect(res.body).to.be.a('object');
+            chai.expect(res.body).to.have.property('error');
+            chai.expect(res.body.error).to
+              .equal('The title provided is too long. (max-characters: 50)');
+            done(err);
+          });
+      });
+    });
+
+    describe('/POST /v1/questions', () => {
+      it('it should NOT POST Question if the TITLE provided'
+        + ' is too short', (done) => {
+        const question = {
+          title: 'hghsg hsghsdg',
+          body: 'hghsg hsghsdg shdgshdgssgdh',
+          username: 'TheoOkafor',
+        };
+        chai.request(app).post('/v1/questions')
+          .set('x-access-token', token)
+          .send(question)
+          .end((err, res) => {
+            chai.expect(res).to.have.status(400);
+            chai.expect(res.body).to.be.a('object');
+            chai.expect(res.body).to.have.property('error');
+            chai.expect(res.body.error).to
+              .equal('The title provided is too short. (min-characters: 20)');
+            done(err);
+          });
+      });
+    });
+
+    describe('/POST /v1/questions', () => {
+      it('it should NOT POST Question if the BODY provided'
+        + ' is too long', (done) => {
+        const question = {
+          title: 'hghsg hsghsdg shdgshdgssgdh hghsg hsg',
+          body: `chai.request(app).post('/v1/questions')
+            .set('x-access-token', token)
+            .send(question)
+            .end((err, res) => {
+              chai.expect(res).to.have.status(400);
+              chai.expect(res.body).to.be.a('object');
+              chai.expect(res.body).to.have.property('error');`,
+          username: 'TheoOkafor',
+        };
+        chai.request(app).post('/v1/questions')
+          .set('x-access-token', token)
+          .send(question)
+          .end((err, res) => {
+            chai.expect(res).to.have.status(400);
+            chai.expect(res.body).to.be.a('object');
+            chai.expect(res.body).to.have.property('error');
+            chai.expect(res.body.error).to
+              .equal('The description provided is too long.'
+                +' (max-characters: 250)');
+            done(err);
+          });
+      });
+    });
+
+    describe('/POST /v1/questions', () => {
       it('it should POST Question if all the required'
        + ' fields are provided', (done) => {
         const question = {
@@ -200,7 +282,7 @@ describe('Questions', () => {
             chai.expect(res).to.have.status(403);
             chai.expect(res.body).be.a('object');
             chai.expect(res.body).to.have.property('auth');
-            chai.expect(res.body.error).to.equal('Token not provided');
+            chai.expect(res.body.error).to.equal('Token not provided, Please sign in');
             done(err);
           });
       });
@@ -221,7 +303,7 @@ describe('Questions', () => {
             chai.expect(res.body).be.a('object');
             chai.expect(res.body).to.have.property('error');
             chai.expect(res.body.error).to
-              .equal('could not authenticate the token');
+              .equal('Authentication failed, please sign in');
             done(err);
           });
       });
@@ -835,6 +917,7 @@ describe('USER AUTHENTICATION', () => {
           username: 'umeryui',
           email: 'gheti31@yahoo.com',
           password: 'password',
+          confirmpassword: 'password',
         };
         chai.request(app).post('/v1/auth/signup')
           .send(userReq).end((err, res) => {
@@ -855,6 +938,7 @@ describe('USER AUTHENTICATION', () => {
         const userReq = {
           username: 'umeryui',
           password: 'password',
+          confirmpassword: 'password',
         };
         chai.request(app).post('/v1/auth/signup')
           .send(userReq).end((err, res) => {
@@ -863,7 +947,7 @@ describe('USER AUTHENTICATION', () => {
             chai.expect(res.body).to.have.property('error');
             chai.expect(res.body.statusCode).to.equal(400);
             chai.expect(res.body.error).to
-              .equal('Username, email and password are all required');
+              .equal('Username, email and passwords are all required');
             done(err);
           });
       });
@@ -876,6 +960,7 @@ describe('USER AUTHENTICATION', () => {
           email: '     ',
           username: 'umeryui',
           password: 'password',
+          confirmpassword: 'password',
         };
         chai.request(app).post('/v1/auth/signup')
           .send(userReq).end((err, res) => {
@@ -896,6 +981,7 @@ describe('USER AUTHENTICATION', () => {
           email: 'theookafor@theo',
           username: 'theo',
           password: 'password',
+          confirmpassword: 'password',
         };
         chai.request(app).post('/v1/auth/signup')
           .send(userReq).end((err, res) => {
@@ -917,6 +1003,7 @@ describe('USER AUTHENTICATION', () => {
           email: 'theookafor@theo.com',
           username: 'theowhisterrastatfaraiyihsgdhgjgjgnfgfh',
           password: 'password',
+          confirmpassword: 'password',
         };
         chai.request(app).post('/v1/auth/signup')
           .send(userReq).end((err, res) => {
@@ -938,6 +1025,7 @@ describe('USER AUTHENTICATION', () => {
           email: 'theookafor@theo.com',
           username: 'theo',
           password: 'password',
+          confirmpassword: 'password',
         };
         chai.request(app).post('/v1/auth/signup')
           .send(userReq).end((err, res) => {
@@ -959,6 +1047,7 @@ describe('USER AUTHENTICATION', () => {
           email: 'theookafor@theo.com',
           username: 'theotester',
           password: 'pass',
+          confirmpassword: 'pass',
         };
         chai.request(app).post('/v1/auth/signup')
           .send(userReq).end((err, res) => {
@@ -974,10 +1063,13 @@ describe('USER AUTHENTICATION', () => {
     });
 
     describe('POST /v1/auth/signup', () => {
-      it('it should NOT SIGNUP user if EMAIL is not provided', (done) => {
+      it(`it should NOT SIGNUP user if PASSWORD 
+          provided is too short`, (done) => {
         const userReq = {
-          username: 'umeryui',
+          email: 'theookafor@theo.com',
+          username: 'theotester',
           password: 'password',
+          confirmpassword: 'password 2',
         };
         chai.request(app).post('/v1/auth/signup')
           .send(userReq).end((err, res) => {
@@ -986,7 +1078,27 @@ describe('USER AUTHENTICATION', () => {
             chai.expect(res.body).to.have.property('error');
             chai.expect(res.body.statusCode).to.equal(400);
             chai.expect(res.body.error).to
-              .equal('Username, email and password are all required');
+              .equal('The passwords provided do not match');
+            done(err);
+          });
+      });
+    });
+
+    describe('POST /v1/auth/signup', () => {
+      it('it should NOT SIGNUP user if EMAIL is not provided', (done) => {
+        const userReq = {
+          username: 'umeryui',
+          password: 'password',
+          confirmpassword: 'password',
+        };
+        chai.request(app).post('/v1/auth/signup')
+          .send(userReq).end((err, res) => {
+            chai.expect(res).to.have.status(400);
+            chai.expect(res.body).to.be.a('object');
+            chai.expect(res.body).to.have.property('error');
+            chai.expect(res.body.statusCode).to.equal(400);
+            chai.expect(res.body.error).to
+              .equal('Username, email and passwords are all required');
             done(err);
           });
       });
@@ -998,6 +1110,7 @@ describe('USER AUTHENTICATION', () => {
           username: 'Nchabomo',
           email: 'gheti31@yahoo.com',
           password: 'password',
+          confirmpassword: 'password',
         };
         chai.request(app).post('/v1/auth/signup')
           .send(userReq).end((err, res) => {
@@ -1018,6 +1131,7 @@ describe('USER AUTHENTICATION', () => {
           username: 'umeryui',
           email: 'gheti312@yahoo.com',
           password: 'password',
+          confirmpassword: 'password',
         };
         chai.request(app).post('/v1/auth/signup')
           .send(userReq).end((err, res) => {
@@ -1167,7 +1281,7 @@ describe('USER AUTHENTICATION', () => {
 // Parent block for USERS
 describe('GET User', () => {
   // TESTS FOR USER
-  describe('POST /v1/users/2', () => {
+  describe('GET /v1/users/2', () => {
     it('it should GET USER', (done) => {
       chai.request(app).get('/v1/users/2')
         .send(loginDetails).end((err, res) => {
@@ -1182,7 +1296,22 @@ describe('GET User', () => {
     });
   });
 
-  describe('POST /v1/users/100', () => {
+  describe('GET /v1/users/2', () => {
+    it('it should GET USER', (done) => {
+      chai.request(app).get('/v1/users/5')
+        .send(loginDetails).end((err, res) => {
+          chai.expect(res).to.have.status(200);
+          chai.expect(res.body).to.be.a('object');
+          chai.expect(res.body).to.have.property('message');
+          chai.expect(res.body).to.have.property('data');
+          chai.expect(res.body.statusCode).to.equal(200);
+          chai.expect(res.body.message).to.equal('User found');
+          done(err);
+        });
+    });
+  });
+
+  describe('GET /v1/users/100', () => {
     it('it should not GET USER that does not exist', (done) => {
       chai.request(app).get('/v1/users/100')
         .send(loginDetails).end((err, res) => {
@@ -1191,6 +1320,89 @@ describe('GET User', () => {
           chai.expect(res.body).to.have.property('error');
           chai.expect(res.body.statusCode).to.equal(404);
           chai.expect(res.body.error).to.equal('User not found');
+          done(err);
+        });
+    });
+  });
+});
+
+// Parent Block for STATIC ROUTE
+describe('STATIC route', () => {
+  describe('GET Homepage', () => {
+    it('it should GET HOME PAGE', (done) => {
+      chai.request(app).get('/')
+        .send(loginDetails).end((err, res) => {
+          chai.expect(res).to.have.status(200);
+          done(err);
+        });
+    });
+  });
+
+  describe('GET Homepage', () => {
+    it('it should GET HOME PAGE', (done) => {
+      chai.request(app).get('/questions')
+        .send(loginDetails).end((err, res) => {
+          chai.expect(res).to.have.status(200);
+          done(err);
+        });
+    });
+  });
+
+  describe('GET Questions', () => {
+    it('it should GET QUESTION PAGE', (done) => {
+      chai.request(app).get('/questions/2')
+        .end((err, res) => {
+          chai.expect(res).to.have.status(200);
+          done(err);
+        });
+    });
+  });
+
+  describe('GET signup page', () => {
+    it('it should GET SIGNUP PAGE', (done) => {
+      chai.request(app).get('/signup')
+        .end((err, res) => {
+          chai.expect(res).to.have.status(200);
+          done(err);
+        });
+    });
+  });
+
+  describe('GET signin page', () => {
+    it('it should GET SIGNIN PAGE', (done) => {
+      chai.request(app).get('/signin')
+        .end((err, res) => {
+          chai.expect(res).to.have.status(200);
+          done(err);
+        });
+    });
+  });
+
+  describe('GET users page', () => {
+    it('it should GET USER PAGE', (done) => {
+      chai.request(app).get('/users/2')
+        .end((err, res) => {
+          chai.expect(res).to.have.status(200);
+          done(err);
+        });
+    });
+  });
+
+  describe('GET error page', () => {
+    it('it should GET ERROR PAGE', (done) => {
+      chai.request(app).get('/error-404')
+        .end((err, res) => {
+          chai.expect(res).to.have.status(200);
+          done(err);
+        });
+    });
+  });
+
+  describe('GET api-docs', () => {
+    it('it should GET API DOCS PAGE', (done) => {
+      chai.request(app).get('/v1/api-docs')
+        .end((err, res) => {
+          chai.expect(res).to.have.status(200);
           done(err);
         });
     });

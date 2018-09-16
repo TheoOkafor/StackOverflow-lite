@@ -36,22 +36,16 @@ const fetchQuestionCtrl = (req, res) => {
         // VOTES
         // Put the votes in the corresponding answers
         const answerVotes = dbVotes.filter((vote) => {
-          if (vote.answerid === answer.id) {
-            return true;
-          }
+          vote.answerid === answer.id;
         });
 
         // Makes the array of downvotes in each answer
         const downvotes = answerVotes.filter((voteItem) => {
-          if (voteItem.vote === 'downvote') {
-            return true;
-          }
+          voteItem.vote === 'downvote';
         });
           // Makes the array of upvotes in each answer
         const upvotes = answerVotes.filter((voteItem) => {
-          if (voteItem.vote === 'upvote') {
-            return true;
-          }
+          voteItem.vote === 'upvote';
         });
 
         const votesCount = upvotes.length - downvotes.length;
@@ -62,9 +56,7 @@ const fetchQuestionCtrl = (req, res) => {
 
         // COMMENTS
         const answerComments = dbComments.filter((comment) => {
-          if (comment.answerid === answer.id) {
-            return true;
-          }
+          comment.answerid === answer.id;
         });
         answer.comments = answerComments;
         return answer;

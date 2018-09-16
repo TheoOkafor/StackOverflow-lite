@@ -2,7 +2,8 @@ import db from '../db';
 
 const getUserValidate = (req, res, next) => {
   const userId = req.params.id;
-
+  // This validates or sends the response when the user has no questions or answers.
+  // If the user has only questions or only answers, the response will be sent.
   db.multi(`
     SELECT username, email, created, modified FROM users WHERE id = $1;
     SELECT * FROM questions WHERE userid = $1;

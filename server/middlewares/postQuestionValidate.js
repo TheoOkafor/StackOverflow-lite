@@ -41,6 +41,13 @@ const postQuestionValidate = (req, res, next) => {
         error: 'The title provided is too short. (min-characters: 20)',
       });
       return res;
+    } if (reqBody.body.trim().length >= 250) {
+      res.status(400);
+      res.json({
+        statusCode: 400,
+        error: 'The description provided is too long. (max-characters: 250)',
+      });
+      return res;
     }
     db.any('SELECT username FROM users WHERE id = $1', [req.userId])
       .then((data) => {
