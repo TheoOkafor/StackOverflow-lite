@@ -35,7 +35,7 @@ const upvoteAnswer = (id) => {
   })
   .catch(error =>{
     console.log(error);
-  })
+  });
 
 };
 
