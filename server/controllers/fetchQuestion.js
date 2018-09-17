@@ -56,7 +56,7 @@ const fetchQuestionCtrl = (req, res) => {
 
         // COMMENTS
         const answerComments = dbComments.filter((comment) => {
-          comment.answerid === answer.id;
+          return comment.answerid === answer.id;
         });
         answer.comments = answerComments;
         return answer;
