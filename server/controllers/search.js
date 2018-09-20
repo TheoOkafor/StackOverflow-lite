@@ -1,5 +1,10 @@
 import db from '../db';
-
+/**
+ * The controller for the search questions route.
+ * @param  {JSON | object} req the request from the client
+ * @param  {JSON | object} res the response from the controller to client
+ * @return {JSON | object}     The final response sent back to the client.
+ */
 const search = (req, res) => {
 	let userQuery = req.query.search;
 	if (!userQuery) {
@@ -10,6 +15,7 @@ const search = (req, res) => {
 		});
 		return res;
 	} else {
+		// DB query
 		userQuery = userQuery.split(' ').join(' & ')
 		const query = `SELECT * FROM questions WHERE 
 			to_tsvector('english', title || '. ' || body) 
@@ -17,6 +23,7 @@ const search = (req, res) => {
 
 		userQuery.trim();
 
+		// make the request to the DB
 		db.any(query, [userQuery])
 		.then(data => {
 			if (data.length <= 0) {
