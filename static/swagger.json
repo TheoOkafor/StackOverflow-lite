@@ -95,6 +95,45 @@
         }
       }
     },
+    "/search": {
+      "get": {
+        "tags": [
+          "Questions"
+        ],
+        "summary": "Search questions in the database using keywords",
+        "description": "",
+        "operationId": "searchQuestions",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "description": "Query parameter",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Question(s) found",
+            "schema": {
+              "$ref": "#/definitions/resSearchQuestions"
+            }
+          },
+          "400": {
+            "description": "Invalid search request, no query provided"
+          },
+          "405": {
+            "description": "Current HTTP request method is not allowed on this URI"
+          }
+        }
+      }
+    },
     "/questions/{questionId}": {
       "get": {
         "tags": [
@@ -694,6 +733,50 @@
                     }
                   }
                 }
+              }
+            }
+          }
+        }
+      },
+      "xml": {
+        "name": "resAllQuestions"
+      }
+    },
+    "resSearchQuestions": {
+      "type": "object",
+      "properties": {
+        "statusCode": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "message": {
+          "type": "string"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "title": {
+                "type": "string"
+              },
+              "body": {
+                "type": "string"
+              },
+              "timesubmitted": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "username": {
+                "type": "string"
+              },
+              "userid": {
+                "type": "integer",
+                "format": "int64"
               }
             }
           }
