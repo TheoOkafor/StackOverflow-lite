@@ -6,48 +6,39 @@ const search = (req, res) => {
 		res.status(400);
 		res.json({
 			statusCode: 400,
-			error: 'Invalid search request',
+			error: 'Invalid search request, no query provided',
 		});
 		return res;
 	} else {
-		if (!userQuery.trim()) {
-			res.status(400);
-			res.json({
-				statusCode: 400,
-				error: 'Invalid search request',
-			});
-			return res;
-		} else {
-			userQuery = userQuery.split(' ').join(' & ')
-			const query = `SELECT * FROM questions WHERE 
-				to_tsvector('english', title || '. ' || body) 
-				@@ to_tsquery('english', $1)`;
+		userQuery = userQuery.split(' ').join(' & ')
+		const query = `SELECT * FROM questions WHERE 
+			to_tsvector('english', title || '. ' || body) 
+			@@ to_tsquery('english', $1)`;
 
-			userQuery.trim();
-  
-			db.any(query, [userQuery])
-			.then(data => {
-				if (data.length <= 0) {
-					res.status(404);
-					res.json({
-						statusCode: 404,
-						error: 'Question not found',
-					});
-					return res;
-				} else {
-					res.status(200);
-					res.json({
-						statusCode: 200,
-						message: 'Question(s) found',
-						data,
-					});
-					return res;
-				}
-			})
-			.catch(error => {
-				console.log(error);
-			})
-		}
+		userQuery.trim();
+
+		db.any(query, [userQuery])
+		.then(data => {
+			if (data.length <= 0) {
+				res.status(404);
+				res.json({
+					statusCode: 404,
+					error: 'Question not found',
+				});
+				return res;
+			} else {
+				res.status(200);
+				res.json({
+					statusCode: 200,
+					message: 'Question(s) found',
+					data,
+				});
+				return res;
+			}
+		})
+		.catch(error => {
+			console.log(error);
+		})
 	}
 }
 

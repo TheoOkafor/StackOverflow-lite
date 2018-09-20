@@ -72,23 +72,8 @@ const fetchQuestionCtrl = (req, res) => {
       });
       return res;
     })
-    /**
-     * Catches the database error
-     * @param  {Object} error - contains the details about the error
-     * @return {JSON | object} - contains the error 404 or 500 reponse
-     *  to the user
-     */
     .catch((error) => {
-      /**
-       * Checks whether data was received from the database
-       * @param  {Number} error.received - is zero if no data was received
-       * @return {JSON | object} - error message
-       */
-      res.status(500);// Set status to 500
-      res.json({
-        statusCode: 500,
-        error: 'Server failed to complete request',
-      });
+      console.log(error);
     });
 };
 

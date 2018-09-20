@@ -45,12 +45,7 @@ const postQuestion = (req, res) => {
      * @return {JSON | object}  - contains error 500 message sent to the user
      */
     .catch((error) => {
-      res.status(500);// Set status to 500
-      res.json({
-        statusCode: 500,
-        error: 'Server failed to complete request',
-        data: error,
-      });
+      console.log(error);
     });
 };
 

@@ -78,6 +78,80 @@ describe('Questions', () => {
       });
     });
 
+    // Test the /search route
+    describe('GET /questions', () => {
+      it('it should not find a question for invalid request', (done) => {
+        chai.request(app).get('/v1/search').end((err, res) => {
+          chai.expect(res).to.have.status(400);
+          chai.expect(res.body).be.a('object');
+          chai.expect(res.body.statusCode).to.equal(400);
+          chai.expect(res.body).to.have.property('error');
+          chai.expect(res.body.error).to
+            .equal('Invalid search request, no query provided');
+          done(err);
+        });
+      });
+    });
+
+    // Test the /search route
+    describe('GET /questions', () => {
+      it('it should not find any question for empty request', (done) => {
+        chai.request(app).get('/v1/search?search=   ').end((err, res) => {
+          chai.expect(res).to.have.status(400);
+          chai.expect(res.body).be.a('object');
+          chai.expect(res.body.statusCode).to.equal(400);
+          chai.expect(res.body).to.have.property('error');
+          chai.expect(res.body.error).to
+            .equal('Invalid search request, no query provided');
+          done(err);
+        });
+      });
+    });
+
+    // Test the /search route
+    describe('GET /questions', () => {
+      it('it should not find any question for empty request', (done) => {
+        chai.request(app).get('/v1/search?search=magnanimous').end((err, res) => {
+          chai.expect(res).to.have.status(404);
+          chai.expect(res.body).be.a('object');
+          chai.expect(res.body.statusCode).to.equal(404);
+          chai.expect(res.body).to.have.property('error');
+          chai.expect(res.body.error).to.equal('Question not found');
+          done(err);
+        });
+      });
+    });
+
+    // Test the /search route
+    describe('GET /search', () => {
+      it('it should GET questions', (done) => {
+        chai.request(app).get('/v1/search?search=people').end((err, res) => {
+          chai.expect(res).to.have.status(200);
+          chai.expect(res.body).be.a('object');
+          chai.expect(res.body.statusCode).to.equal(200);
+          chai.expect(res.body).to.have.property('message');
+          chai.expect(res.body.message).to.equal('Question(s) found');
+          chai.expect(res.body).to.have.property('data');
+          done(err);
+        });
+      });
+    });
+
+    // Test the /search route
+    describe('GET /search', () => {
+      it('it should GET questions', (done) => {
+        chai.request(app).get('/v1/search?search=people+suffer').end((err, res) => {
+          chai.expect(res).to.have.status(200);
+          chai.expect(res.body).be.a('object');
+          chai.expect(res.body.statusCode).to.equal(200);
+          chai.expect(res.body).to.have.property('message');
+          chai.expect(res.body.message).to.equal('Question(s) found');
+          chai.expect(res.body).to.have.property('data');
+          done(err);
+        });
+      });
+    });
+
     // GET A QUESTION FROM QUESTIONS TEST
     describe('GET /v1/questions/2', () => {
       it('it should GET the question with id = 2', (done) => {
@@ -1368,6 +1442,17 @@ describe('STATIC route', () => {
     });
   });
 
+  // describe('GET signup page', () => {
+  //   it('it should GET SIGNUP PAGE', (done) => {
+  //     chai.request(app).post('/signup')
+  //       .redirects(0)
+  //       .end((err, res) => {
+  //         chai.expect(res).to.have.status(200);
+  //         done(err);
+  //       });
+  //   });
+  // });
+
   describe('GET signin page', () => {
     it('it should GET SIGNIN PAGE', (done) => {
       chai.request(app).get('/signin')
@@ -1377,6 +1462,28 @@ describe('STATIC route', () => {
         });
     });
   });
+
+  // describe('GET signin page', () => {
+  //   it('it should GET SIGNIN PAGE', (done) => {
+  //     chai.request(app).post('/signin')
+  //       .redirects(0)
+  //       .end((err, res) => {
+  //         chai.expect(res).to.have.status(200);
+  //         done(err);
+  //       });
+  //   });
+  // });
+
+  // describe('GET signin page', () => {
+  //   it('it should GET SIGNIN PAGE', (done) => {
+  //     chai.request(app).get('/logout')
+  //       .redirects(0)
+  //       .end((err, res) => {
+  //         chai.expect(res).to.have.status(307);
+  //         done(err);
+  //       });
+  //   });
+  // });
 
   describe('GET users page', () => {
     it('it should GET USER PAGE', (done) => {

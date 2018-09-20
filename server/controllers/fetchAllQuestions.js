@@ -47,12 +47,7 @@ const fetchAllQuestionsCtrl = (req, res) => {
    * @return {JSON | object} - Error message response to user
    */
     .catch((error) => {
-      res.status(500);// Set status to 500
-      res.json({
-        statusCode: 500,
-        error: 'Server failed to complete request',
-      });
-      return res;
+      console.log(error);
     });
 };
 

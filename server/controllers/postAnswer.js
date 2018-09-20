@@ -51,11 +51,7 @@ const postAnswer = (req, res) => {
           error: err.message,
         });
       } else {
-        res.status(500);// Set status to 500
-        res.json({
-          statusCode: 500,
-          error: 'Server failed to complete request',
-        });
+        console.log(error);
       }
     });
 };

@@ -56,19 +56,8 @@ const acceptAnswer = (req, res, next) => {
             return res;
           }
         })
-      /**
-       * Catch Error call-back
-       * @param  {Object} error handles the errors resulting from the request.
-       * @return {JSON | object}  error 500 message.
-       */
         .catch((error) => {
-          res.status(500);// Set status to 500
-          res.json({
-            statusCode: 500,
-            error: 'Server failed to complete request',
-            data: error,
-          });
-          return res;
+          console.log(error);
         });
     }
   } else {
