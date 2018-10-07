@@ -1,0 +1,8 @@
+node_modules/
+coverage/
+.nyc_output/
+build/
+old-build/
+package-lock.json
+-159941112
+.env

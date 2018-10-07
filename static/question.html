@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Stack Overflow-lite </title>
+	<meta name="description" content="StackOverflow-lite is a platform where people can ask questions and provide answers.">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<base href="/">
+	<link rel="icon" type="image/png" href="./images/favicon/favicon.png">
+	<link rel="stylesheet" href="./stylesheets/style.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Ubuntu">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+</head>
+<body>
+	<header class="home">
+		<div class="logo">
+			<a href="/"><p class="home">StackOverflow<small>-lite</small></p></a>
+		</div>
+
+		<button class="btn primary toggle-nav" onclick="showNav()"><i class="fas fa-bars"></i></button>
+		<nav class="top-link right">
+			
+		</nav>
+
+	</header>
+
+	<div class="row-container home">
+		<div class="sd-margin-12 d-margin-1">
+		</div>
+
+		<div class="sd-margin-12 d-margin-7">
+			<div class="row-container" id="main-container">
+				<div class="question">
+					
+				</div>
+				<div id="root">
+					<div class="loader"></div>
+				</div>
+				
+				<div class="answer-card">
+					<div id="user-name">
+						<h4><a href="" class="inherit"> </a><small>(you)</small></h4>
+					</div>
+					<div class="message-display">
+						<p id="server-message"></p>
+						<div class="loader-xs" id="add-answer-loader"></div>
+					</div>
+					<div class="answer-form">
+						<textarea rows="4" placeholder="Type your answer here" id="body"></textarea>
+						<div class="btn-group">
+							<button class="btn answer-btn primary" id="add-answer" onclick="activateLoaderXs(this.id)">Add Answer</button>
+							<input type="reset" value="Cancel">
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<div class="sd-margin-12 d-margin-4">
+			<div class="card margin-top-30 question-extra">
+				
+			</div>
+
+			<div>		
+				<h3 class="side-title">Top Questions with Most Answers</h3>
+				<table class="table" id="top-questions">
+					
+				</table>
+			</div>
+		</div>
+		<div id="overlay-delete">
+			<div class="card">
+
+			</div>
+		</div>
+
+	</div><!--End of Row Container -->
+
+	<footer class="home center margin-top-30">
+		<p class="sitemap margin-bottom-30"><small>Copyright 2018 Theo Okafor <a href="https://en.wikipedia.org/wiki/ISC_license" class="inherit">(ISC License)</a></small></p>
+		<p><small>Created as part of Andela Developer Challenge</small></p>
+	</footer>
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<script src="./javascript/custom.js"></script>
+	<script src="./javascript/fetchQuestion.js"></script>
+	<script src="./javascript/fetchTopQuestions.js"></script>
+	<script src="./javascript/fetchSearch.js"></script>
+	<script src="./javascript/updateAnswer.js"></script>
+	<script src="./javascript/postAnswer.js"></script>
+	<script src="./javascript/postVote.js"></script>
+	<script src="./javascript/postComment.js"></script>
+	<script>
+		window.addEventListener('load', fetchQuestion);
+		window.addEventListener('load', fetchTopQuestions);
+	</script>
+</body>
+</html>

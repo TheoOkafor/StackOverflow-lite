@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Stack Overflow-lite </title>
+	<meta name="description" content="StackOverflow-lite is a platform where people can ask questions and provide answers.">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<base href="/">
+	<link rel="icon" type="image/png" href="./images/favicon/favicon.png">
+	<link rel="stylesheet" href="./stylesheets/style.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Ubuntu">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+</head>
+<body>
+	<header class="home">
+		<div class="logo">
+			<a href=""><p class="home">StackOverflow<small>-lite</small></p></a>
+		</div>
+
+		<button class="btn primary toggle-nav" onclick="showNav()"><i class="fas fa-bars"></i></button>
+		<nav class="top-link right">
+			
+		</nav>
+
+	</header>
+
+	<div class="row-container home">
+		<div class="sd-margin-12 d-margin-3">
+			<div class="card margin-top-30" id="profile-summary">
+
+			</div>
+		</div>
+
+		<div class="sd-margin-12 d-margin-6 margin-bottom-30" id="main-container">
+			<div class="row-container margin-top-30 margin-bottom-20">
+				<h3>Recent Questions by <span class="profile-username">coco-maiko</span></h3>
+
+				<table class="table user-table">
+					
+				</table>
+			</div>
+
+			<div class="row-container">
+				<h3>All <span id="all-questions">10</span> Questions by <span class="profile-username">coco-maiko</span></h3>
+				
+				<table class="table user-table">
+
+				</table>
+			</div>
+		</div>
+
+		<div class="sd-margin-12 d-margin-3">
+			<div>	
+				<h3 class="side-title">Top Questions with Most Answers</h3>
+				<table class="table" id="top-questions">
+					
+				</table>
+			</div>
+		</div>
+
+
+	</div><!--End of Row Container -->
+
+	<footer class="home center margin-top-30">
+		<p class="sitemap margin-bottom-30"><small>Copyright 2018 Theo Okafor <a href="https://en.wikipedia.org/wiki/ISC_license" class="inherit">(ISC License)</a></small></p>
+		<p><small>Created as part of Andela Developer Challenge</small></p>
+	</footer>
+	<script src="./javascript/custom.js"></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<script src="./javascript/fetchUser.js"></script>
+	<script src="./javascript/fetchTopQuestions.js"></script>
+	<script src="./javascript/fetchSearch.js"></script>
+	<script>
+		window.addEventListener('load', fetchUser);
+		window.addEventListener('load', fetchTopQuestions);
+
+	</script>
+</body>
+</html>

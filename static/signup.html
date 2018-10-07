@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Join Stack Overflow-lite </title>
+	<meta name="description" content="StackOverflow-lite is a platform where people can ask questions and provide answers.">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" type="image/png" href="./images/favicon/favicon.png">
+	<link rel="stylesheet" href="./stylesheets/style.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Ubuntu">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+</head>
+<body class="home main sign">
+	<header class="home">
+		<div class="logo">
+			<a href="/"><p class="home">StackOverflow<small>-lite</small></p></a>
+		</div>
+
+		<button class="btn primary toggle-nav" onclick="showNav()"><i class="fas fa-bars"></i></button>
+		<nav class="top-link right">
+			
+		</nav>
+
+	</header>
+
+	<div class="main row-container">
+		<div class="sd-margin-12 d-margin-6 margin-top-20 site-desc">
+			<h1 class="heading center">Join Stack Overflow<small>-lite</small></h1>
+			<p>This is a platform where you can ask <span>questions</span> and provide <span>answers</span>.</p>
+		</div>
+
+		<div class="sd-margin-12 d-margin-6">
+			<div class="sign-card">
+				<form class="signup-form" method="post" id="signup-form">
+					<p><small>Already Signed up?</small> <a href="/signin" class="inherit">Sign in</a></p>
+
+					<p class="signup-error"></p>
+					<div class="form-item">
+						<label for="username">Username</label>
+						<input type="text" name="username" placeholder="username" required>
+					</div>
+					<div class="form-item">
+						<label for="email">Email</label>
+						<input type="email" name="user-email" placeholder="Your current email address" required>
+					</div>
+					<div class="form-item">
+						<label for="password">Create Password</label>
+						<input type="password" name="create-password" placeholder="Create Password" id="password" oninput="checkPassword()" required>
+						<h5 id="pass-strength"><span id="result"></span></h5>
+					</div>
+					<div class="form-item">
+						<label for="password">Repeat Password</label>
+						<input type="password" name="repeat-password" placeholder="Repeat password" id="password2" onchange="passwordMatch()" required>
+						<h5 id="match-display"></h5>
+					</div>
+					<button class="btn primary" id="sign-up">Sign Up</button>
+				</form>
+			</div>
+		</div>
+		<div class="clear-fix"></div>
+
+	</div><!--End of Row Container -->
+
+	<footer class="sign center">
+		<p class="sitemap margin-bottom-30"><small>Copyright 2018 Theo Okafor <a href="https://en.wikipedia.org/wiki/ISC_license" class="inherit">(ISC License)</a></small></p>
+		<small>Created as part of Andela Developer Challenge</small>
+	</footer>
+	<script type="text/javascript">
+		const signupBtn = document.getElementById('sign-up');
+	</script>
+	<script src="javascript/custom.js"></script>
+	<script src="javascript/signup.js"></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<script>
+	</script>
+</body>
+</html>
